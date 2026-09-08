@@ -1,11 +1,14 @@
 import { RouterProvider } from 'react-router';
 import { router } from './router';
 import { AuthProvider } from './context/AuthContext';
+import { CartProvider } from './hooks/useCart';
 
 function App() {
   return (
     <AuthProvider>
-      <RouterProvider router={router} />
+      <CartProvider>
+        <RouterProvider router={router} />
+      </CartProvider>
     </AuthProvider>
   );
 }
