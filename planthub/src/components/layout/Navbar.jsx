@@ -78,33 +78,27 @@ export default function Navbar() {
           >
             Support
           </Link>
-          {user?.role === 'admin' && (
-            <Link
-              to="/admin"
-              className={`navbar-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
-              onClick={() => setMobileOpen(false)}
-            >
-              Admin
-            </Link>
-          )}
-          {user?.role === 'manager' && (
-            <Link
-              to="/manager"
-              className={`navbar-link ${location.pathname.startsWith('/manager') ? 'active' : ''}`}
-              onClick={() => setMobileOpen(false)}
-            >
-              Manager
-            </Link>
-          )}
-          {user?.role === 'agent' && (
-            <Link
-              to="/agent"
-              className={`navbar-link ${location.pathname.startsWith('/agent') ? 'active' : ''}`}
-              onClick={() => setMobileOpen(false)}
-            >
-              Agent
-            </Link>
-          )}
+          <Link
+            to="/admin"
+            className={`navbar-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
+            onClick={() => setMobileOpen(false)}
+          >
+            Admin Dashboard
+          </Link>
+          <Link
+            to="/manager"
+            className={`navbar-link ${location.pathname.startsWith('/manager') ? 'active' : ''}`}
+            onClick={() => setMobileOpen(false)}
+          >
+            Manager Dashboard
+          </Link>
+          <Link
+            to="/agent"
+            className={`navbar-link ${location.pathname.startsWith('/agent') ? 'active' : ''}`}
+            onClick={() => setMobileOpen(false)}
+          >
+            Agent Panel
+          </Link>
         </div>
 
         {/* Actions */}
