@@ -25,9 +25,76 @@ const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [inventory, setInventory] = useState(PRODUCTS);
   const [users, setUsers] = useState(MOCK_USERS);
+  const [orders, setOrders] = useState(DEMO_ORDERS);
+
+  // Inventory State
+  const [editingProductId, setEditingProductId] = useState(null);
+  const [editProductForm, setEditProductForm] = useState({});
+  const [isAddingProduct, setIsAddingProduct] = useState(false);
+  
+  const handleEditProductClick = (product) => {
+    setEditingProductId(product.id);
+    setEditProductForm(product);
+  };
+
+  const handleSaveProduct = () => {
+    setInventory(inventory.map(p => p.id === editingProductId ? editProductForm : p));
+    setEditingProductId(null);
+  };
+
+  const handleAddProduct = () => {
+    const newProduct = {
+      ...editProductForm,
+      id: `P${Math.floor(Math.random() * 10000)}`,
+      image: editProductForm.image || 'https://images.unsplash.com/photo-1550989460-0adf9ea622e2?w=500' // fallback image
+    };
+    setInventory([...inventory, newProduct]);
+    setIsAddingProduct(false);
+    setEditProductForm({});
+  };
   
   const handleDeleteProduct = (id) => {
     setInventory(inventory.filter(p => p.id !== id));
+  };
+
+  // User State
+  const [editingUserId, setEditingUserId] = useState(null);
+  const [editUserRole, setEditUserRole] = useState('');
+  const [isAddingUser, setIsAddingUser] = useState(false);
+  const [newUserForm, setNewUserForm] = useState({ name: '', email: '', role: 'customer', status: 'active' });
+
+  const handleEditRole = (user) => {
+    setEditingUserId(user.id);
+    setEditUserRole(user.role);
+  };
+
+  const handleSaveUserRole = (id) => {
+    setUsers(users.map(u => u.id === id ? { ...u, role: editUserRole } : u));
+    setEditingUserId(null);
+  };
+
+  const handleAddUser = () => {
+    const newUser = {
+      ...newUserForm,
+      id: `USR${Math.floor(Math.random() * 1000)}`,
+    };
+    setUsers([...users, newUser]);
+    setIsAddingUser(false);
+    setNewUserForm({ name: '', email: '', role: 'customer', status: 'active' });
+  };
+
+  // Order State
+  const [editingOrderId, setEditingOrderId] = useState(null);
+  const [editOrderStatus, setEditOrderStatus] = useState('');
+
+  const handleEditOrderStatus = (order) => {
+    setEditingOrderId(order.id);
+    setEditOrderStatus(order.status);
+  };
+
+  const handleSaveOrderStatus = (id) => {
+    setOrders(orders.map(o => o.id === id ? { ...o, status: editOrderStatus } : o));
+    setEditingOrderId(null);
   };
 
   return (
@@ -37,46 +104,46 @@ const AdminDashboard = () => {
         <p>Welcome back! Here's what's happening today.</p>
       </div>
 
-      <div style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
-        <button className={`btn ${activeTab === 'overview' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('overview')}>Overview</button>
-        <button className={`btn ${activeTab === 'inventory' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('inventory')}>Inventory Management</button>
-        <button className={`btn ${activeTab === 'orders' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('orders')}>Order Management</button>
-        <button className={`btn ${activeTab === 'users' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('users')}>User Management</button>
+      <div style={{ display: 'flex', gap: '15px', marginBottom: '30px', flexWrap: 'wrap' }}>
+        <button className={`btn ${activeTab === 'overview' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('overview')}>Overview</button>
+        <button className={`btn ${activeTab === 'inventory' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('inventory')}>Inventory Management</button>
+        <button className={`btn ${activeTab === 'orders' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('orders')}>Order Management</button>
+        <button className={`btn ${activeTab === 'users' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('users')}>User Management</button>
       </div>
 
       {activeTab === 'overview' && (
         <>
-          <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
-            <div className="stat-card card">
-              <div className="stat-icon"><DollarSign /></div>
-              <div className="stat-info">
-                <h3>Total Revenue</h3>
-                <p className="value">$24,590</p>
-                <span className="trend positive">+12% this week</span>
+          <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '24px' }}>
+            <div className="stat-card card hover-lift animate-slide-up delay-1" style={{ borderTop: '4px solid var(--primary-500)' }}>
+              <div className="stat-icon" style={{ background: 'var(--primary-50)', padding: '12px', borderRadius: '50%', color: 'var(--primary-600)', width: 'fit-content' }}><DollarSign /></div>
+              <div className="stat-info" style={{ marginTop: '16px' }}>
+                <h3 style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Total Revenue</h3>
+                <p className="value" style={{ fontSize: 'var(--text-3xl)', fontWeight: 'var(--font-bold)', color: 'var(--text-primary)', margin: '4px 0' }}>$24,590</p>
+                <span className="trend positive" style={{ color: 'var(--success-600)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>↑ +12% this week</span>
               </div>
             </div>
-            <div className="stat-card card">
-              <div className="stat-icon"><Package /></div>
-              <div className="stat-info">
-                <h3>Total Orders</h3>
-                <p className="value">{DEMO_ORDERS.length}</p>
-                <span className="trend positive">+5% this week</span>
+            <div className="stat-card card hover-lift animate-slide-up delay-2" style={{ borderTop: '4px solid var(--info-500)' }}>
+              <div className="stat-icon" style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '12px', borderRadius: '50%', color: 'var(--info-500)', width: 'fit-content' }}><Package /></div>
+              <div className="stat-info" style={{ marginTop: '16px' }}>
+                <h3 style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Total Orders</h3>
+                <p className="value" style={{ fontSize: 'var(--text-3xl)', fontWeight: 'var(--font-bold)', color: 'var(--text-primary)', margin: '4px 0' }}>{DEMO_ORDERS.length}</p>
+                <span className="trend positive" style={{ color: 'var(--success-600)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>↑ +5% this week</span>
               </div>
             </div>
-            <div className="stat-card card">
-              <div className="stat-icon"><Users /></div>
-              <div className="stat-info">
-                <h3>Total Plants</h3>
-                <p className="value">{inventory.length}</p>
-                <span className="trend neutral">Active items</span>
+            <div className="stat-card card hover-lift animate-slide-up delay-3" style={{ borderTop: '4px solid var(--admin-500)' }}>
+              <div className="stat-icon" style={{ background: 'var(--admin-50)', padding: '12px', borderRadius: '50%', color: 'var(--admin-600)', width: 'fit-content' }}><Users /></div>
+              <div className="stat-info" style={{ marginTop: '16px' }}>
+                <h3 style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Total Plants</h3>
+                <p className="value" style={{ fontSize: 'var(--text-3xl)', fontWeight: 'var(--font-bold)', color: 'var(--text-primary)', margin: '4px 0' }}>{inventory.length}</p>
+                <span className="trend neutral" style={{ color: 'var(--text-muted)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Active items</span>
               </div>
             </div>
-            <div className="stat-card card">
-              <div className="stat-icon alert" style={{ color: 'red' }}><AlertCircle /></div>
-              <div className="stat-info">
-                <h3>Low Stock</h3>
-                <p className="value">{inventory.filter(p => p.stock < 10).length} Items</p>
-                <button className="btn btn-sm btn-secondary mt-2" onClick={() => setActiveTab('inventory')}>View Inventory</button>
+            <div className="stat-card card hover-lift animate-slide-up delay-4" style={{ borderTop: '4px solid var(--danger-500)' }}>
+              <div className="stat-icon" style={{ background: 'rgba(239, 68, 68, 0.1)', padding: '12px', borderRadius: '50%', color: 'var(--danger-600)', width: 'fit-content' }}><AlertCircle /></div>
+              <div className="stat-info" style={{ marginTop: '16px' }}>
+                <h3 style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Low Stock</h3>
+                <p className="value" style={{ fontSize: 'var(--text-3xl)', fontWeight: 'var(--font-bold)', color: 'var(--text-primary)', margin: '4px 0' }}>{inventory.filter(p => p.stock < 10).length} Items</p>
+                <button className="btn btn-sm btn-ghost hover-scale" style={{ padding: 0, color: 'var(--danger-600)', marginTop: '8px' }} onClick={() => setActiveTab('inventory')}>View Inventory →</button>
               </div>
             </div>
           </div>
@@ -99,15 +166,22 @@ const AdminDashboard = () => {
       )}
 
       {activeTab === 'inventory' && (
-        <div className="card" style={{ padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h2>Plant Inventory Data</h2>
-            <button className="btn btn-primary">Add New Plant</button>
+        <div className="card animate-slide-up" style={{ padding: '24px', borderRadius: 'var(--radius-xl)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <div>
+              <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: '4px' }}>Plant Inventory Data</h2>
+              <p style={{ color: 'var(--text-muted)', fontSize: 'var(--text-sm)' }}>Manage your catalog. Add new plants, update pricing, or adjust stock levels below.</p>
+            </div>
+            {!isAddingProduct && (
+              <button className="btn btn-admin hover-scale" onClick={() => { setIsAddingProduct(true); setEditProductForm({ name: '', category: 'Indoor', price: 0, stock: 0 }); }}>
+                + Add New Plant
+              </button>
+            )}
           </div>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
+                <tr style={{ borderBottom: '2px solid var(--border-light)', textAlign: 'left' }}>
                   <th style={{ padding: '10px' }}>Image</th>
                   <th style={{ padding: '10px' }}>Name</th>
                   <th style={{ padding: '10px' }}>Category</th>
@@ -117,25 +191,84 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {inventory.map(product => (
-                  <tr key={product.id} style={{ borderBottom: '1px solid #eee' }}>
+                {isAddingProduct && (
+                  <tr style={{ borderBottom: '1px solid var(--border-light)', background: 'var(--primary-50)' }}>
                     <td style={{ padding: '10px' }}>
-                      <img src={product.image} alt={product.name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                      <input type="text" className="input input-sm" placeholder="Image URL" value={editProductForm.image || ''} onChange={(e) => setEditProductForm({...editProductForm, image: e.target.value})} style={{ padding: '4px', width: '80px' }} />
                     </td>
-                    <td style={{ padding: '10px', fontWeight: 'bold' }}>{product.name}</td>
-                    <td style={{ padding: '10px' }}>{product.category}</td>
-                    <td style={{ padding: '10px' }}>${product.price}</td>
                     <td style={{ padding: '10px' }}>
-                      <span style={{ padding: '4px 8px', borderRadius: '12px', fontSize: '0.8rem', backgroundColor: product.stock < 10 ? '#fee2e2' : '#d1fae5', color: product.stock < 10 ? '#991b1b' : '#065f46' }}>
-                        {product.stock} in stock
-                      </span>
+                      <input type="text" className="input input-sm" placeholder="Plant Name" value={editProductForm.name || ''} onChange={(e) => setEditProductForm({...editProductForm, name: e.target.value})} style={{ padding: '4px', width: '100%' }} />
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <select className="input input-sm" value={editProductForm.category || 'Indoor'} onChange={(e) => setEditProductForm({...editProductForm, category: e.target.value})} style={{ padding: '4px' }}>
+                        <option value="Indoor">Indoor</option>
+                        <option value="Outdoor">Outdoor</option>
+                        <option value="Succulent">Succulent</option>
+                      </select>
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <input type="number" className="input input-sm" placeholder="0.00" value={editProductForm.price || ''} onChange={(e) => setEditProductForm({...editProductForm, price: parseFloat(e.target.value)})} style={{ padding: '4px', width: '80px' }} />
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <input type="number" className="input input-sm" placeholder="0" value={editProductForm.stock || ''} onChange={(e) => setEditProductForm({...editProductForm, stock: parseInt(e.target.value, 10)})} style={{ padding: '4px', width: '80px' }} />
                     </td>
                     <td style={{ padding: '10px' }}>
                       <div style={{ display: 'flex', gap: '10px' }}>
-                        <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3b82f6' }} title="Edit"><Edit size={18} /></button>
-                        <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }} onClick={() => handleDeleteProduct(product.id)} title="Delete"><Trash2 size={18} /></button>
+                        <button className="btn btn-sm btn-primary" onClick={handleAddProduct}>Save</button>
+                        <button className="btn btn-sm btn-ghost" onClick={() => setIsAddingProduct(false)}>Cancel</button>
                       </div>
                     </td>
+                  </tr>
+                )}
+                {inventory.map(product => (
+                  <tr key={product.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
+                    <td style={{ padding: '10px' }}>
+                      <img src={product.image} alt={product.name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                    </td>
+                    
+                    {editingProductId === product.id ? (
+                      <>
+                        <td style={{ padding: '10px' }}>
+                          <input type="text" className="input input-sm" value={editProductForm.name} onChange={(e) => setEditProductForm({...editProductForm, name: e.target.value})} style={{ padding: '4px', width: '100%' }} />
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <select className="input input-sm" value={editProductForm.category} onChange={(e) => setEditProductForm({...editProductForm, category: e.target.value})} style={{ padding: '4px' }}>
+                            <option value="Indoor">Indoor</option>
+                            <option value="Outdoor">Outdoor</option>
+                            <option value="Succulent">Succulent</option>
+                          </select>
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <input type="number" className="input input-sm" value={editProductForm.price} onChange={(e) => setEditProductForm({...editProductForm, price: parseFloat(e.target.value)})} style={{ padding: '4px', width: '80px' }} />
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <input type="number" className="input input-sm" value={editProductForm.stock} onChange={(e) => setEditProductForm({...editProductForm, stock: parseInt(e.target.value, 10)})} style={{ padding: '4px', width: '80px' }} />
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                            <button className="btn btn-sm btn-primary" onClick={handleSaveProduct}>Save</button>
+                            <button className="btn btn-sm btn-ghost" onClick={() => setEditingProductId(null)}>Cancel</button>
+                          </div>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td style={{ padding: '10px', fontWeight: 'bold' }}>{product.name}</td>
+                        <td style={{ padding: '10px' }}>{product.category}</td>
+                        <td style={{ padding: '10px' }}>${product.price}</td>
+                        <td style={{ padding: '10px' }}>
+                          <span style={{ padding: '4px 8px', borderRadius: '12px', fontSize: '0.8rem', backgroundColor: product.stock < 10 ? 'rgba(239, 68, 68, 0.1)' : 'rgba(34, 197, 94, 0.1)', color: product.stock < 10 ? 'var(--danger-600)' : 'var(--success-600)' }}>
+                            {product.stock} in stock
+                          </span>
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                            <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--info-500)' }} onClick={() => handleEditProductClick(product)} title="Edit"><Edit size={18} /></button>
+                            <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--danger-500)' }} onClick={() => handleDeleteProduct(product.id)} title="Delete"><Trash2 size={18} /></button>
+                          </div>
+                        </td>
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -145,12 +278,12 @@ const AdminDashboard = () => {
       )}
 
       {activeTab === 'orders' && (
-        <div className="card" style={{ padding: '20px' }}>
-          <h2 style={{ marginBottom: '20px' }}>Recent Orders</h2>
+        <div className="card animate-slide-up" style={{ padding: '24px', borderRadius: 'var(--radius-xl)' }}>
+          <h2 style={{ marginBottom: '20px', fontSize: 'var(--text-xl)' }}>Recent Orders</h2>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
+                <tr style={{ borderBottom: '2px solid var(--border-light)', textAlign: 'left' }}>
                   <th style={{ padding: '10px' }}>Order ID</th>
                   <th style={{ padding: '10px' }}>Date</th>
                   <th style={{ padding: '10px' }}>Total</th>
@@ -160,22 +293,37 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {DEMO_ORDERS.map(order => (
-                  <tr key={order.id} style={{ borderBottom: '1px solid #eee' }}>
+                {orders.map(order => (
+                  <tr key={order.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
                     <td style={{ padding: '10px', fontWeight: 'bold' }}>{order.id}</td>
                     <td style={{ padding: '10px' }}>{order.date}</td>
                     <td style={{ padding: '10px' }}>${order.total}</td>
                     <td style={{ padding: '10px' }}>
-                      <span style={{ padding: '4px 8px', borderRadius: '12px', fontSize: '0.8rem', textTransform: 'capitalize',
-                        backgroundColor: order.status === 'delivered' ? '#d1fae5' : order.status === 'shipped' ? '#dbeafe' : '#fef3c7',
-                        color: order.status === 'delivered' ? '#065f46' : order.status === 'shipped' ? '#1e40af' : '#92400e'
-                      }}>
-                        {order.status}
-                      </span>
+                      {editingOrderId === order.id ? (
+                        <select className="input input-sm" value={editOrderStatus} onChange={(e) => setEditOrderStatus(e.target.value)} style={{ padding: '4px' }}>
+                          <option value="pending">Pending</option>
+                          <option value="shipped">Shipped</option>
+                          <option value="delivered">Delivered</option>
+                        </select>
+                      ) : (
+                        <span style={{ padding: '4px 8px', borderRadius: '12px', fontSize: '0.8rem', textTransform: 'capitalize',
+                          backgroundColor: order.status === 'delivered' ? 'rgba(34, 197, 94, 0.1)' : order.status === 'shipped' ? 'rgba(59, 130, 246, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+                          color: order.status === 'delivered' ? 'var(--success-600)' : order.status === 'shipped' ? 'var(--info-500)' : 'var(--warning-600)'
+                        }}>
+                          {order.status}
+                        </span>
+                      )}
                     </td>
                     <td style={{ padding: '10px' }}>{order.trackingNumber}</td>
                     <td style={{ padding: '10px' }}>
-                      <button className="btn btn-sm btn-secondary">View Details</button>
+                      {editingOrderId === order.id ? (
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                          <button className="btn btn-sm btn-primary" onClick={() => handleSaveOrderStatus(order.id)}>Save</button>
+                          <button className="btn btn-sm btn-ghost" onClick={() => setEditingOrderId(null)}>Cancel</button>
+                        </div>
+                      ) : (
+                        <button className="btn btn-sm btn-secondary hover-scale" onClick={() => handleEditOrderStatus(order)}>Update Status</button>
+                      )}
                     </td>
                   </tr>
                 ))}
@@ -186,15 +334,17 @@ const AdminDashboard = () => {
       )}
 
       {activeTab === 'users' && (
-        <div className="card" style={{ padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h2>System Users</h2>
-            <button className="btn btn-primary">Add New User</button>
+        <div className="card animate-slide-up" style={{ padding: '24px', borderRadius: 'var(--radius-xl)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: 'var(--text-xl)' }}>System Users</h2>
+            {!isAddingUser && (
+              <button className="btn btn-admin hover-scale" onClick={() => setIsAddingUser(true)}>+ Add New User</button>
+            )}
           </div>
           <div style={{ overflowX: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
+                <tr style={{ borderBottom: '2px solid var(--border-light)', textAlign: 'left' }}>
                   <th style={{ padding: '10px' }}>Name</th>
                   <th style={{ padding: '10px' }}>Email</th>
                   <th style={{ padding: '10px' }}>Role</th>
@@ -203,14 +353,53 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
+                {isAddingUser && (
+                  <tr style={{ borderBottom: '1px solid var(--border-light)', background: 'var(--primary-50)' }}>
+                    <td style={{ padding: '10px' }}>
+                      <input type="text" className="input input-sm" placeholder="Name" value={newUserForm.name} onChange={(e) => setNewUserForm({...newUserForm, name: e.target.value})} style={{ padding: '4px', width: '100%' }} />
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <input type="email" className="input input-sm" placeholder="Email" value={newUserForm.email} onChange={(e) => setNewUserForm({...newUserForm, email: e.target.value})} style={{ padding: '4px', width: '100%' }} />
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <select className="input input-sm" value={newUserForm.role} onChange={(e) => setNewUserForm({...newUserForm, role: e.target.value})} style={{ padding: '4px' }}>
+                        <option value="admin">Admin</option>
+                        <option value="manager">Manager</option>
+                        <option value="agent">Agent</option>
+                        <option value="customer">Customer</option>
+                      </select>
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <select className="input input-sm" value={newUserForm.status} onChange={(e) => setNewUserForm({...newUserForm, status: e.target.value})} style={{ padding: '4px' }}>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                      </select>
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <button className="btn btn-sm btn-primary" onClick={handleAddUser}>Save</button>
+                        <button className="btn btn-sm btn-ghost" onClick={() => setIsAddingUser(false)}>Cancel</button>
+                      </div>
+                    </td>
+                  </tr>
+                )}
                 {users.map(user => (
-                  <tr key={user.id} style={{ borderBottom: '1px solid #eee' }}>
+                  <tr key={user.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
                     <td style={{ padding: '10px', fontWeight: 'bold' }}>{user.name}</td>
-                    <td style={{ padding: '10px', color: '#666' }}>{user.email}</td>
+                    <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{user.email}</td>
                     <td style={{ padding: '10px', textTransform: 'capitalize' }}>
-                      <span className={`badge ${user.role === 'admin' ? 'badge-danger' : user.role === 'manager' ? 'badge-info' : 'badge-neutral'}`}>
-                        {user.role}
-                      </span>
+                      {editingUserId === user.id ? (
+                        <select className="input input-sm" value={editUserRole} onChange={(e) => setEditUserRole(e.target.value)} style={{ padding: '4px' }}>
+                          <option value="admin">Admin</option>
+                          <option value="manager">Manager</option>
+                          <option value="agent">Agent</option>
+                          <option value="customer">Customer</option>
+                        </select>
+                      ) : (
+                        <span className={`badge ${user.role === 'admin' ? 'badge-danger' : user.role === 'manager' ? 'badge-info' : 'badge-neutral'}`}>
+                          {user.role}
+                        </span>
+                      )}
                     </td>
                     <td style={{ padding: '10px' }}>
                       <span className={`badge ${user.status === 'active' ? 'badge-success' : 'badge-warning'}`}>
@@ -218,7 +407,14 @@ const AdminDashboard = () => {
                       </span>
                     </td>
                     <td style={{ padding: '10px' }}>
-                      <button className="btn btn-sm btn-secondary">Edit Role</button>
+                      {editingUserId === user.id ? (
+                        <div style={{ display: 'flex', gap: '10px' }}>
+                          <button className="btn btn-sm btn-primary" onClick={() => handleSaveUserRole(user.id)}>Save</button>
+                          <button className="btn btn-sm btn-ghost" onClick={() => setEditingUserId(null)}>Cancel</button>
+                        </div>
+                      ) : (
+                        <button className="btn btn-sm btn-secondary hover-scale" onClick={() => handleEditRole(user)}>Edit Role</button>
+                      )}
                     </td>
                   </tr>
                 ))}

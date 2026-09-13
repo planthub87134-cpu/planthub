@@ -68,6 +68,7 @@
   background: linear-gradient(135deg, var(--primary-400), var(--primary-500));
   box-shadow: 0 8px 24px rgba(5, 150, 105, 0.45);
   transform: translateY(-3px) scale(1.03);
+  animation: glow 2s ease-in-out infinite, pulse 2s ease-in-out infinite;
 }
 
 .btn-secondary {
@@ -93,6 +94,7 @@
   background: linear-gradient(135deg, var(--danger-600), var(--danger-700));
   box-shadow: 0 8px 24px rgba(220, 38, 38, 0.45);
   transform: translateY(-3px) scale(1.03);
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 .btn-ghost {
@@ -115,6 +117,7 @@
   background: linear-gradient(135deg, var(--admin-400), var(--admin-500));
   box-shadow: 0 8px 24px rgba(147, 51, 234, 0.45);
   transform: translateY(-3px) scale(1.03);
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .btn-manager {
@@ -127,6 +130,7 @@
   background: linear-gradient(135deg, var(--manager-400), var(--manager-500));
   box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45);
   transform: translateY(-3px) scale(1.03);
+  animation: pulse 2s ease-in-out infinite;
 }
 
 .btn-google {

@@ -44,13 +44,13 @@ const AdminLoginPage = () => {
       <div className="leaf-pattern leaf-2">🌿</div>
       <div className="leaf-pattern leaf-3">🌱</div>
 
-      <div className="auth-card">
-        <div className="auth-header">
-          <div className="auth-logo" style={{ background: 'var(--warm-800)', color: 'white' }}>
-            <Shield size={32} />
+      <div className="auth-card card-glass animate-scale-in" style={{ padding: 'var(--space-8)', borderRadius: 'var(--radius-2xl)', boxShadow: 'var(--shadow-2xl)', border: '1px solid rgba(255,255,255,0.4)', background: 'rgba(255, 255, 255, 0.85)' }}>
+        <div className="auth-header animate-slide-up delay-1">
+          <div className="auth-logo hover-scale" style={{ background: 'linear-gradient(135deg, var(--admin-500), var(--admin-600))', color: 'white', padding: '16px', borderRadius: 'var(--radius-xl)', boxShadow: '0 8px 16px rgba(147, 51, 234, 0.3)' }}>
+            <Shield size={36} />
           </div>
-          <h1 className="auth-title">Admin Portal</h1>
-          <p className="auth-subtitle">Sign in to access the administrative dashboard</p>
+          <h1 className="auth-title" style={{ marginTop: 'var(--space-4)', fontSize: 'var(--text-3xl)' }}>Admin Portal</h1>
+          <p className="auth-subtitle" style={{ color: 'var(--text-secondary)' }}>Sign in to access the administrative dashboard</p>
         </div>
 
         {error && (
@@ -69,10 +69,10 @@ const AdminLoginPage = () => {
         )}
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          <div className="form-field">
+          <div className="form-field animate-slide-up delay-2">
             <label className="form-label">Admin Email</label>
-            <div className="input-group" style={{ display: 'flex', alignItems: 'center', background: 'var(--white)', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-md)', padding: '0 12px' }}>
-              <Mail size={18} style={{ color: 'var(--gray-400)' }} />
+            <div className="input-group hover-glow" style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.9)', border: '2px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '4px 12px', transition: 'all var(--transition-base)' }}>
+              <Mail size={20} style={{ color: 'var(--admin-400)' }} />
               <input 
                 name="email" 
                 type="email" 
@@ -85,10 +85,10 @@ const AdminLoginPage = () => {
             </div>
           </div>
           
-          <div className="form-field" style={{ marginBottom: '24px' }}>
+          <div className="form-field animate-slide-up delay-3" style={{ marginBottom: '24px' }}>
             <label className="form-label">Password</label>
-            <div className="input-group" style={{ display: 'flex', alignItems: 'center', background: 'var(--white)', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-md)', padding: '0 12px' }}>
-              <Lock size={18} style={{ color: 'var(--gray-400)' }} />
+            <div className="input-group hover-glow" style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.9)', border: '2px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '4px 12px', transition: 'all var(--transition-base)' }}>
+              <Lock size={20} style={{ color: 'var(--admin-400)' }} />
               <input 
                 name="password" 
                 type="password" 
@@ -101,13 +101,13 @@ const AdminLoginPage = () => {
             </div>
           </div>
           
-          <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
-            {loading ? <span className="spinner"></span> : 'Access Dashboard'}
+          <button type="submit" className="btn btn-admin btn-block animate-slide-up delay-4" disabled={loading} style={{ borderRadius: 'var(--radius-xl)', padding: '16px' }}>
+            {loading ? <span className="spinner"></span> : 'Secure Login'}
           </button>
         </form>
         
-        <div className="auth-footer" style={{ marginTop: '24px', textAlign: 'center' }}>
-          <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }} style={{ color: 'var(--gray-600)', fontWeight: '500', textDecoration: 'none' }}>
+        <div className="auth-footer animate-fade-in delay-5" style={{ marginTop: '28px', textAlign: 'center' }}>
+          <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }} style={{ color: 'var(--admin-600)', fontWeight: '600', textDecoration: 'none', display: 'inline-block', transition: 'transform var(--transition-fast)' }} className="hover-scale">
             ← Return to Store
           </a>
         </div>

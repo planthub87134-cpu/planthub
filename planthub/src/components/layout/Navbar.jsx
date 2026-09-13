@@ -1,6 +1,6 @@
 // PlantHub — Navbar Component
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../hooks/useCart';
@@ -11,8 +11,30 @@ export default function Navbar() {
   const { cartCount } = useCart();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user previously saved dark mode preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      setIsDarkMode(true);
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    if (isDarkMode) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', 'light');
+      setIsDarkMode(false);
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+      setIsDarkMode(true);
+    }
+  };
 
   const isActive = (path) => location.pathname === path;
 
@@ -47,62 +69,80 @@ export default function Navbar() {
             to="/"
             className={`navbar-link ${isActive('/') ? 'active' : ''}`}
             onClick={() => setMobileOpen(false)}
+            title="Home"
           >
-            Home
+            🏠
           </Link>
           <Link
             to="/shop"
             className={`navbar-link ${isActive('/shop') ? 'active' : ''}`}
             onClick={() => setMobileOpen(false)}
+            title="Shop"
           >
-            Shop
+            🛍️
           </Link>
           <Link
             to="/contact"
             className={`navbar-link ${isActive('/contact') ? 'active' : ''}`}
             onClick={() => setMobileOpen(false)}
+            title="Contact"
           >
-            Contact
+            📞
           </Link>
           <Link
             to="/feedback"
             className={`navbar-link ${isActive('/feedback') ? 'active' : ''}`}
             onClick={() => setMobileOpen(false)}
+            title="Feedback"
           >
-            Feedback
+            💬
           </Link>
           <Link
             to="/support"
             className={`navbar-link ${isActive('/support') ? 'active' : ''}`}
             onClick={() => setMobileOpen(false)}
+            title="Support"
           >
-            Support
+            🛠️
           </Link>
           <Link
             to="/admin"
             className={`navbar-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
             onClick={() => setMobileOpen(false)}
+            title="Admin Dashboard"
           >
-            Admin Dashboard
+            🛡️
           </Link>
           <Link
             to="/manager"
             className={`navbar-link ${location.pathname.startsWith('/manager') ? 'active' : ''}`}
             onClick={() => setMobileOpen(false)}
+            title="Manager Dashboard"
           >
-            Manager Dashboard
+            🧑‍💼
           </Link>
           <Link
             to="/agent"
             className={`navbar-link ${location.pathname.startsWith('/agent') ? 'active' : ''}`}
             onClick={() => setMobileOpen(false)}
+            title="Agent Panel"
           >
-            Agent Panel
+            🎧
           </Link>
         </div>
 
         {/* Actions */}
         <div className="navbar-actions">
+          {/* Theme Toggle */}
+          <button 
+            className="navbar-link" 
+            onClick={toggleTheme} 
+            title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+            style={{ fontSize: '1.2rem', background: 'transparent', border: 'none', cursor: 'pointer' }}
+          >
+            {isDarkMode ? '🌞' : '🌙'}
+          </button>
+
           {/* Cart */}
           <Link to="/cart" className="navbar-cart" id="cart-button" aria-label="Shopping cart">
             🛒

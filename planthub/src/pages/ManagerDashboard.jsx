@@ -24,14 +24,14 @@ const ManagerDashboard = () => {
         <p>Manage daily operations, orders, and inventory.</p>
       </div>
 
-      <div style={{ display: 'flex', gap: '15px', marginBottom: '20px' }}>
-        <button className={`btn ${activeTab === 'orders' ? 'btn-manager' : 'btn-secondary'}`} onClick={() => setActiveTab('orders')}>Order Processing</button>
-        <button className={`btn ${activeTab === 'inventory' ? 'btn-manager' : 'btn-secondary'}`} onClick={() => setActiveTab('inventory')}>Inventory Overview</button>
+      <div style={{ display: 'flex', gap: '15px', marginBottom: '30px' }}>
+        <button className={`btn ${activeTab === 'orders' ? 'btn-manager' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('orders')}>Order Processing</button>
+        <button className={`btn ${activeTab === 'inventory' ? 'btn-manager' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('inventory')}>Inventory Overview</button>
       </div>
 
       {activeTab === 'orders' && (
-        <div className="card" style={{ padding: '20px' }}>
-          <div className="dashboard-controls mb-6 flex space-between align-center" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+        <div className="card animate-slide-up" style={{ padding: '24px', borderRadius: 'var(--radius-xl)' }}>
+          <div className="dashboard-controls mb-6 flex space-between align-center" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '24px' }}>
             <div className="tabs" style={{ display: 'flex', gap: '10px' }}>
               {['Pending', 'Shipped', 'Delivered', 'All'].map(tab => (
                 <button 
@@ -99,8 +99,8 @@ const ManagerDashboard = () => {
       )}
 
       {activeTab === 'inventory' && (
-        <div className="card" style={{ padding: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+        <div className="card animate-slide-up" style={{ padding: '24px', borderRadius: 'var(--radius-xl)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
             <h2>Inventory Stock Levels</h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', color: '#d97706' }}>
               <AlertCircle size={20} />

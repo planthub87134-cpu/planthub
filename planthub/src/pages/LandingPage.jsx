@@ -41,7 +41,7 @@ export default function LandingPage() {
             </div>
             
             <div style={{ marginTop: '40px' }} className="animate-slide-up delay-4">
-              <Link to="/shop" className="btn btn-primary btn-lg">Shop Now</Link>
+              <Link to="/shop" className="btn btn-primary btn-lg hover-scale">Shop Now</Link>
             </div>
           </div>
           <div className="hero-decoration animate-float">🌿</div>
@@ -63,9 +63,10 @@ export default function LandingPage() {
             {featuredProducts.map((product, index) => (
               <div
                 key={product.id}
-                className={`product-card stagger-item animate-slide-up delay-${index + 1}`}
+                className={`product-card stagger-item animate-slide-up delay-${index + 1} hover-lift`}
+                style={{ transition: 'all 0.3s ease', borderRadius: 'var(--radius-xl)', overflow: 'hidden', border: '1px solid var(--border-light)', background: 'var(--bg-primary)' }}
               >
-                <div className="product-card-image">
+                <div className="product-card-image" style={{ position: 'relative', overflow: 'hidden' }}>
                   <img src={product.image} alt={product.name} style={{ width: '100%', height: '250px', objectFit: 'cover', display: 'block' }} />
                   {product.stock < 10 && (
                     <div className="product-card-badge">
@@ -73,13 +74,13 @@ export default function LandingPage() {
                     </div>
                   )}
                 </div>
-                <div className="product-card-body">
-                  <p className="product-card-category">{product.category}</p>
-                  <h3 className="product-card-name">{product.name}</h3>
-                  <p className="product-card-desc">{product.description}</p>
-                  <div className="product-card-footer">
-                    <span className="product-card-price">{formatCurrency(product.price)}</span>
-                    <Link to="/shop" className="btn btn-primary btn-sm">View</Link>
+                <div className="product-card-body" style={{ padding: 'var(--space-4)' }}>
+                  <p className="product-card-category" style={{ fontSize: 'var(--text-xs)', color: 'var(--primary-600)', fontWeight: 'var(--font-bold)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 'var(--space-1)' }}>{product.category}</p>
+                  <h3 className="product-card-name" style={{ fontSize: 'var(--text-lg)', marginBottom: 'var(--space-2)' }}>{product.name}</h3>
+                  <p className="product-card-desc" style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', marginBottom: 'var(--space-4)', display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{product.description}</p>
+                  <div className="product-card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-light)', paddingTop: 'var(--space-3)' }}>
+                    <span className="product-card-price" style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)' }}>{formatCurrency(product.price)}</span>
+                    <Link to="/shop" className="btn btn-primary btn-sm hover-scale">View</Link>
                   </div>
                 </div>
               </div>
@@ -151,17 +152,48 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Newsletter Section */}
+      <section className="section" style={{ background: 'linear-gradient(135deg, var(--primary-900), var(--gray-900))', color: 'white' }}>
+        <div className="container">
+          <div className="grid grid-2 items-center" style={{ gap: 'var(--space-10)' }}>
+            <div className="animate-slide-right">
+              <h2 className="section-title" style={{ color: 'white', marginBottom: 'var(--space-4)' }}>Join Our Green Community</h2>
+              <p className="section-subtitle" style={{ color: 'var(--primary-100)', marginBottom: '0' }}>
+                Subscribe to our newsletter for exclusive plant care tips, new arrival updates, and 15% off your first order.
+              </p>
+            </div>
+            <div className="animate-slide-left">
+              <form className="flex gap-2" onSubmit={(e) => e.preventDefault()} style={{ background: 'rgba(255,255,255,0.1)', padding: 'var(--space-2)', borderRadius: 'var(--radius-full)', backdropFilter: 'blur(10px)' }}>
+                <input 
+                  type="email" 
+                  placeholder="Enter your email address..." 
+                  className="input" 
+                  style={{ flex: 1, border: 'none', background: 'transparent', color: 'white', paddingLeft: 'var(--space-4)' }}
+                  required
+                />
+                <button type="submit" className="btn btn-primary hover-scale" style={{ borderRadius: 'var(--radius-full)' }}>
+                  Subscribe
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="section">
         <div className="container">
-          <div className="cta-banner">
-            <h2 className="cta-banner-title">Ready to Go Green?</h2>
-            <p className="cta-banner-text">
-              Start your plant journey today and enjoy 15% off your first order.
-            </p>
-            <Link to="/shop" className="btn btn-lg" id="cta-shop">
-              Shop Now →
-            </Link>
+          <div className="cta-banner" style={{ background: 'linear-gradient(135deg, var(--primary-50), var(--accent-50))', padding: 'var(--space-12)', borderRadius: 'var(--radius-2xl)', textAlign: 'center', border: '1px solid var(--primary-200)', position: 'relative', overflow: 'hidden' }}>
+            <div className="leaf-pattern leaf-1" style={{ opacity: 0.1, zIndex: 0 }}>🌿</div>
+            <div style={{ position: 'relative', zIndex: 1 }}>
+              <h2 className="cta-banner-title" style={{ fontSize: 'var(--text-4xl)', marginBottom: 'var(--space-4)' }}>Ready to Go Green?</h2>
+              <p className="cta-banner-text" style={{ fontSize: 'var(--text-lg)', color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', maxWidth: '600px', margin: '0 auto var(--space-6)' }}>
+                Start your plant journey today. We have everything you need to build your perfect indoor jungle.
+              </p>
+              <Link to="/shop" className="btn btn-primary btn-lg hover-scale hover-glow" id="cta-shop">
+                Shop Our Collection →
+              </Link>
+            </div>
           </div>
         </div>
       </section>

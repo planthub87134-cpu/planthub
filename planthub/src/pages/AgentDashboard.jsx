@@ -25,7 +25,7 @@ export default function AgentDashboard() {
       
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-6)' }}>
         {/* Sidebar - Ticket List */}
-        <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', overflow: 'hidden' }}>
+        <div className="card animate-slide-up" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
           <div style={{ padding: 'var(--space-4)', borderBottom: '1px solid var(--border-light)', backgroundColor: 'var(--bg-subtle)' }}>
             <h2 style={{ fontSize: 'var(--text-lg)', fontWeight: 'var(--font-bold)' }}>All Tickets</h2>
           </div>
@@ -39,11 +39,14 @@ export default function AgentDashboard() {
                 <div 
                   key={ticket.id}
                   onClick={() => setActiveTicket(ticket.id)}
+                  className="hover-lift"
                   style={{ 
                     padding: 'var(--space-4)', 
                     borderBottom: '1px solid var(--border-light)',
                     cursor: 'pointer',
-                    backgroundColor: activeTicket === ticket.id ? 'var(--bg-subtle)' : 'white'
+                    backgroundColor: activeTicket === ticket.id ? 'var(--primary-50)' : 'white',
+                    borderLeft: activeTicket === ticket.id ? '4px solid var(--primary-500)' : '4px solid transparent',
+                    transition: 'all 0.2s ease'
                   }}
                 >
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
@@ -69,7 +72,7 @@ export default function AgentDashboard() {
         </div>
 
         {/* Main Content - Ticket Thread */}
-        <div style={{ backgroundColor: 'white', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border-light)', display: 'flex', flexDirection: 'column', height: '750px' }}>
+        <div className="card animate-slide-up delay-1" style={{ padding: 0, display: 'flex', flexDirection: 'column', height: '750px', overflow: 'hidden' }}>
           {currentTicket ? (
             <>
               <div style={{ padding: 'var(--space-4)', borderBottom: '1px solid var(--border-light)', backgroundColor: 'var(--bg-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -94,13 +97,16 @@ export default function AgentDashboard() {
                 {currentTicket.messages.map(msg => {
                   const isAgent = msg.senderRole === 'agent' || msg.senderRole === 'admin' || msg.senderRole === 'manager';
                   return (
-                    <div key={msg.id} style={{ 
+                    <div key={msg.id} className="animate-scale-in" style={{ 
                       alignSelf: isAgent ? 'flex-end' : 'flex-start',
                       maxWidth: '80%',
                       backgroundColor: isAgent ? 'var(--primary-50)' : '#f3f4f6',
                       border: isAgent ? '1px solid var(--primary-100)' : '1px solid #e5e7eb',
-                      borderRadius: 'var(--radius-md)',
-                      padding: 'var(--space-3)'
+                      borderRadius: 'var(--radius-xl)',
+                      borderBottomRightRadius: isAgent ? '4px' : 'var(--radius-xl)',
+                      borderBottomLeftRadius: isAgent ? 'var(--radius-xl)' : '4px',
+                      padding: 'var(--space-4)',
+                      boxShadow: 'var(--shadow-sm)'
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 'var(--space-2)', fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>
                         <span style={{ fontWeight: 'var(--font-bold)', color: isAgent ? 'var(--primary-700)' : 'var(--text-secondary)' }}>{msg.senderName} ({msg.senderRole})</span>
