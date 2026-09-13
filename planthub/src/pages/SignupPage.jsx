@@ -9,6 +9,7 @@ export default function SignupPage() {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -33,7 +34,7 @@ export default function SignupPage() {
     }
 
     setLoading(true);
-    const { error } = await signUp(email, password, name);
+    const { error } = await signUp(email, password, name, phone);
     setLoading(false);
 
     if (error) {
@@ -102,7 +103,7 @@ export default function SignupPage() {
             />
           </div>
           <div className="form-field">
-            <label className="form-label" htmlFor="signup-email">Email</label>
+            <label className="form-label" htmlFor="signup-email">Email (Gmail)</label>
             <input
               id="signup-email"
               type="email"
@@ -110,6 +111,18 @@ export default function SignupPage() {
               placeholder="john@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-field">
+            <label className="form-label" htmlFor="signup-phone">Mobile No</label>
+            <input
+              id="signup-phone"
+              type="tel"
+              className="input"
+              placeholder="+1234567890"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
               required
             />
           </div>

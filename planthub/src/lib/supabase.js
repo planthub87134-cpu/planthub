@@ -10,7 +10,7 @@ export const isDemoMode = !supabaseUrl || !supabaseAnonKey ||
   supabaseUrl === 'your-project-url-here' || 
   supabaseAnonKey === 'your-anon-key-here';
 
-// Create client only if credentials exist
+// Create client only if credentials exist (but we keep it null in demo mode)
 export const supabase = isDemoMode
   ? null
   : createClient(supabaseUrl, supabaseAnonKey);

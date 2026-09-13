@@ -32,13 +32,17 @@ export default function DashboardLayout({ role = 'admin' }) {
     { id: 'orders', label: '📦 Orders', icon: '📦' },
   ];
 
-  const links = role === 'admin' ? adminLinks : managerLinks;
+  const agentLinks = [
+    { id: 'tickets', label: '🎧 Support Tickets', icon: '🎧' },
+  ];
+
+  const links = role === 'admin' ? adminLinks : role === 'manager' ? managerLinks : agentLinks;
 
   return (
     <div className="dashboard-layout">
       <aside className="dashboard-sidebar">
         <a href="/" className={`dashboard-sidebar-brand ${role}`}>
-          {role === 'admin' ? '⚙️ Admin' : '📦 Manager'}
+          {role === 'admin' ? '⚙️ Admin' : role === 'manager' ? '📦 Manager' : '🎧 Agent'}
         </a>
 
         <nav className="dashboard-sidebar-nav">

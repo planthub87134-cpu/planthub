@@ -71,6 +71,13 @@ export default function Navbar() {
           >
             Feedback
           </Link>
+          <Link
+            to="/support"
+            className={`navbar-link ${isActive('/support') ? 'active' : ''}`}
+            onClick={() => setMobileOpen(false)}
+          >
+            Support
+          </Link>
           {user?.role === 'admin' && (
             <Link
               to="/admin"
@@ -87,6 +94,15 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
             >
               Manager
+            </Link>
+          )}
+          {user?.role === 'agent' && (
+            <Link
+              to="/agent"
+              className={`navbar-link ${location.pathname.startsWith('/agent') ? 'active' : ''}`}
+              onClick={() => setMobileOpen(false)}
+            >
+              Agent
             </Link>
           )}
         </div>

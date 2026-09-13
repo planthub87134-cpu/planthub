@@ -8,11 +8,15 @@ import CheckoutPage from '../pages/CheckoutPage';
 import OrdersPage from '../pages/OrdersPage';
 import ProfilePage from '../pages/ProfilePage';
 import LoginPage from '../pages/LoginPage';
+import ForgotPasswordPage from '../pages/ForgotPasswordPage';
+import AdminLoginPage from '../pages/AdminLoginPage';
 import SignupPage from '../pages/SignupPage';
 import ContactPage from '../pages/ContactPage';
 import FeedbackPage from '../pages/FeedbackPage';
 import AdminDashboard from '../pages/AdminDashboard';
 import ManagerDashboard from '../pages/ManagerDashboard';
+import SupportPage from '../pages/SupportPage';
+import AgentDashboard from '../pages/AgentDashboard';
 import PrivacyPolicy from '../pages/policies/PrivacyPolicy';
 import ReturnPolicy from '../pages/policies/ReturnPolicy';
 import CookiePolicy from '../pages/policies/CookiePolicy';
@@ -53,6 +57,8 @@ export const router = createBrowserRouter([
         ),
       },
       { path: 'login', element: <LoginPage /> },
+      { path: 'forgot-password', element: <ForgotPasswordPage /> },
+      { path: 'admin-login', element: <AdminLoginPage /> },
       { path: 'signup', element: <SignupPage /> },
       { path: 'auth/callback', element: <AuthCallback /> },
       { path: 'contact', element: <ContactPage /> },
@@ -61,6 +67,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <FeedbackPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'support',
+        element: (
+          <ProtectedRoute>
+            <SupportPage />
           </ProtectedRoute>
         ),
       },
@@ -90,6 +104,17 @@ export const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <ManagerDashboard /> },
+    ],
+  },
+  {
+    path: '/agent',
+    element: (
+      <ProtectedRoute role="agent">
+        <DashboardLayout role="agent" />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <AgentDashboard /> },
     ],
   },
 ]);
