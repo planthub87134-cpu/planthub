@@ -66,7 +66,7 @@ export default function LandingPage() {
                 className={`product-card stagger-item animate-slide-up delay-${index + 1}`}
               >
                 <div className="product-card-image">
-                  {product.image}
+                  <img src={product.image} alt={product.name} style={{ width: '100%', height: '250px', objectFit: 'cover', display: 'block' }} />
                   {product.stock < 10 && (
                     <div className="product-card-badge">
                       <span className="badge badge-solid-warning">Low Stock</span>
