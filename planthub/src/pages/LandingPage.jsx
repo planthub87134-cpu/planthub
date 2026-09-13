@@ -8,115 +8,40 @@ import { Mail, Lock } from 'lucide-react';
 export default function LandingPage() {
   const featuredProducts = PRODUCTS.slice(0, 4);
   const navigate = useNavigate();
-  const { signIn, isDemoMode, demoLogin } = useAuth();
-  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
+  const { isDemoMode } = useAuth();
 
-  const handleQuickLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
 
-    if (isDemoMode) {
-      if (email && password) {
-        demoLogin('customer');
-        navigate('/shop');
-      } else {
-        setError('Please enter email and password');
-      }
-      setLoading(false);
-      return;
-    }
-
-    const { error: signInError } = await signIn(email, password);
-    if (signInError) {
-      setError(signInError.message);
-    } else {
-      navigate('/shop');
-    }
-    setLoading(false);
-  };
 
   return (
     <div className="page-enter">
       {/* Hero Section */}
       <section className="hero gradient-hero">
         <div className="container">
-          <div className="grid grid-2" style={{ alignItems: 'center', gap: '40px' }}>
-            {/* Hero Text */}
-            <div className="hero-content animate-slide-up" style={{ textAlign: 'left', maxWidth: '100%' }}>
-              <div className="hero-badge" style={{ display: 'inline-block' }}>
-                🌿 Premium Quality Plants — Free shipping over $50
+          <div className="hero-content animate-slide-up" style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+            <div className="hero-badge" style={{ display: 'inline-block' }}>
+              🌿 Premium Quality Plants — Free shipping over $50
+            </div>
+            <h1 className="hero-title" style={{ fontSize: '3rem', marginTop: '20px' }}>
+              Bring Nature
+              <span className="gradient-text"> Into Your Home</span>
+            </h1>
+            <p className="hero-subtitle" style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
+              Discover our curated collection of premium indoor plants, succulents, and herbs.
+              Delivered fresh to your doorstep with expert care guides.
+            </p>
+            <div className="hero-stats" style={{ display: 'flex', gap: '40px', marginTop: '30px', justifyContent: 'center' }}>
+              <div className="stagger-item animate-slide-up delay-2">
+                <div className="hero-stat-value">10K+</div>
+                <div className="hero-stat-label">Plants Delivered</div>
               </div>
-              <h1 className="hero-title" style={{ fontSize: '3rem', marginTop: '20px' }}>
-                Bring Nature
-                <span className="gradient-text"> Into Your Home</span>
-              </h1>
-              <p className="hero-subtitle" style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
-                Discover our curated collection of premium indoor plants, succulents, and herbs.
-                Delivered fresh to your doorstep with expert care guides.
-              </p>
-              <div className="hero-stats" style={{ display: 'flex', gap: '20px', marginTop: '20px' }}>
-                <div className="stagger-item animate-slide-up delay-2">
-                  <div className="hero-stat-value">10K+</div>
-                  <div className="hero-stat-label">Plants Delivered</div>
-                </div>
-                <div className="stagger-item animate-slide-up delay-3">
-                  <div className="hero-stat-value">5K+</div>
-                  <div className="hero-stat-label">Happy Customers</div>
-                </div>
+              <div className="stagger-item animate-slide-up delay-3">
+                <div className="hero-stat-value">5K+</div>
+                <div className="hero-stat-label">Happy Customers</div>
               </div>
             </div>
-
-            {/* Quick Login Form */}
-            <div className="hero-login-card card animate-slide-up delay-2" style={{ padding: '30px', background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)', boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '10px', color: 'var(--warm-900)' }}>Quick Access</h3>
-              <p style={{ color: 'var(--gray-600)', marginBottom: '20px' }}>Sign in to continue your plant journey.</p>
-              
-              {error && <div style={{ color: '#991b1b', backgroundColor: '#fee2e2', padding: '10px', borderRadius: '8px', marginBottom: '15px', fontSize: '0.9rem' }}>{error}</div>}
-
-              <form onSubmit={handleQuickLogin}>
-                <div className="form-field" style={{ marginBottom: '15px' }}>
-                  <label className="form-label">Email Address</label>
-                  <div className="input-group" style={{ display: 'flex', alignItems: 'center', background: 'var(--white)', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-md)', padding: '0 12px' }}>
-                    <Mail size={18} style={{ color: 'var(--gray-400)' }} />
-                    <input 
-                      type="email" 
-                      placeholder="john@example.com" 
-                      required 
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      style={{ border: 'none', boxShadow: 'none', flex: 1, padding: '12px', background: 'transparent', outline: 'none' }}
-                    />
-                  </div>
-                </div>
-                
-                <div className="form-field" style={{ marginBottom: '20px' }}>
-                  <label className="form-label">Password</label>
-                  <div className="input-group" style={{ display: 'flex', alignItems: 'center', background: 'var(--white)', border: '1px solid var(--gray-200)', borderRadius: 'var(--radius-md)', padding: '0 12px' }}>
-                    <Lock size={18} style={{ color: 'var(--gray-400)' }} />
-                    <input 
-                      type="password" 
-                      placeholder="••••••••" 
-                      required 
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      style={{ border: 'none', boxShadow: 'none', flex: 1, padding: '12px', background: 'transparent', outline: 'none' }}
-                    />
-                  </div>
-                </div>
-
-                <button type="submit" className="btn btn-primary btn-block" disabled={loading} style={{ width: '100%', marginBottom: '15px' }}>
-                  {loading ? <span className="spinner"></span> : 'Sign In Now'}
-                </button>
-              </form>
-
-              <div style={{ textAlign: 'center', fontSize: '0.9rem', color: 'var(--gray-600)' }}>
-                Don't have an account? <Link to="/signup" style={{ color: 'var(--primary-color)', fontWeight: 'bold' }}>Sign up</Link>
-              </div>
+            
+            <div style={{ marginTop: '40px' }} className="animate-slide-up delay-4">
+              <Link to="/shop" className="btn btn-primary btn-lg">Shop Now</Link>
             </div>
           </div>
           <div className="hero-decoration animate-float">🌿</div>
