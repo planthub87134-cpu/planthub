@@ -13,8 +13,22 @@ const data = [
   { name: 'Sun', sales: 3490 },
 ];
 
+const MOCK_USERS = [
+  { id: 'USR001', name: 'Mayank Kumar', email: 'mayank@example.com', role: 'admin', status: 'active' },
+  { id: 'USR002', name: 'Laura Agent', email: 'laura@example.com', role: 'manager', status: 'active' },
+  { id: 'USR003', name: 'Support Bot', email: 'support@planthub.com', role: 'agent', status: 'active' },
+  { id: 'USR004', name: 'John Doe', email: 'john@example.com', role: 'customer', status: 'inactive' },
+  { id: 'USR005', name: 'Alice Smith', email: 'alice@example.com', role: 'customer', status: 'active' },
+];
+
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [inventory, setInventory] = useState(PRODUCTS);
+  const [users, setUsers] = useState(MOCK_USERS);
+  
+  const handleDeleteProduct = (id) => {
+    setInventory(inventory.filter(p => p.id !== id));
+  };
 
   return (
     <div className="dashboard-page container" style={{ padding: '20px' }}>
@@ -27,6 +41,7 @@ const AdminDashboard = () => {
         <button className={`btn ${activeTab === 'overview' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('overview')}>Overview</button>
         <button className={`btn ${activeTab === 'inventory' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('inventory')}>Inventory Management</button>
         <button className={`btn ${activeTab === 'orders' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('orders')}>Order Management</button>
+        <button className={`btn ${activeTab === 'users' ? 'btn-primary' : 'btn-secondary'}`} onClick={() => setActiveTab('users')}>User Management</button>
       </div>
 
       {activeTab === 'overview' && (
@@ -52,7 +67,7 @@ const AdminDashboard = () => {
               <div className="stat-icon"><Users /></div>
               <div className="stat-info">
                 <h3>Total Plants</h3>
-                <p className="value">{PRODUCTS.length}</p>
+                <p className="value">{inventory.length}</p>
                 <span className="trend neutral">Active items</span>
               </div>
             </div>
@@ -60,7 +75,7 @@ const AdminDashboard = () => {
               <div className="stat-icon alert" style={{ color: 'red' }}><AlertCircle /></div>
               <div className="stat-info">
                 <h3>Low Stock</h3>
-                <p className="value">{PRODUCTS.filter(p => p.stock < 10).length} Items</p>
+                <p className="value">{inventory.filter(p => p.stock < 10).length} Items</p>
                 <button className="btn btn-sm btn-secondary mt-2" onClick={() => setActiveTab('inventory')}>View Inventory</button>
               </div>
             </div>
@@ -102,7 +117,7 @@ const AdminDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {PRODUCTS.map(product => (
+                {inventory.map(product => (
                   <tr key={product.id} style={{ borderBottom: '1px solid #eee' }}>
                     <td style={{ padding: '10px' }}>
                       <img src={product.image} alt={product.name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
@@ -117,8 +132,8 @@ const AdminDashboard = () => {
                     </td>
                     <td style={{ padding: '10px' }}>
                       <div style={{ display: 'flex', gap: '10px' }}>
-                        <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3b82f6' }}><Edit size={18} /></button>
-                        <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }}><Trash2 size={18} /></button>
+                        <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#3b82f6' }} title="Edit"><Edit size={18} /></button>
+                        <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444' }} onClick={() => handleDeleteProduct(product.id)} title="Delete"><Trash2 size={18} /></button>
                       </div>
                     </td>
                   </tr>
@@ -161,6 +176,49 @@ const AdminDashboard = () => {
                     <td style={{ padding: '10px' }}>{order.trackingNumber}</td>
                     <td style={{ padding: '10px' }}>
                       <button className="btn btn-sm btn-secondary">View Details</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'users' && (
+        <div className="card" style={{ padding: '20px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <h2>System Users</h2>
+            <button className="btn btn-primary">Add New User</button>
+          </div>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid #eee', textAlign: 'left' }}>
+                  <th style={{ padding: '10px' }}>Name</th>
+                  <th style={{ padding: '10px' }}>Email</th>
+                  <th style={{ padding: '10px' }}>Role</th>
+                  <th style={{ padding: '10px' }}>Status</th>
+                  <th style={{ padding: '10px' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map(user => (
+                  <tr key={user.id} style={{ borderBottom: '1px solid #eee' }}>
+                    <td style={{ padding: '10px', fontWeight: 'bold' }}>{user.name}</td>
+                    <td style={{ padding: '10px', color: '#666' }}>{user.email}</td>
+                    <td style={{ padding: '10px', textTransform: 'capitalize' }}>
+                      <span className={`badge ${user.role === 'admin' ? 'badge-danger' : user.role === 'manager' ? 'badge-info' : 'badge-neutral'}`}>
+                        {user.role}
+                      </span>
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <span className={`badge ${user.status === 'active' ? 'badge-success' : 'badge-warning'}`}>
+                        {user.status}
+                      </span>
+                    </td>
+                    <td style={{ padding: '10px' }}>
+                      <button className="btn btn-sm btn-secondary">Edit Role</button>
                     </td>
                   </tr>
                 ))}
