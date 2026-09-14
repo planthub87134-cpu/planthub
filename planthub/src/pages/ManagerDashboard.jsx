@@ -1,9 +1,12 @@
 import { useState } from 'react';
+import { useOutletContext } from 'react-router';
 import { Clock, CheckCircle, Package, Truck, Search, AlertCircle } from 'lucide-react';
 import { DEMO_ORDERS, PRODUCTS } from '../utils/constants';
 
 const ManagerDashboard = () => {
-  const [activeTab, setActiveTab] = useState('orders');
+  const { activeView, setActiveView } = useOutletContext();
+  const activeTab = activeView || 'orders';
+  const setActiveTab = setActiveView;
   const [orderStatus, setOrderStatus] = useState('Pending');
   const [orders, setOrders] = useState(DEMO_ORDERS);
 

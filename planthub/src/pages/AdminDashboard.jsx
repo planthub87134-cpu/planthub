@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useOutletContext } from 'react-router';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Package, DollarSign, Users, AlertCircle, Edit, Trash2 } from 'lucide-react';
 import { PRODUCTS, DEMO_ORDERS } from '../utils/constants';
@@ -22,7 +23,9 @@ const MOCK_USERS = [
 ];
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const { activeView, setActiveView } = useOutletContext();
+  const activeTab = activeView || 'overview';
+  const setActiveTab = setActiveView;
   const [inventory, setInventory] = useState(PRODUCTS);
   const [users, setUsers] = useState(MOCK_USERS);
   const [orders, setOrders] = useState(DEMO_ORDERS);
@@ -59,17 +62,17 @@ const AdminDashboard = () => {
 
   // User State
   const [editingUserId, setEditingUserId] = useState(null);
-  const [editUserRole, setEditUserRole] = useState('');
+  const [editUserForm, setEditUserForm] = useState({});
   const [isAddingUser, setIsAddingUser] = useState(false);
   const [newUserForm, setNewUserForm] = useState({ name: '', email: '', role: 'customer', status: 'active' });
 
-  const handleEditRole = (user) => {
+  const handleEditUser = (user) => {
     setEditingUserId(user.id);
-    setEditUserRole(user.role);
+    setEditUserForm(user);
   };
 
-  const handleSaveUserRole = (id) => {
-    setUsers(users.map(u => u.id === id ? { ...u, role: editUserRole } : u));
+  const handleSaveUser = (id) => {
+    setUsers(users.map(u => u.id === id ? editUserForm : u));
     setEditingUserId(null);
   };
 
@@ -385,37 +388,54 @@ const AdminDashboard = () => {
                 )}
                 {users.map(user => (
                   <tr key={user.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
-                    <td style={{ padding: '10px', fontWeight: 'bold' }}>{user.name}</td>
-                    <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{user.email}</td>
-                    <td style={{ padding: '10px', textTransform: 'capitalize' }}>
-                      {editingUserId === user.id ? (
-                        <select className="input input-sm" value={editUserRole} onChange={(e) => setEditUserRole(e.target.value)} style={{ padding: '4px' }}>
-                          <option value="admin">Admin</option>
-                          <option value="manager">Manager</option>
-                          <option value="agent">Agent</option>
-                          <option value="customer">Customer</option>
-                        </select>
-                      ) : (
-                        <span className={`badge ${user.role === 'admin' ? 'badge-danger' : user.role === 'manager' ? 'badge-info' : 'badge-neutral'}`}>
-                          {user.role}
-                        </span>
-                      )}
-                    </td>
-                    <td style={{ padding: '10px' }}>
-                      <span className={`badge ${user.status === 'active' ? 'badge-success' : 'badge-warning'}`}>
-                        {user.status}
-                      </span>
-                    </td>
-                    <td style={{ padding: '10px' }}>
-                      {editingUserId === user.id ? (
-                        <div style={{ display: 'flex', gap: '10px' }}>
-                          <button className="btn btn-sm btn-primary" onClick={() => handleSaveUserRole(user.id)}>Save</button>
-                          <button className="btn btn-sm btn-ghost" onClick={() => setEditingUserId(null)}>Cancel</button>
-                        </div>
-                      ) : (
-                        <button className="btn btn-sm btn-secondary hover-scale" onClick={() => handleEditRole(user)}>Edit Role</button>
-                      )}
-                    </td>
+                    {editingUserId === user.id ? (
+                      <>
+                        <td style={{ padding: '10px' }}>
+                          <input type="text" className="input input-sm" value={editUserForm.name || ''} onChange={(e) => setEditUserForm({...editUserForm, name: e.target.value})} style={{ padding: '4px', width: '100%' }} />
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <input type="email" className="input input-sm" value={editUserForm.email || ''} onChange={(e) => setEditUserForm({...editUserForm, email: e.target.value})} style={{ padding: '4px', width: '100%' }} />
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <select className="input input-sm" value={editUserForm.role || ''} onChange={(e) => setEditUserForm({...editUserForm, role: e.target.value})} style={{ padding: '4px' }}>
+                            <option value="admin">Admin</option>
+                            <option value="manager">Manager</option>
+                            <option value="agent">Agent</option>
+                            <option value="customer">Customer</option>
+                          </select>
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <select className="input input-sm" value={editUserForm.status || ''} onChange={(e) => setEditUserForm({...editUserForm, status: e.target.value})} style={{ padding: '4px' }}>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                          </select>
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <div style={{ display: 'flex', gap: '10px' }}>
+                            <button className="btn btn-sm btn-primary" onClick={() => handleSaveUser(user.id)}>Save</button>
+                            <button className="btn btn-sm btn-ghost" onClick={() => setEditingUserId(null)}>Cancel</button>
+                          </div>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td style={{ padding: '10px', fontWeight: 'bold' }}>{user.name}</td>
+                        <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{user.email}</td>
+                        <td style={{ padding: '10px', textTransform: 'capitalize' }}>
+                          <span className={`badge ${user.role === 'admin' ? 'badge-danger' : user.role === 'manager' ? 'badge-info' : 'badge-neutral'}`}>
+                            {user.role}
+                          </span>
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <span className={`badge ${user.status === 'active' ? 'badge-success' : 'badge-warning'}`}>
+                            {user.status}
+                          </span>
+                        </td>
+                        <td style={{ padding: '10px' }}>
+                          <button className="btn btn-sm btn-secondary hover-scale" onClick={() => handleEditUser(user)}>Edit</button>
+                        </td>
+                      </>
+                    )}
                   </tr>
                 ))}
               </tbody>

@@ -10,10 +10,11 @@ export default function DashboardLayout({ role = 'admin' }) {
   const location = useLocation();
   const [activeView, setActiveView] = useState(() => {
     const path = location.pathname;
-    if (path.includes('products')) return 'products';
     if (path.includes('inventory')) return 'inventory';
     if (path.includes('orders')) return 'orders';
-    return 'analytics';
+    if (path.includes('users')) return 'users';
+    if (path.includes('tickets')) return 'tickets';
+    return 'overview';
   });
 
   const handleLogout = async () => {
@@ -22,14 +23,15 @@ export default function DashboardLayout({ role = 'admin' }) {
   };
 
   const adminLinks = [
-    { id: 'analytics', label: '📊 Analytics', icon: '📊' },
-    { id: 'products', label: '🌿 Products', icon: '🌿' },
-    { id: 'inventory', label: '📦 Inventory', icon: '📦' },
+    { id: 'overview', label: '📊 Analytics', icon: '📊' },
+    { id: 'inventory', label: '🌿 Products', icon: '🌿' },
+    { id: 'orders', label: '📦 Orders', icon: '📦' },
+    { id: 'users', label: '👥 Users', icon: '👥' },
   ];
 
   const managerLinks = [
-    { id: 'overview', label: '📊 Overview', icon: '📊' },
-    { id: 'orders', label: '📦 Orders', icon: '📦' },
+    { id: 'orders', label: '📦 Order Processing', icon: '📦' },
+    { id: 'inventory', label: '🌿 Inventory Overview', icon: '🌿' },
   ];
 
   const agentLinks = [
