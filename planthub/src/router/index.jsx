@@ -14,7 +14,7 @@ import ManagerDashboard from '../pages/ManagerDashboard';
 import SupportPage from '../pages/SupportPage';
 import AgentDashboard from '../pages/AgentDashboard';
 import SignupPage from '../pages/SignupPage';
-import AdminLoginPage from '../pages/AdminLoginPage';
+import LoginPage from '../pages/LoginPage';
 import PrivacyPolicy from '../pages/policies/PrivacyPolicy';
 import ReturnPolicy from '../pages/policies/ReturnPolicy';
 import CookiePolicy from '../pages/policies/CookiePolicy';
@@ -28,7 +28,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <LandingPage /> },
       { path: 'signup', element: <SignupPage /> },
-      { path: 'admin-login', element: <AdminLoginPage /> },
+      { path: 'login', element: <LoginPage /> },
       { path: 'shop', element: <ShopPage /> },
       { path: 'cart', element: <CartPage /> },
       {

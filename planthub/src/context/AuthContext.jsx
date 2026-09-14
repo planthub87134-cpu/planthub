@@ -22,11 +22,18 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // New register function that saves the user
+  // New register function that saves the user and also logs them in
   const register = (userData) => {
-    const newUser = { id: 'local-user', role: 'customer', ...userData };
+    const newUser = { id: 'local-user-' + Date.now(), role: 'customer', ...userData };
     setUser(newUser);
     localStorage.setItem('planthub_user', JSON.stringify(newUser));
+    
+    // Add to registered users list
+    const savedUsers = localStorage.getItem('planthub_registered_users');
+    const users = savedUsers ? JSON.parse(savedUsers) : [];
+    users.push(newUser);
+    localStorage.setItem('planthub_registered_users', JSON.stringify(users));
+    
     return { error: null };
   };
 
@@ -35,14 +42,28 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('planthub_user');
   };
 
-  const adminLogin = async (email, password) => {
+  const login = async (email, password) => {
+    // 1. Check Admin
     if (email === 'admin@planthub.com' && password === 'admin123') {
       const adminUser = { id: 'admin-user', role: 'admin', email, name: 'Admin User', phone: '555-9012' };
       setUser(adminUser);
       localStorage.setItem('planthub_user', JSON.stringify(adminUser));
       return { error: null };
     }
-    return { error: { message: 'Invalid admin credentials' } };
+    
+    // 2. Check registered local users
+    const savedUsers = localStorage.getItem('planthub_registered_users');
+    if (savedUsers) {
+      const users = JSON.parse(savedUsers);
+      const foundUser = users.find(u => u.email === email && u.password === password);
+      if (foundUser) {
+        setUser(foundUser);
+        localStorage.setItem('planthub_user', JSON.stringify(foundUser));
+        return { error: null };
+      }
+    }
+
+    return { error: { message: 'Invalid email or password' } };
   };
 
   // Stub functions to prevent crashes in other components
@@ -61,7 +82,7 @@ export function AuthProvider({ children }) {
     loading,
     isDemoMode,
     register,
-    adminLogin,
+    login,
     signUp,
     signIn,
     signInWithGoogle,

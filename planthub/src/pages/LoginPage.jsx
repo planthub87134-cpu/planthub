@@ -3,8 +3,8 @@ import { useAuth } from '../context/AuthContext';
 import { Lock, Mail } from 'lucide-react';
 import { useNavigate } from 'react-router';
 
-export default function AdminLoginPage() {
-  const { adminLogin } = useAuth();
+export default function LoginPage() {
+  const { login } = useAuth();
   const navigate = useNavigate();
   
   const [formData, setFormData] = useState({
@@ -28,11 +28,13 @@ export default function AdminLoginPage() {
       return;
     }
     
-    adminLogin(formData.email, formData.password).then(({ error }) => {
+    login(formData.email, formData.password).then(({ error }) => {
       if (error) {
         setError(error.message);
       } else {
-        navigate('/admin');
+        // We will just navigate to home (which redirects based on role in App.jsx or DashboardLayout, but for now we'll send to `/` which goes to user dashboard/home, and admin will be able to go to /admin). 
+        // Let's redirect to `/` instead of `/admin` unconditionally.
+        navigate('/');
       }
     });
   };
@@ -54,10 +56,10 @@ export default function AdminLoginPage() {
             <Lock size={32} />
           </div>
           <h2 style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-2)' }}>
-            Admin Access
+            Welcome Back
           </h2>
           <p className="text-muted" style={{ color: 'var(--text-muted)' }}>
-            Enter admin credentials to proceed
+            Login to your account
           </p>
         </div>
         
@@ -77,7 +79,7 @@ export default function AdminLoginPage() {
                 type="email" 
                 name="email"
                 className="form-input" 
-                placeholder="admin@planthub.com"
+                placeholder="you@example.com"
                 value={formData.email}
                 onChange={handleChange}
                 style={{ width: '100%', padding: '10px 12px 10px 40px', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)' }}
@@ -102,7 +104,7 @@ export default function AdminLoginPage() {
           </div>
           
           <button type="submit" className="btn btn-primary btn-block" style={{ marginTop: 'var(--space-4)', padding: '12px', width: '100%', background: 'var(--primary-600)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', fontWeight: 'var(--font-bold)', cursor: 'pointer' }}>
-            Login as Admin
+            Login
           </button>
         </form>
       </div>

@@ -32,9 +32,9 @@ export default function LandingPage() {  return (
             
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', justifyContent: 'center' }} className="animate-slide-up delay-4">
               <Link to="/shop" className="btn btn-primary btn-lg hover-scale">Shop Now</Link>
-              <Link to="/admin-login" className="btn btn-outline btn-lg hover-scale" style={{ background: 'rgba(255,255,255,0.8)' }}>
+              <Link to="/login" className="btn btn-outline btn-lg hover-scale" style={{ background: 'rgba(255,255,255,0.8)' }}>
                 <Lock size={20} style={{ display: 'inline', marginRight: '8px' }} />
-                Admin Login
+                Login
               </Link>
             </div>
           </div>
