@@ -24,7 +24,7 @@ const CheckoutPage = () => {
     e.preventDefault();
     
     // Create new order
-    const shipping = cartTotal > 100 ? 0 : 10;
+    const shipping = cartTotal > 999 ? 0 : 99;
     const newOrder = {
       id: `ORD${Math.floor(Math.random() * 10000)}`,
       customer: formData.name,
@@ -130,7 +130,7 @@ const CheckoutPage = () => {
 
             <div className="button-group mt-4">
               <button type="button" onClick={() => setStep(1)} className="btn btn-secondary">Back</button>
-              <button type="submit" className="btn btn-primary">Place Order ({formatCurrency(cartTotal + (cartTotal > 100 ? 0 : 10))})</button>
+              <button type="submit" className="btn btn-primary">Place Order ({formatCurrency(cartTotal + (cartTotal > 999 ? 0 : 99))})</button>
             </div>
           </form>
         )}

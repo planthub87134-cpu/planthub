@@ -6,7 +6,7 @@ import { formatCurrency } from '../utils/formatters';
 const CartPage = () => {
   const { cart: cartItems, removeFromCart, updateQuantity, cartTotal: subtotal } = useCart();
 
-  const shipping = subtotal > 100 ? 0 : 10;
+  const shipping = subtotal > 999 ? 0 : 99;
   const total = subtotal + shipping;
 
   return (
