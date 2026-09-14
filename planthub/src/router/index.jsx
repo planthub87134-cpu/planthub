@@ -7,12 +7,6 @@ import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import OrdersPage from '../pages/OrdersPage';
 import ProfilePage from '../pages/ProfilePage';
-import LoginPage from '../pages/LoginPage';
-import ForgotPasswordPage from '../pages/ForgotPasswordPage';
-import AdminLoginPage from '../pages/AdminLoginPage';
-import ManagerLoginPage from '../pages/ManagerLoginPage';
-import AgentLoginPage from '../pages/AgentLoginPage';
-import SignupPage from '../pages/SignupPage';
 import ContactPage from '../pages/ContactPage';
 import FeedbackPage from '../pages/FeedbackPage';
 import AdminDashboard from '../pages/AdminDashboard';
@@ -23,7 +17,6 @@ import PrivacyPolicy from '../pages/policies/PrivacyPolicy';
 import ReturnPolicy from '../pages/policies/ReturnPolicy';
 import CookiePolicy from '../pages/policies/CookiePolicy';
 import TermsAndConditions from '../pages/policies/TermsAndConditions';
-import AuthCallback from '../features/auth/AuthCallback';
 import ProtectedRoute from './ProtectedRoute';
 
 export const router = createBrowserRouter([
@@ -58,13 +51,6 @@ export const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      { path: 'login', element: <LoginPage /> },
-      { path: 'forgot-password', element: <ForgotPasswordPage /> },
-      { path: 'admin-login', element: <AdminLoginPage /> },
-      { path: 'manager-login', element: <ManagerLoginPage /> },
-      { path: 'agent-login', element: <AgentLoginPage /> },
-      { path: 'signup', element: <SignupPage /> },
-      { path: 'auth/callback', element: <AuthCallback /> },
       { path: 'contact', element: <ContactPage /> },
       {
         path: 'feedback',

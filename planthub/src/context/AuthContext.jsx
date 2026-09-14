@@ -14,166 +14,21 @@ const DEMO_USERS = {
 };
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [session, setSession] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // Always logged in as an admin for full access without login pages
+  const [user, setUser] = useState(DEMO_USERS.admin);
+  const [session, setSession] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (isDemoMode) {
-      setLoading(false);
-      return;
-    }
+  // Stub functions to prevent crashes in other components
+  const signUp = async () => ({ error: null });
+  const signIn = async () => ({ data: { user }, error: null });
+  const signInWithGoogle = async () => ({ error: null });
+  const signInWithPhone = async () => ({ error: null });
+  const verifyOtp = async () => ({ error: null });
+  const signOut = async () => {};
+  const demoLogin = () => {};
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      if (session?.user) {
-        setUser({
-          id: session.user.id,
-          email: session.user.email,
-          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
-          role: session.user.user_metadata?.role || 'customer',
-          phone: session.user.phone || '',
-        });
-      }
-      setLoading(false);
-    });
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (session?.user) {
-        setUser({
-          id: session.user.id,
-          email: session.user.email,
-          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
-          role: session.user.user_metadata?.role || 'customer',
-          phone: session.user.phone || '',
-        });
-      } else {
-        setUser(null);
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // Check if error is a rate limit error
-  const isRateLimitError = (error) => {
-    if (!error) return false;
-    const msg = error.message?.toLowerCase() || '';
-    return msg.includes('rate limit') || msg.includes('security purposes') || error.status === 429;
-  };
-
-  // Sign up with email & password
-  const signUp = async (email, password, name, phone) => {
-    if (isDemoMode) {
-      setUser({ ...DEMO_USERS.customer, email, name, phone });
-      return { error: null };
-    }
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { name, phone, role: 'customer' } },
-    });
-    
-    // Bypass Rate Limit
-    if (error && isRateLimitError(error)) {
-      console.warn('Supabase Rate Limit hit. Falling back to local auth state for development.');
-      setUser({ ...DEMO_USERS.customer, email, name, phone });
-      return { data: { user: { email, name, phone } }, error: null };
-    }
-    
-    return { data, error };
-  };
-
-  // Sign in with email & password
-  const signIn = async (email, password) => {
-    // 1. First, check if they are using one of our hardcoded demo accounts
-    const demoUser = Object.values(DEMO_USERS).find(u => u.email === email);
-    
-    // If it's a demo account and password matches, log them in immediately without hitting Supabase
-    // This fixes the "Invalid login credentials" error on Vercel when Supabase is partially configured
-    if (demoUser && demoUser.password === password) {
-      setUser({ ...demoUser });
-      return { data: { user: demoUser }, error: null };
-    }
-
-    // 2. If it's demo mode, but they typed wrong credentials for a demo account, or a random email
-    if (isDemoMode) {
-      return { error: { message: 'Invalid credentials. Please check your email and password.' } };
-    }
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    
-    // Bypass Rate Limit
-    if (error && isRateLimitError(error)) {
-      console.warn('Supabase Rate Limit hit. Falling back to local auth state for development.');
-      const fallbackUser = Object.values(DEMO_USERS).find(u => u.email === email) || DEMO_USERS.customer;
-      setUser({ ...fallbackUser, email });
-      return { data: { user: fallbackUser }, error: null };
-    }
-    
-    return { data, error };
-  };
-
-  // Sign in with Google
-  const signInWithGoogle = async () => {
-    if (isDemoMode) {
-      setUser(DEMO_USERS.customer);
-      return { error: null };
-    }
-    const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
-    return { data, error };
-  };
-
-  // Send phone OTP
-  const signInWithPhone = async (phone) => {
-    if (isDemoMode) {
-      return { error: null };
-    }
-    const { data, error } = await supabase.auth.signInWithOtp({ phone });
-    
-    if (error && isRateLimitError(error)) {
-      console.warn('Supabase Rate Limit hit. Bypassing OTP send.');
-      return { data: {}, error: null };
-    }
-    
-    return { data, error };
-  };
-
-  // Verify phone OTP
-  const verifyOtp = async (phone, token) => {
-    if (isDemoMode) {
-      setUser({ ...DEMO_USERS.customer, phone });
-      return { error: null };
-    }
-    const { data, error } = await supabase.auth.verifyOtp({ phone, token, type: 'sms' });
-    
-    if (error && isRateLimitError(error)) {
-      console.warn('Supabase Rate Limit hit. Bypassing OTP verify.');
-      setUser({ ...DEMO_USERS.customer, phone });
-      return { data: { user: DEMO_USERS.customer }, error: null };
-    }
-    
-    return { data, error };
-  };
-
-  // Sign out
-  const signOut = async () => {
-    if (isDemoMode) {
-      setUser(null);
-      setSession(null);
-      return;
-    }
-    await supabase.auth.signOut();
-    setUser(null);
-    setSession(null);
-  };
-
-  // Demo login (for quick access buttons)
-  const demoLogin = (role) => {
-    setUser(DEMO_USERS[role]);
-  };
 
   const value = {
     user,

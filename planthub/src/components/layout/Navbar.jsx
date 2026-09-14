@@ -152,45 +152,17 @@ export default function Navbar() {
           </Link>
 
           {/* Auth */}
-          {user ? (
-            <div className="navbar-user-menu">
-              <button
-                className="navbar-user-btn"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                id="user-menu-button"
-              >
-                <div className="avatar">{getInitials(user.name)}</div>
-                <span className="hide-mobile" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>
-                  {user.name}
-                </span>
-              </button>
-
-              {dropdownOpen && (
-                <div className="navbar-dropdown" id="user-dropdown">
-                  <div style={{ padding: 'var(--space-3) var(--space-4)', borderBottom: '1px solid var(--border-light)', marginBottom: 'var(--space-2)' }}>
-                    <div style={{ fontWeight: 'var(--font-bold)', fontSize: 'var(--text-sm)' }}>{user.name}</div>
-                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>{user.email}</div>
-                    <div className="badge badge-success" style={{ marginTop: 'var(--space-2)' }}>{user.role}</div>
-                  </div>
-                  <Link to="/profile" className="navbar-dropdown-item" onClick={() => setDropdownOpen(false)}>
-                    👤 Profile
-                  </Link>
-                  <Link to="/orders" className="navbar-dropdown-item" onClick={() => setDropdownOpen(false)}>
-                    📦 My Orders
-                  </Link>
-                  <div className="navbar-dropdown-divider" />
-                  <button className="navbar-dropdown-item" onClick={handleLogout} id="logout-button" style={{ color: 'var(--danger-500)' }}>
-                    🚪 Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex gap-2">
-              <Link to="/login" className="btn btn-ghost btn-sm">Sign In</Link>
-              <Link to="/signup" className="btn btn-primary btn-sm">Get Started</Link>
-            </div>
-          )}
+          <div className="flex gap-2">
+            <Link to="/admin" className="btn btn-outline" style={{ borderRadius: 'var(--radius-xl)' }}>
+              Admin
+            </Link>
+            <Link to="/manager" className="btn btn-outline" style={{ borderRadius: 'var(--radius-xl)' }}>
+              Manager
+            </Link>
+            <Link to="/agent" className="btn btn-outline" style={{ borderRadius: 'var(--radius-xl)' }}>
+              Agent
+            </Link>
+          </div>
         </div>
       </div>
 
