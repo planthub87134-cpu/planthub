@@ -10,6 +10,8 @@ import ProfilePage from '../pages/ProfilePage';
 import LoginPage from '../pages/LoginPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage';
 import AdminLoginPage from '../pages/AdminLoginPage';
+import ManagerLoginPage from '../pages/ManagerLoginPage';
+import AgentLoginPage from '../pages/AgentLoginPage';
 import SignupPage from '../pages/SignupPage';
 import ContactPage from '../pages/ContactPage';
 import FeedbackPage from '../pages/FeedbackPage';
@@ -59,6 +61,8 @@ export const router = createBrowserRouter([
       { path: 'login', element: <LoginPage /> },
       { path: 'forgot-password', element: <ForgotPasswordPage /> },
       { path: 'admin-login', element: <AdminLoginPage /> },
+      { path: 'manager-login', element: <ManagerLoginPage /> },
+      { path: 'agent-login', element: <AgentLoginPage /> },
       { path: 'signup', element: <SignupPage /> },
       { path: 'auth/callback', element: <AuthCallback /> },
       { path: 'contact', element: <ContactPage /> },

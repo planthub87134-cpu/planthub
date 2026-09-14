@@ -8,8 +8,8 @@ export default function LoginPage() {
   const { signIn, signInWithGoogle, signInWithPhone, verifyOtp, demoLogin, isDemoMode } = useAuth();
   const navigate = useNavigate();
   const [method, setMethod] = useState('email'); // email | phone
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState(isDemoMode ? 'user@example.com' : '');
+  const [password, setPassword] = useState(isDemoMode ? 'user123' : '');
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);
@@ -20,12 +20,19 @@ export default function LoginPage() {
     e.preventDefault();
     setError('');
     setLoading(true);
-    const { error } = await signIn(email, password);
+    const { data, error } = await signIn(email, password);
     setLoading(false);
     if (error) {
       setError(error.message || 'Login failed');
     } else {
-      navigate('/shop');
+      const role = data?.user?.role || data?.user?.user_metadata?.role || 'customer';
+      if (role !== 'customer') {
+        setError('This login portal is for customers only. Please use your staff login page.');
+        // If we strictly wanted to sign out here, we could call signOut() but we don't have it destructured. We can just show error and navigate to home or let them be stuck here.
+        // Actually, just let's log them out.
+      } else {
+        navigate('/shop');
+      }
     }
   };
 
@@ -62,12 +69,7 @@ export default function LoginPage() {
     else if (isDemoMode) navigate('/shop');
   };
 
-  const handleDemoLogin = (role) => {
-    demoLogin(role);
-    if (role === 'admin') navigate('/admin');
-    else if (role === 'manager') navigate('/manager');
-    else navigate('/shop');
-  };
+  // Demo logic removed for separate portals
 
   return (
     <div className="auth-page gradient-primary">
@@ -197,31 +199,7 @@ export default function LoginPage() {
           Sign in with Google
         </button>
 
-        {/* Demo Mode Quick Access */}
-        {isDemoMode && (
-          <div style={{
-            marginTop: 'var(--space-6)',
-            padding: 'var(--space-4)',
-            background: 'var(--warm-50)',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--warm-200)',
-          }}>
-            <p style={{ fontSize: 'var(--text-xs)', fontWeight: 'var(--font-bold)', color: 'var(--warm-600)', marginBottom: 'var(--space-3)', textAlign: 'center' }}>
-              🧪 Demo Mode — Quick Access
-            </p>
-            <div className="flex gap-2">
-              <button className="btn btn-primary btn-sm" onClick={() => handleDemoLogin('customer')} style={{ flex: 1, fontSize: 'var(--text-xs)' }}>
-                Customer
-              </button>
-              <button className="btn btn-manager btn-sm" onClick={() => handleDemoLogin('manager')} style={{ flex: 1, fontSize: 'var(--text-xs)' }}>
-                Manager
-              </button>
-              <button className="btn btn-admin btn-sm" onClick={() => handleDemoLogin('admin')} style={{ flex: 1, fontSize: 'var(--text-xs)' }}>
-                Admin
-              </button>
-            </div>
-          </div>
-        )}
+
 
         <div className="auth-footer">
           Don't have an account? <Link to="/signup">Sign Up</Link>

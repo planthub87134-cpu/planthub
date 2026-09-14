@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Shield, Lock, Mail } from 'lucide-react';
+import { Briefcase, Lock, Mail } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
-const AdminLoginPage = () => {
+const ManagerLoginPage = () => {
   const navigate = useNavigate();
-  const { demoLogin, signIn, isDemoMode } = useAuth();
+  const { signIn, isDemoMode } = useAuth();
   const [formData, setFormData] = useState({ 
-    email: isDemoMode ? 'admin@planthub.com' : '', 
-    password: isDemoMode ? 'admin123' : '' 
+    email: isDemoMode ? 'manager@planthub.com' : '', 
+    password: isDemoMode ? 'manager123' : '' 
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -22,13 +22,13 @@ const AdminLoginPage = () => {
 
     const { data, error: signInError } = await signIn(formData.email, formData.password);
     if (signInError) {
-      setError(signInError.message || 'Invalid admin credentials.');
+      setError(signInError.message || 'Invalid manager credentials.');
     } else {
       const role = data?.user?.role || data?.user?.user_metadata?.role;
-      if (role !== 'admin') {
-        setError('Access denied. Admin privileges required.');
+      if (role !== 'manager') {
+        setError('Access denied. Manager privileges required.');
       } else {
-        navigate('/admin');
+        navigate('/manager');
       }
     }
     setLoading(false);
@@ -36,18 +36,17 @@ const AdminLoginPage = () => {
 
   return (
     <div className="auth-page gradient-primary">
-      {/* Decorative elements */}
       <div className="leaf-pattern leaf-1">🍃</div>
       <div className="leaf-pattern leaf-2">🌿</div>
       <div className="leaf-pattern leaf-3">🌱</div>
 
       <div className="auth-card card-glass animate-scale-in" style={{ padding: 'var(--space-8)', borderRadius: 'var(--radius-2xl)', boxShadow: 'var(--shadow-2xl)', border: '1px solid rgba(255,255,255,0.4)', background: 'rgba(255, 255, 255, 0.85)' }}>
         <div className="auth-header animate-slide-up delay-1">
-          <div className="auth-logo hover-scale" style={{ background: 'linear-gradient(135deg, var(--admin-500), var(--admin-600))', color: 'white', padding: '16px', borderRadius: 'var(--radius-xl)', boxShadow: '0 8px 16px rgba(147, 51, 234, 0.3)' }}>
-            <Shield size={36} />
+          <div className="auth-logo hover-scale" style={{ background: 'linear-gradient(135deg, var(--primary-500), var(--primary-600))', color: 'white', padding: '16px', borderRadius: 'var(--radius-xl)', boxShadow: '0 8px 16px rgba(16, 185, 129, 0.3)' }}>
+            <Briefcase size={36} />
           </div>
-          <h1 className="auth-title" style={{ marginTop: 'var(--space-4)', fontSize: 'var(--text-3xl)' }}>Admin Portal</h1>
-          <p className="auth-subtitle" style={{ color: 'var(--text-secondary)' }}>Sign in to access the administrative dashboard</p>
+          <h1 className="auth-title" style={{ marginTop: 'var(--space-4)', fontSize: 'var(--text-3xl)' }}>Manager Portal</h1>
+          <p className="auth-subtitle" style={{ color: 'var(--text-secondary)' }}>Sign in to access the manager dashboard</p>
         </div>
 
         {error && (
@@ -67,13 +66,13 @@ const AdminLoginPage = () => {
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="form-field animate-slide-up delay-2">
-            <label className="form-label">Admin Email</label>
+            <label className="form-label">Manager Email</label>
             <div className="input-group hover-glow" style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.9)', border: '2px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '4px 12px', transition: 'all var(--transition-base)' }}>
-              <Mail size={20} style={{ color: 'var(--admin-400)' }} />
+              <Mail size={20} style={{ color: 'var(--primary-400)' }} />
               <input 
                 name="email" 
                 type="email" 
-                placeholder="admin@planthub.com" 
+                placeholder="manager@planthub.com" 
                 required 
                 className="input" 
                 style={{ border: 'none', boxShadow: 'none', flex: 1, padding: '12px', background: 'transparent' }}
@@ -85,7 +84,7 @@ const AdminLoginPage = () => {
           <div className="form-field animate-slide-up delay-3" style={{ marginBottom: '24px' }}>
             <label className="form-label">Password</label>
             <div className="input-group hover-glow" style={{ display: 'flex', alignItems: 'center', background: 'rgba(255,255,255,0.9)', border: '2px solid var(--border-light)', borderRadius: 'var(--radius-xl)', padding: '4px 12px', transition: 'all var(--transition-base)' }}>
-              <Lock size={20} style={{ color: 'var(--admin-400)' }} />
+              <Lock size={20} style={{ color: 'var(--primary-400)' }} />
               <input 
                 name="password" 
                 type="password" 
@@ -98,13 +97,13 @@ const AdminLoginPage = () => {
             </div>
           </div>
           
-          <button type="submit" className="btn btn-admin btn-block animate-slide-up delay-4" disabled={loading} style={{ borderRadius: 'var(--radius-xl)', padding: '16px' }}>
+          <button type="submit" className="btn btn-primary btn-block animate-slide-up delay-4" disabled={loading} style={{ borderRadius: 'var(--radius-xl)', padding: '16px' }}>
             {loading ? <span className="spinner"></span> : 'Secure Login'}
           </button>
         </form>
         
         <div className="auth-footer animate-fade-in delay-5" style={{ marginTop: '28px', textAlign: 'center' }}>
-          <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }} style={{ color: 'var(--admin-600)', fontWeight: '600', textDecoration: 'none', display: 'inline-block', transition: 'transform var(--transition-fast)' }} className="hover-scale">
+          <a href="/" onClick={(e) => { e.preventDefault(); navigate('/'); }} style={{ color: 'var(--primary-600)', fontWeight: '600', textDecoration: 'none', display: 'inline-block', transition: 'transform var(--transition-fast)' }} className="hover-scale">
             ← Return to Store
           </a>
         </div>
@@ -113,4 +112,4 @@ const AdminLoginPage = () => {
   );
 };
 
-export default AdminLoginPage;
+export default ManagerLoginPage;

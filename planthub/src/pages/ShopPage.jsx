@@ -3,6 +3,7 @@ import { Search, Filter, ShoppingCart, Eye } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { PRODUCTS } from '../utils/constants';
 import { formatCurrency } from '../utils/formatters';
+import '../styles/shop.css';
 
 const ShopPage = () => {
   const [products, setProducts] = useState(PRODUCTS);
@@ -87,7 +88,7 @@ const ShopPage = () => {
               <p className="category">{product.category}</p>
               <div className="price-row">
                 <span className="price">{formatCurrency(product.price)}</span>
-                <span className="stock">{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span>
+                <span className={`stock ${product.stock > 0 ? '' : 'out'}`}>{product.stock > 0 ? 'In Stock' : 'Out of Stock'}</span>
               </div>
             </div>
           </div>

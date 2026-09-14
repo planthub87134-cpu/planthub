@@ -187,7 +187,7 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="flex gap-2">
-              <Link to="/login" className="btn btn-ghost btn-sm hide-mobile">Sign In</Link>
+              <Link to="/login" className="btn btn-ghost btn-sm">Sign In</Link>
               <Link to="/signup" className="btn btn-primary btn-sm">Get Started</Link>
             </div>
           )}

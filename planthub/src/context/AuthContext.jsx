@@ -7,10 +7,10 @@ const AuthContext = createContext(null);
 
 // Demo users for when Supabase isn't configured
 const DEMO_USERS = {
-  customer: { id: 'demo-customer', email: 'john@example.com', name: 'John Doe', role: 'customer', phone: '555-1234' },
-  manager: { id: 'demo-manager', email: 'manager@planthub.com', name: 'Plant Manager', role: 'manager', phone: '555-5678' },
-  admin: { id: 'demo-admin', email: 'admin@planthub.com', name: 'Admin User', role: 'admin', phone: '555-9012' },
-  agent: { id: 'demo-agent', email: 'agent@planthub.com', name: 'Support Agent', role: 'agent', phone: '555-3333' },
+  customer: { id: 'demo-customer', email: 'user@example.com', name: 'John Doe', role: 'customer', phone: '555-1234', password: 'user123' },
+  manager: { id: 'demo-manager', email: 'manager@planthub.com', name: 'Plant Manager', role: 'manager', phone: '555-5678', password: 'manager123' },
+  admin: { id: 'demo-admin', email: 'admin@planthub.com', name: 'Admin User', role: 'admin', phone: '555-9012', password: 'admin123' },
+  agent: { id: 'demo-agent', email: 'agent@planthub.com', name: 'Support Agent', role: 'agent', phone: '555-3333', password: 'agent123' },
 };
 
 export function AuthProvider({ children }) {
@@ -90,9 +90,12 @@ export function AuthProvider({ children }) {
   // Sign in with email & password
   const signIn = async (email, password) => {
     if (isDemoMode) {
-      const demoUser = Object.values(DEMO_USERS).find(u => u.email === email) || DEMO_USERS.customer;
-      setUser({ ...demoUser, email });
-      return { error: null };
+      const demoUser = Object.values(DEMO_USERS).find(u => u.email === email);
+      if (!demoUser || demoUser.password !== password) {
+        return { error: { message: 'Invalid credentials. Please check your email and password.' } };
+      }
+      setUser({ ...demoUser });
+      return { data: { user: demoUser }, error: null };
     }
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     
