@@ -14,10 +14,26 @@ const DEMO_USERS = {
 };
 
 export function AuthProvider({ children }) {
-  // Always logged in as an admin for full access without login pages
-  const [user, setUser] = useState(DEMO_USERS.admin);
+  // Initialize from localStorage to persist across refreshes
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('planthub_user');
+    return saved ? JSON.parse(saved) : null;
+  });
   const [session, setSession] = useState({});
   const [loading, setLoading] = useState(false);
+
+  // New register function that saves the user
+  const register = (userData) => {
+    const newUser = { id: 'local-user', role: 'customer', ...userData };
+    setUser(newUser);
+    localStorage.setItem('planthub_user', JSON.stringify(newUser));
+    return { error: null };
+  };
+
+  const signOut = async () => {
+    setUser(null);
+    localStorage.removeItem('planthub_user');
+  };
 
   // Stub functions to prevent crashes in other components
   const signUp = async () => ({ error: null });
@@ -25,7 +41,6 @@ export function AuthProvider({ children }) {
   const signInWithGoogle = async () => ({ error: null });
   const signInWithPhone = async () => ({ error: null });
   const verifyOtp = async () => ({ error: null });
-  const signOut = async () => {};
   const demoLogin = () => {};
 
 
@@ -35,6 +50,7 @@ export function AuthProvider({ children }) {
     session,
     loading,
     isDemoMode,
+    register,
     signUp,
     signIn,
     signInWithGoogle,
