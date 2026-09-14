@@ -36,7 +36,9 @@ const OrdersPage = () => {
             </div>
             <div className="order-details" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
-                <p style={{ color: 'var(--text-secondary)' }}>{order.items} item(s)</p>
+                <p style={{ color: 'var(--text-secondary)' }}>
+                  {typeof order.items === 'number' ? order.items : (Array.isArray(order.items) ? order.items.length : 0)} item(s)
+                </p>
                 <p className="total" style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)', color: 'var(--text-primary)', marginTop: 'var(--space-1)' }}>{formatCurrency(order.total)}</p>
               </div>
               <button className="btn btn-primary hover-scale" onClick={() => alert(`Tracking information for ${order.id}:\nStatus: ${order.status}\nCarrier: PlantHub Logistics\nExpected Delivery: 2-3 business days`)}>Track Order</button>
