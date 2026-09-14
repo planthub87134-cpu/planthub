@@ -6,6 +6,12 @@ import { useAuth } from '../context/AuthContext';
 import { Mail, Lock } from 'lucide-react';
 
 export default function LandingPage() {
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    setSubscribed(true);
+  };
   const featuredProducts = PRODUCTS.slice(0, 4);
   const navigate = useNavigate();
   const { isDemoMode } = useAuth();
@@ -167,18 +173,25 @@ export default function LandingPage() {
               </p>
             </div>
             <div className="animate-slide-left">
-              <form className="flex gap-2" onSubmit={(e) => e.preventDefault()} style={{ background: 'rgba(255,255,255,0.1)', padding: 'var(--space-2)', borderRadius: 'var(--radius-full)', backdropFilter: 'blur(10px)' }}>
-                <input 
-                  type="email" 
-                  placeholder="Enter your email address..." 
-                  className="input" 
-                  style={{ flex: 1, border: 'none', background: 'transparent', color: 'white', paddingLeft: 'var(--space-4)' }}
-                  required
-                />
-                <button type="submit" className="btn btn-primary hover-scale" style={{ borderRadius: 'var(--radius-full)' }}>
-                  Subscribe
-                </button>
-              </form>
+              {subscribed ? (
+                <div style={{ background: 'rgba(255,255,255,0.1)', padding: 'var(--space-4)', borderRadius: 'var(--radius-lg)', backdropFilter: 'blur(10px)', textAlign: 'center' }}>
+                  <h3 style={{ color: 'var(--success)', marginBottom: 'var(--space-2)' }}>Thanks for subscribing!</h3>
+                  <p style={{ margin: 0 }}>Check your email for the 15% off coupon.</p>
+                </div>
+              ) : (
+                <form className="flex gap-2" onSubmit={handleSubscribe} style={{ background: 'rgba(255,255,255,0.1)', padding: 'var(--space-2)', borderRadius: 'var(--radius-full)', backdropFilter: 'blur(10px)' }}>
+                  <input 
+                    type="email" 
+                    placeholder="Enter your email address..." 
+                    className="input" 
+                    style={{ flex: 1, border: 'none', background: 'transparent', color: 'white', paddingLeft: 'var(--space-4)' }}
+                    required
+                  />
+                  <button type="submit" className="btn btn-primary hover-scale" style={{ borderRadius: 'var(--radius-full)' }}>
+                    Subscribe
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>

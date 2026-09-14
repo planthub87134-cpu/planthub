@@ -28,10 +28,10 @@ export default function MegaFooter() {
             to you with premium quality plants, expert care guides, and fast delivery.
           </p>
           <div className="footer-social">
-            <a href="#" className="footer-social-link" aria-label="Facebook">📘</a>
-            <a href="#" className="footer-social-link" aria-label="Instagram">📷</a>
-            <a href="#" className="footer-social-link" aria-label="Twitter">🐦</a>
-            <a href="#" className="footer-social-link" aria-label="Pinterest">📌</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Facebook">📘</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Instagram">📷</a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Twitter">🐦</a>
+            <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" className="footer-social-link" aria-label="Pinterest">📌</a>
           </div>
         </div>
 

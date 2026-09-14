@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, Filter, ShoppingCart, Eye } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useCart } from '../hooks/useCart';
 import { PRODUCTS } from '../utils/constants';
 import { formatCurrency } from '../utils/formatters';
 import '../styles/shop.css';
@@ -10,8 +11,17 @@ const ShopPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
+  
+  const { addToCart } = useCart();
+  const [addedItem, setAddedItem] = useState(null);
 
   const categories = ['All', 'Indoor', 'Outdoor', 'Succulents', 'Rare'];
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setAddedItem(product.id);
+    setTimeout(() => setAddedItem(null), 2000);
+  };
 
   useEffect(() => {
     let result = [...PRODUCTS];
@@ -79,8 +89,14 @@ const ShopPage = () => {
               <img src={product.image || 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=800'} alt={product.name} />
               {product.isNew && <span className="badge badge-success new-badge">New</span>}
               <div className="product-actions">
-                <button className="btn btn-primary btn-icon"><ShoppingCart size={18} /></button>
-                <button className="btn btn-secondary btn-icon"><Eye size={18} /></button>
+                <button 
+                  className={`btn ${addedItem === product.id ? 'btn-success' : 'btn-primary'} btn-icon`}
+                  onClick={() => handleAddToCart(product)}
+                  title="Add to Cart"
+                >
+                  <ShoppingCart size={18} />
+                </button>
+                <button className="btn btn-secondary btn-icon" title="View Details"><Eye size={18} /></button>
               </div>
             </div>
             <div className="product-info">

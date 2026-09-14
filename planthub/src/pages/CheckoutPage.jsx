@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { CreditCard, Truck, CheckCircle, Smartphone, Banknote, Building, Globe } from 'lucide-react';
+import { useCart } from '../hooks/useCart';
+import { formatCurrency } from '../utils/formatters';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
+  const { cart, cartTotal, addOrder, clearCart } = useCart();
   const [step, setStep] = useState(1);
   const [paymentMode, setPaymentMode] = useState('card');
   const [formData, setFormData] = useState({
@@ -19,6 +22,20 @@ const CheckoutPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Create new order
+    const shipping = cartTotal > 100 ? 0 : 10;
+    const newOrder = {
+      id: `ORD${Math.floor(Math.random() * 10000)}`,
+      customer: formData.name,
+      date: new Date().toISOString().split('T')[0],
+      total: cartTotal + shipping,
+      status: 'pending',
+      items: cart.length
+    };
+    
+    addOrder(newOrder);
+    clearCart();
     setStep(3); // success
     setTimeout(() => {
       navigate('/orders');
@@ -113,7 +130,7 @@ const CheckoutPage = () => {
 
             <div className="button-group mt-4">
               <button type="button" onClick={() => setStep(1)} className="btn btn-secondary">Back</button>
-              <button type="submit" className="btn btn-primary">Place Order</button>
+              <button type="submit" className="btn btn-primary">Place Order ({formatCurrency(cartTotal + (cartTotal > 100 ? 0 : 10))})</button>
             </div>
           </form>
         )}
