@@ -71,7 +71,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
             title="Home"
           >
-            🏠
+            Home
           </Link>
           <Link
             to="/shop"
@@ -79,7 +79,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
             title="Shop"
           >
-            🛍️
+            Shop
           </Link>
           <Link
             to="/contact"
@@ -87,7 +87,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
             title="Contact"
           >
-            📞
+            Contact
           </Link>
           <Link
             to="/feedback"
@@ -95,7 +95,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
             title="Feedback"
           >
-            💬
+            Feedback
           </Link>
           <Link
             to="/support"
@@ -103,7 +103,7 @@ export default function Navbar() {
             onClick={() => setMobileOpen(false)}
             title="Support"
           >
-            🛠️
+            Support
           </Link>
           {user?.role === 'admin' && (
             <Link
@@ -112,7 +112,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
               title="Admin Dashboard"
             >
-              🛡️
+              Admin Dashboard
             </Link>
           )}
           {user?.role === 'manager' && (
@@ -122,7 +122,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
               title="Manager Dashboard"
             >
-              🧑‍💼
+              Manager Dashboard
             </Link>
           )}
           {user?.role === 'agent' && (
@@ -132,7 +132,7 @@ export default function Navbar() {
               onClick={() => setMobileOpen(false)}
               title="Agent Panel"
             >
-              🎧
+              Agent Panel
             </Link>
           )}
         </div>
@@ -150,8 +150,8 @@ export default function Navbar() {
           </button>
 
           {/* Cart */}
-          <Link to="/cart" className="navbar-cart" id="cart-button" aria-label="Shopping cart">
-            🛒
+          <Link to="/cart" className="navbar-cart" id="cart-button" aria-label="Shopping cart" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Cart</span>
             {cartCount > 0 && (
               <span className="navbar-cart-count">{cartCount}</span>
             )}
@@ -179,14 +179,14 @@ export default function Navbar() {
                     <div className="badge badge-success" style={{ marginTop: 'var(--space-2)' }}>{user.role}</div>
                   </div>
                   <Link to="/profile" className="navbar-dropdown-item" onClick={() => setDropdownOpen(false)}>
-                    👤 Profile
+                    Profile
                   </Link>
                   <Link to="/orders" className="navbar-dropdown-item" onClick={() => setDropdownOpen(false)}>
-                    📦 My Orders
+                    My Orders
                   </Link>
                   <div className="navbar-dropdown-divider" />
                   <button className="navbar-dropdown-item" onClick={handleLogout} id="logout-button" style={{ color: 'var(--danger-500)' }}>
-                    🚪 Sign Out
+                    Sign Out
                   </button>
                 </div>
               )}
