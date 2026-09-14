@@ -1,11 +1,9 @@
 import { Package, Clock, CheckCircle } from 'lucide-react';
+import { useCart } from '../hooks/useCart';
 import { formatCurrency } from '../utils/formatters';
 
 const OrdersPage = () => {
-  const orders = [
-    { id: 'ORD-8472', date: 'Oct 24, 2024', total: 70.98, status: 'Shipped', items: 3 },
-    { id: 'ORD-8451', date: 'Sep 12, 2024', total: 45.99, status: 'Delivered', items: 1 },
-  ];
+  const { orders } = useCart();
 
   const getStatusIcon = (status) => {
     switch(status) {
@@ -41,7 +39,7 @@ const OrdersPage = () => {
                 <p style={{ color: 'var(--text-secondary)' }}>{order.items} item(s)</p>
                 <p className="total" style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)', color: 'var(--text-primary)', marginTop: 'var(--space-1)' }}>{formatCurrency(order.total)}</p>
               </div>
-              <button className="btn btn-primary hover-scale">Track Order</button>
+              <button className="btn btn-primary hover-scale" onClick={() => alert(`Tracking information for ${order.id}:\nStatus: ${order.status}\nCarrier: PlantHub Logistics\nExpected Delivery: 2-3 business days`)}>Track Order</button>
             </div>
           </div>
         ))}
