@@ -89,13 +89,19 @@ export function AuthProvider({ children }) {
 
   // Sign in with email & password
   const signIn = async (email, password) => {
-    if (isDemoMode) {
-      const demoUser = Object.values(DEMO_USERS).find(u => u.email === email);
-      if (!demoUser || demoUser.password !== password) {
-        return { error: { message: 'Invalid credentials. Please check your email and password.' } };
-      }
+    // 1. First, check if they are using one of our hardcoded demo accounts
+    const demoUser = Object.values(DEMO_USERS).find(u => u.email === email);
+    
+    // If it's a demo account and password matches, log them in immediately without hitting Supabase
+    // This fixes the "Invalid login credentials" error on Vercel when Supabase is partially configured
+    if (demoUser && demoUser.password === password) {
       setUser({ ...demoUser });
       return { data: { user: demoUser }, error: null };
+    }
+
+    // 2. If it's demo mode, but they typed wrong credentials for a demo account, or a random email
+    if (isDemoMode) {
+      return { error: { message: 'Invalid credentials. Please check your email and password.' } };
     }
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     
