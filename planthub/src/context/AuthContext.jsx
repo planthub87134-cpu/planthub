@@ -35,6 +35,16 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('planthub_user');
   };
 
+  const adminLogin = async (email, password) => {
+    if (email === 'admin@planthub.com' && password === 'admin123') {
+      const adminUser = { id: 'admin-user', role: 'admin', email, name: 'Admin User', phone: '555-9012' };
+      setUser(adminUser);
+      localStorage.setItem('planthub_user', JSON.stringify(adminUser));
+      return { error: null };
+    }
+    return { error: { message: 'Invalid admin credentials' } };
+  };
+
   // Stub functions to prevent crashes in other components
   const signUp = async () => ({ error: null });
   const signIn = async () => ({ data: { user }, error: null });
@@ -51,6 +61,7 @@ export function AuthProvider({ children }) {
     loading,
     isDemoMode,
     register,
+    adminLogin,
     signUp,
     signIn,
     signInWithGoogle,

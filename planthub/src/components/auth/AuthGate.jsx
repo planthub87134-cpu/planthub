@@ -3,7 +3,9 @@ import { useAuth } from '../../context/AuthContext';
 import { Lock, Mail, User, Phone, ShieldCheck } from 'lucide-react';
 
 export default function AuthGate({ children }) {
-  const { user, register } = useAuth();
+  const { user, register, adminLogin } = useAuth();
+  
+  const [mode, setMode] = useState('register'); // 'register' | 'admin'
   
   const [formData, setFormData] = useState({
     name: '',
@@ -33,7 +35,19 @@ export default function AuthGate({ children }) {
     e.preventDefault();
     setError('');
     
-    // Validations
+    if (mode === 'admin') {
+      if (!formData.email || !formData.password) {
+        setError('Please enter both email and password.');
+        return;
+      }
+      
+      adminLogin(formData.email, formData.password).then(({ error }) => {
+        if (error) setError(error.message);
+      });
+      return;
+    }
+    
+    // Register Validations
     if (!formData.name || !formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
       setError('Please fill in all fields.');
       return;
@@ -72,10 +86,14 @@ export default function AuthGate({ children }) {
           <div className="auth-icon bg-primary-subtle text-primary mx-auto mb-4" style={{ 
             width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto var(--space-4)' 
           }}>
-            <ShieldCheck size={32} />
+            {mode === 'admin' ? <Lock size={32} /> : <ShieldCheck size={32} />}
           </div>
-          <h2 style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-2)' }}>Create Your Account</h2>
-          <p className="text-muted" style={{ color: 'var(--text-muted)' }}>You must register to access PlantHub</p>
+          <h2 style={{ fontSize: 'var(--text-2xl)', fontWeight: 'var(--font-bold)', marginBottom: 'var(--space-2)' }}>
+            {mode === 'admin' ? 'Admin Access' : 'Create Your Account'}
+          </h2>
+          <p className="text-muted" style={{ color: 'var(--text-muted)' }}>
+            {mode === 'admin' ? 'Enter admin credentials to proceed' : 'You must register to access PlantHub'}
+          </p>
         </div>
         
         {error && (
@@ -85,21 +103,23 @@ export default function AuthGate({ children }) {
         )}
         
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-          <div className="form-group">
-            <label className="form-label" style={{ display: 'block', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Full Name</label>
-            <div className="input-with-icon" style={{ position: 'relative' }}>
-              <User size={20} className="input-icon" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-              <input 
-                type="text" 
-                name="name"
-                className="form-input" 
-                placeholder="John Doe"
-                value={formData.name}
-                onChange={handleChange}
-                style={{ width: '100%', padding: '10px 12px 10px 40px', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)' }}
-              />
+          {mode === 'register' && (
+            <div className="form-group">
+              <label className="form-label" style={{ display: 'block', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Full Name</label>
+              <div className="input-with-icon" style={{ position: 'relative' }}>
+                <User size={20} className="input-icon" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                <input 
+                  type="text" 
+                  name="name"
+                  className="form-input" 
+                  placeholder="John Doe"
+                  value={formData.name}
+                  onChange={handleChange}
+                  style={{ width: '100%', padding: '10px 12px 10px 40px', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)' }}
+                />
+              </div>
             </div>
-          </div>
+          )}
           
           <div className="form-group">
             <label className="form-label" style={{ display: 'block', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Email (Gmail)</label>
@@ -109,7 +129,7 @@ export default function AuthGate({ children }) {
                 type="email" 
                 name="email"
                 className="form-input" 
-                placeholder="you@gmail.com"
+                placeholder={mode === 'admin' ? "admin@planthub.com" : "you@gmail.com"}
                 value={formData.email}
                 onChange={handleChange}
                 style={{ width: '100%', padding: '10px 12px 10px 40px', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)' }}
@@ -117,21 +137,23 @@ export default function AuthGate({ children }) {
             </div>
           </div>
           
-          <div className="form-group">
-            <label className="form-label" style={{ display: 'block', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Mobile Number</label>
-            <div className="input-with-icon" style={{ position: 'relative' }}>
-              <Phone size={20} className="input-icon" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-              <input 
-                type="tel" 
-                name="phone"
-                className="form-input" 
-                placeholder="+91 9876543210"
-                value={formData.phone}
-                onChange={handleChange}
-                style={{ width: '100%', padding: '10px 12px 10px 40px', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)' }}
-              />
+          {mode === 'register' && (
+            <div className="form-group">
+              <label className="form-label" style={{ display: 'block', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Mobile Number</label>
+              <div className="input-with-icon" style={{ position: 'relative' }}>
+                <Phone size={20} className="input-icon" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                <input 
+                  type="tel" 
+                  name="phone"
+                  className="form-input" 
+                  placeholder="+91 9876543210"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  style={{ width: '100%', padding: '10px 12px 10px 40px', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)' }}
+                />
+              </div>
             </div>
-          </div>
+          )}
           
           <div className="form-group">
             <label className="form-label" style={{ display: 'block', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Password</label>
@@ -149,39 +171,53 @@ export default function AuthGate({ children }) {
             </div>
           </div>
           
-          <div className="form-group">
-            <label className="form-label" style={{ display: 'block', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Confirm Password</label>
-            <div className="input-with-icon" style={{ position: 'relative' }}>
-              <Lock size={20} className="input-icon" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-              <input 
-                type="password" 
-                name="confirmPassword"
-                className="form-input" 
-                placeholder="••••••••"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                style={{ width: '100%', padding: '10px 12px 10px 40px', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)' }}
-              />
-            </div>
-          </div>
-          
-          <div className="form-group" style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
-            <input 
-              type="checkbox" 
-              name="agreed"
-              id="agreed"
-              checked={formData.agreed}
-              onChange={handleChange}
-              style={{ marginTop: '4px' }}
-            />
-            <label htmlFor="agreed" style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)', cursor: 'pointer', lineHeight: '1.5' }}>
-              I agree to the <strong>Privacy Policy</strong> and <strong>Terms & Conditions</strong>.
-            </label>
-          </div>
+          {mode === 'register' && (
+            <>
+              <div className="form-group">
+                <label className="form-label" style={{ display: 'block', marginBottom: 'var(--space-2)', fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Confirm Password</label>
+                <div className="input-with-icon" style={{ position: 'relative' }}>
+                  <Lock size={20} className="input-icon" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+                  <input 
+                    type="password" 
+                    name="confirmPassword"
+                    className="form-input" 
+                    placeholder="••••••••"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    style={{ width: '100%', padding: '10px 12px 10px 40px', border: '1px solid var(--border-light)', borderRadius: 'var(--radius-md)' }}
+                  />
+                </div>
+              </div>
+              
+              <div className="form-group" style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
+                <input 
+                  type="checkbox" 
+                  name="agreed"
+                  id="agreed"
+                  checked={formData.agreed}
+                  onChange={handleChange}
+                  style={{ marginTop: '4px' }}
+                />
+                <label htmlFor="agreed" style={{ fontSize: 'var(--text-sm)', color: 'var(--text-muted)', cursor: 'pointer', lineHeight: '1.5' }}>
+                  I agree to the <strong>Privacy Policy</strong> and <strong>Terms & Conditions</strong>.
+                </label>
+              </div>
+            </>
+          )}
           
           <button type="submit" className="btn btn-primary btn-block" style={{ marginTop: 'var(--space-4)', padding: '12px', width: '100%', background: 'var(--primary-600)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', fontWeight: 'var(--font-bold)', cursor: 'pointer' }}>
-            Register & Continue
+            {mode === 'admin' ? 'Login as Admin' : 'Register & Continue'}
           </button>
+          
+          <div style={{ textAlign: 'center', marginTop: 'var(--space-4)' }}>
+            <button 
+              type="button" 
+              onClick={() => { setMode(mode === 'admin' ? 'register' : 'admin'); setError(''); }}
+              style={{ background: 'none', border: 'none', color: 'var(--primary-600)', fontWeight: 'var(--font-medium)', cursor: 'pointer', fontSize: 'var(--text-sm)' }}
+            >
+              {mode === 'admin' ? 'Back to User Registration' : 'Are you an admin? Login here'}
+            </button>
+          </div>
         </form>
       </div>
     </div>

@@ -77,7 +77,7 @@ export const router = createBrowserRouter([
   {
     path: '/admin',
     element: (
-      <ProtectedRoute role="admin">
+      <ProtectedRoute requiredRole="admin">
         <DashboardLayout role="admin" />
       </ProtectedRoute>
     ),
@@ -88,7 +88,7 @@ export const router = createBrowserRouter([
   {
     path: '/manager',
     element: (
-      <ProtectedRoute role="manager">
+      <ProtectedRoute requiredRole="manager">
         <DashboardLayout role="manager" />
       </ProtectedRoute>
     ),
@@ -99,7 +99,7 @@ export const router = createBrowserRouter([
   {
     path: '/agent',
     element: (
-      <ProtectedRoute role="agent">
+      <ProtectedRoute requiredRole="agent">
         <DashboardLayout role="agent" />
       </ProtectedRoute>
     ),

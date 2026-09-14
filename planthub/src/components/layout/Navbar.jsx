@@ -105,30 +105,36 @@ export default function Navbar() {
           >
             🛠️
           </Link>
-          <Link
-            to="/admin"
-            className={`navbar-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
-            onClick={() => setMobileOpen(false)}
-            title="Admin Dashboard"
-          >
-            🛡️
-          </Link>
-          <Link
-            to="/manager"
-            className={`navbar-link ${location.pathname.startsWith('/manager') ? 'active' : ''}`}
-            onClick={() => setMobileOpen(false)}
-            title="Manager Dashboard"
-          >
-            🧑‍💼
-          </Link>
-          <Link
-            to="/agent"
-            className={`navbar-link ${location.pathname.startsWith('/agent') ? 'active' : ''}`}
-            onClick={() => setMobileOpen(false)}
-            title="Agent Panel"
-          >
-            🎧
-          </Link>
+          {user?.role === 'admin' && (
+            <Link
+              to="/admin"
+              className={`navbar-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
+              onClick={() => setMobileOpen(false)}
+              title="Admin Dashboard"
+            >
+              🛡️
+            </Link>
+          )}
+          {user?.role === 'manager' && (
+            <Link
+              to="/manager"
+              className={`navbar-link ${location.pathname.startsWith('/manager') ? 'active' : ''}`}
+              onClick={() => setMobileOpen(false)}
+              title="Manager Dashboard"
+            >
+              🧑‍💼
+            </Link>
+          )}
+          {user?.role === 'agent' && (
+            <Link
+              to="/agent"
+              className={`navbar-link ${location.pathname.startsWith('/agent') ? 'active' : ''}`}
+              onClick={() => setMobileOpen(false)}
+              title="Agent Panel"
+            >
+              🎧
+            </Link>
+          )}
         </div>
 
         {/* Actions */}
@@ -152,17 +158,40 @@ export default function Navbar() {
           </Link>
 
           {/* Auth */}
-          <div className="flex gap-2">
-            <Link to="/admin" className="btn btn-outline" style={{ borderRadius: 'var(--radius-xl)' }}>
-              Admin
-            </Link>
-            <Link to="/manager" className="btn btn-outline" style={{ borderRadius: 'var(--radius-xl)' }}>
-              Manager
-            </Link>
-            <Link to="/agent" className="btn btn-outline" style={{ borderRadius: 'var(--radius-xl)' }}>
-              Agent
-            </Link>
-          </div>
+          {user ? (
+            <div className="navbar-user-menu">
+              <button
+                className="navbar-user-btn"
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                id="user-menu-button"
+              >
+                <div className="avatar">{getInitials(user.name)}</div>
+                <span className="hide-mobile" style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>
+                  {user.name}
+                </span>
+              </button>
+
+              {dropdownOpen && (
+                <div className="navbar-dropdown" id="user-dropdown">
+                  <div style={{ padding: 'var(--space-3) var(--space-4)', borderBottom: '1px solid var(--border-light)', marginBottom: 'var(--space-2)' }}>
+                    <div style={{ fontWeight: 'var(--font-bold)', fontSize: 'var(--text-sm)' }}>{user.name}</div>
+                    <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>{user.email}</div>
+                    <div className="badge badge-success" style={{ marginTop: 'var(--space-2)' }}>{user.role}</div>
+                  </div>
+                  <Link to="/profile" className="navbar-dropdown-item" onClick={() => setDropdownOpen(false)}>
+                    👤 Profile
+                  </Link>
+                  <Link to="/orders" className="navbar-dropdown-item" onClick={() => setDropdownOpen(false)}>
+                    📦 My Orders
+                  </Link>
+                  <div className="navbar-dropdown-divider" />
+                  <button className="navbar-dropdown-item" onClick={handleLogout} id="logout-button" style={{ color: 'var(--danger-500)' }}>
+                    🚪 Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : null}
         </div>
       </div>
 
