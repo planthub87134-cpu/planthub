@@ -13,6 +13,8 @@ import AdminDashboard from '../pages/AdminDashboard';
 import ManagerDashboard from '../pages/ManagerDashboard';
 import SupportPage from '../pages/SupportPage';
 import AgentDashboard from '../pages/AgentDashboard';
+import SignupPage from '../pages/SignupPage';
+import AdminLoginPage from '../pages/AdminLoginPage';
 import PrivacyPolicy from '../pages/policies/PrivacyPolicy';
 import ReturnPolicy from '../pages/policies/ReturnPolicy';
 import CookiePolicy from '../pages/policies/CookiePolicy';
@@ -25,6 +27,8 @@ export const router = createBrowserRouter([
     element: <PageLayout />,
     children: [
       { index: true, element: <LandingPage /> },
+      { path: 'signup', element: <SignupPage /> },
+      { path: 'admin-login', element: <AdminLoginPage /> },
       { path: 'shop', element: <ShopPage /> },
       { path: 'cart', element: <CartPage /> },
       {

@@ -191,7 +191,16 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-          ) : null}
+          ) : (
+            <div className="flex gap-2">
+              <Link to="/admin-login" className="btn btn-outline" style={{ borderRadius: 'var(--radius-md)' }}>
+                Admin Login
+              </Link>
+              <Link to="/signup" className="btn btn-primary" style={{ borderRadius: 'var(--radius-md)' }}>
+                Sign Up
+              </Link>
+            </div>
+          )}
         </div>
       </div>
 
