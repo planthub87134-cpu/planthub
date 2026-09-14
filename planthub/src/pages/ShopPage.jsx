@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Search, Filter, ShoppingCart, Eye } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../hooks/useCart';
-import { PRODUCTS } from '../utils/constants';
+import { supabase } from '../lib/supabase';
 import { formatCurrency } from '../utils/formatters';
 import '../styles/shop.css';
 
@@ -24,21 +24,33 @@ const ShopPage = () => {
   };
 
   useEffect(() => {
-    let result = [...PRODUCTS];
+    const fetchProducts = async () => {
+      let query = supabase.from('products').select('*');
+      
+      const { data, error } = await query;
+      if (error) {
+        console.error('Error fetching products:', error);
+        return;
+      }
+      
+      let result = [...(data || [])];
 
-    if (searchTerm) {
-      result = result.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
-    }
+      if (searchTerm) {
+        result = result.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+      }
 
-    if (selectedCategory !== 'All') {
-      result = result.filter(p => p.category === selectedCategory);
-    }
+      if (selectedCategory !== 'All') {
+        result = result.filter(p => p.category === selectedCategory);
+      }
 
-    if (sortBy === 'price-asc') result.sort((a, b) => a.price - b.price);
-    else if (sortBy === 'price-desc') result.sort((a, b) => b.price - a.price);
-    else if (sortBy === 'name-asc') result.sort((a, b) => a.name.localeCompare(b.name));
+      if (sortBy === 'price-asc') result.sort((a, b) => a.price - b.price);
+      else if (sortBy === 'price-desc') result.sort((a, b) => b.price - a.price);
+      else if (sortBy === 'name-asc') result.sort((a, b) => a.name.localeCompare(b.name));
 
-    setProducts(result);
+      setProducts(result);
+    };
+
+    fetchProducts();
   }, [searchTerm, selectedCategory, sortBy]);
 
   return (

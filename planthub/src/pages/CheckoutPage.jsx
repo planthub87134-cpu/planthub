@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router';
 import { CreditCard, Truck, CheckCircle, Smartphone, Banknote, Building, Globe } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 import { formatCurrency } from '../utils/formatters';
+import { supabase } from '../lib/supabase';
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
@@ -20,21 +21,45 @@ const CheckoutPage = () => {
     setStep(step + 1);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     // Create new order
     const shipping = cartTotal > 999 ? 0 : 99;
+    const orderId = `ORD${Math.floor(Math.random() * 10000)}`;
+    
     const newOrder = {
-      id: `ORD${Math.floor(Math.random() * 10000)}`,
-      customer: formData.name,
-      date: new Date().toISOString().split('T')[0],
+      id: orderId,
       total: cartTotal + shipping,
       status: 'pending',
-      items: cart.length
+      date: new Date().toISOString().split('T')[0],
+      trackingNumber: `TRK-PH-${Math.floor(Math.random() * 10000)}`
     };
+
+    const { error: orderError } = await supabase.from('orders').insert(newOrder);
+
+    if (orderError) {
+      console.error('Error creating order:', orderError);
+      alert('Failed to place order.');
+      return;
+    }
+
+    const orderItems = cart.map(item => ({
+      order_id: orderId,
+      product_id: item.id,
+      qty: item.qty,
+      price: item.price,
+      name: item.name,
+      image: item.image
+    }));
+
+    const { error: itemsError } = await supabase.from('order_items').insert(orderItems);
+
+    if (itemsError) {
+      console.error('Error adding order items:', itemsError);
+    }
     
-    addOrder(newOrder);
+    addOrder({ ...newOrder, items: cart }); // Optimistic UI update
     clearCart();
     setStep(3); // success
     setTimeout(() => {
