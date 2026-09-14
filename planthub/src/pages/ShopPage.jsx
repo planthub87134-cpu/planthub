@@ -7,7 +7,7 @@ import { formatCurrency } from '../utils/formatters';
 import '../styles/shop.css';
 
 const ShopPage = () => {
-  const [products, setProducts] = useState(PRODUCTS);
+  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
