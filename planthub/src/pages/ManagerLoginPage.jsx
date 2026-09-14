@@ -7,8 +7,8 @@ const ManagerLoginPage = () => {
   const navigate = useNavigate();
   const { signIn, isDemoMode } = useAuth();
   const [formData, setFormData] = useState({ 
-    email: isDemoMode ? 'manager@planthub.com' : '', 
-    password: isDemoMode ? 'manager123' : '' 
+    email: '', 
+    password: '' 
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);

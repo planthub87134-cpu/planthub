@@ -8,8 +8,8 @@ export default function LoginPage() {
   const { signIn, signInWithGoogle, signInWithPhone, verifyOtp, demoLogin, isDemoMode } = useAuth();
   const navigate = useNavigate();
   const [method, setMethod] = useState('email'); // email | phone
-  const [email, setEmail] = useState(isDemoMode ? 'user@example.com' : '');
-  const [password, setPassword] = useState(isDemoMode ? 'user123' : '');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [otp, setOtp] = useState('');
   const [otpSent, setOtpSent] = useState(false);

@@ -7,8 +7,8 @@ const AgentLoginPage = () => {
   const navigate = useNavigate();
   const { signIn, isDemoMode } = useAuth();
   const [formData, setFormData] = useState({ 
-    email: isDemoMode ? 'agent@planthub.com' : '', 
-    password: isDemoMode ? 'agent123' : '' 
+    email: '', 
+    password: '' 
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
