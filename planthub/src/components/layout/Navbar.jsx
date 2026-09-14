@@ -47,27 +47,18 @@ export default function Navbar() {
   return (
     <nav className="navbar" id="main-navbar">
       <div className="navbar-inner">
-        {/* Brand */}
-        <Link to="/" className="navbar-brand">
-          <span className="navbar-brand-icon">🌱</span>
-          PlantHub
-        </Link>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-8)' }}>
+          {/* Brand */}
+          <Link to="/" className="navbar-brand">
+            <span className="navbar-brand-icon">🌱</span>
+            PlantHub
+          </Link>
 
-        {/* Mobile Toggle */}
-        <button
-          className="navbar-mobile-toggle"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Toggle menu"
-          id="mobile-menu-toggle"
-        >
-          {mobileOpen ? '✕' : '☰'}
-        </button>
-
-        {/* Navigation Links */}
-        <div className={`navbar-links ${mobileOpen ? 'open' : ''}`}>
+          {/* Navigation Links */}
+          <div className={`navbar-links ${mobileOpen ? 'open' : ''}`}>
           <Link
             to="/"
-            className={`navbar-link ${isActive('/') ? 'active' : ''}`}
+            className={`btn btn-ghost ${isActive('/') ? 'btn-secondary' : ''}`}
             onClick={() => setMobileOpen(false)}
             title="Home"
           >
@@ -75,7 +66,7 @@ export default function Navbar() {
           </Link>
           <Link
             to="/shop"
-            className={`navbar-link ${isActive('/shop') ? 'active' : ''}`}
+            className={`btn btn-ghost ${isActive('/shop') ? 'btn-secondary' : ''}`}
             onClick={() => setMobileOpen(false)}
             title="Shop"
           >
@@ -83,7 +74,7 @@ export default function Navbar() {
           </Link>
           <Link
             to="/contact"
-            className={`navbar-link ${isActive('/contact') ? 'active' : ''}`}
+            className={`btn btn-ghost ${isActive('/contact') ? 'btn-secondary' : ''}`}
             onClick={() => setMobileOpen(false)}
             title="Contact"
           >
@@ -91,7 +82,7 @@ export default function Navbar() {
           </Link>
           <Link
             to="/feedback"
-            className={`navbar-link ${isActive('/feedback') ? 'active' : ''}`}
+            className={`btn btn-ghost ${isActive('/feedback') ? 'btn-secondary' : ''}`}
             onClick={() => setMobileOpen(false)}
             title="Feedback"
           >
@@ -99,7 +90,7 @@ export default function Navbar() {
           </Link>
           <Link
             to="/support"
-            className={`navbar-link ${isActive('/support') ? 'active' : ''}`}
+            className={`btn btn-ghost ${isActive('/support') ? 'btn-secondary' : ''}`}
             onClick={() => setMobileOpen(false)}
             title="Support"
           >
@@ -108,7 +99,7 @@ export default function Navbar() {
           {user?.role === 'admin' && (
             <Link
               to="/admin"
-              className={`navbar-link ${location.pathname.startsWith('/admin') ? 'active' : ''}`}
+              className={`btn btn-ghost ${location.pathname.startsWith('/admin') ? 'btn-secondary' : ''}`}
               onClick={() => setMobileOpen(false)}
               title="Admin Dashboard"
             >
@@ -118,7 +109,7 @@ export default function Navbar() {
           {user?.role === 'manager' && (
             <Link
               to="/manager"
-              className={`navbar-link ${location.pathname.startsWith('/manager') ? 'active' : ''}`}
+              className={`btn btn-ghost ${location.pathname.startsWith('/manager') ? 'btn-secondary' : ''}`}
               onClick={() => setMobileOpen(false)}
               title="Manager Dashboard"
             >
@@ -128,7 +119,7 @@ export default function Navbar() {
           {user?.role === 'agent' && (
             <Link
               to="/agent"
-              className={`navbar-link ${location.pathname.startsWith('/agent') ? 'active' : ''}`}
+              className={`btn btn-ghost ${location.pathname.startsWith('/agent') ? 'btn-secondary' : ''}`}
               onClick={() => setMobileOpen(false)}
               title="Agent Panel"
             >
@@ -136,7 +127,10 @@ export default function Navbar() {
             </Link>
           )}
         </div>
+      </div>
 
+      {/* Mobile Toggle & Actions */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)' }}>
         {/* Actions */}
         <div className="navbar-actions">
           {/* Theme Toggle */}
@@ -202,7 +196,18 @@ export default function Navbar() {
             </div>
           )}
         </div>
+
+        <button
+          className="navbar-mobile-toggle"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Toggle menu"
+          id="mobile-menu-toggle"
+          style={{ marginLeft: 'var(--space-2)' }}
+        >
+          {mobileOpen ? '✕' : '☰'}
+        </button>
       </div>
+    </div>
 
       {/* Click outside to close dropdown */}
       {dropdownOpen && (
