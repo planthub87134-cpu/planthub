@@ -10,6 +10,7 @@ import PlantMatcherPage from '../pages/PlantMatcherPage';
 import PlantDoctorPage from '../pages/PlantDoctorPage';
 import SubscriptionsPage from '../pages/SubscriptionsPage';
 import GiftingPage from '../pages/GiftingPage';
+import TrackOrderPage from '../pages/TrackOrderPage';
 import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import OrdersPage from '../pages/OrdersPage';
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
       { path: 'plant-doctor', element: <PlantDoctorPage /> },
       { path: 'subscriptions', element: <SubscriptionsPage /> },
       { path: 'gifting', element: <GiftingPage /> },
+      { path: 'track-order', element: <TrackOrderPage /> },
       { path: 'cart', element: <CartPage /> },
       {
         path: 'checkout',
