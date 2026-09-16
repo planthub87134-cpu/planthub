@@ -4,6 +4,7 @@ import React from 'react';
 import { Outlet } from 'react-router';
 import Navbar from './Navbar';
 import MegaFooter from './MegaFooter';
+import WhatsAppWidget from '../common/WhatsAppWidget';
 
 export default function PageLayout() {
   return (
@@ -13,6 +14,7 @@ export default function PageLayout() {
         <Outlet />
       </main>
       <MegaFooter />
+      <WhatsAppWidget />
     </div>
   );
 }
