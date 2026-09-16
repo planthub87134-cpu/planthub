@@ -3,6 +3,7 @@ import PageLayout from '../components/layout/PageLayout';
 import DashboardLayout from '../components/layout/DashboardLayout';
 import LandingPage from '../pages/LandingPage';
 import ShopPage from '../pages/ShopPage';
+import ProductDetailPage from '../pages/ProductDetailPage';
 import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import OrdersPage from '../pages/OrdersPage';
@@ -30,6 +31,7 @@ export const router = createBrowserRouter([
       { path: 'signup', element: <SignupPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'shop', element: <ShopPage /> },
+      { path: 'product/:id', element: <ProductDetailPage /> },
       { path: 'cart', element: <CartPage /> },
       {
         path: 'checkout',

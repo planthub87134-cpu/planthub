@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router';
 import { Search, Filter, ShoppingCart, Eye } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../hooks/useCart';
@@ -156,7 +157,7 @@ const ShopPage = () => {
                 >
                   <ShoppingCart size={18} />
                 </button>
-                <button className="btn btn-secondary btn-icon" title="View Details"><Eye size={18} /></button>
+                <Link to={`/product/${product.id}`} className="btn btn-secondary btn-icon" title="View Details"><Eye size={18} /></Link>
               </div>
             </div>
             <div className="product-info">

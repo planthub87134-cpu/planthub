@@ -121,7 +121,7 @@ export default function LandingPage() {
                   <p className="product-card-desc" style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', marginBottom: 'var(--space-4)', display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{product.description}</p>
                   <div className="product-card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-light)', paddingTop: 'var(--space-3)' }}>
                     <span className="product-card-price" style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)' }}>{formatCurrency(product.price)}</span>
-                    <Link to="/shop" className="btn btn-primary btn-sm hover-scale">View</Link>
+                    <Link to={`/product/${product.id}`} className="btn btn-primary btn-sm hover-scale">View</Link>
                   </div>
                 </div>
               </div>
@@ -166,7 +166,7 @@ export default function LandingPage() {
                   <p className="product-card-desc" style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', marginBottom: 'var(--space-4)', display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{product.description}</p>
                   <div className="product-card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-light)', paddingTop: 'var(--space-3)' }}>
                     <span className="product-card-price" style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)' }}>{formatCurrency(product.price)}</span>
-                    <Link to="/shop" className="btn btn-primary btn-sm hover-scale">View</Link>
+                    <Link to={`/product/${product.id}`} className="btn btn-primary btn-sm hover-scale">View</Link>
                   </div>
                 </div>
               </div>
