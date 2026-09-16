@@ -20,6 +20,12 @@ export default function LandingPage() {
 
   return (
     <div className="page-enter">
+      {/* Promotional Banner */}
+      <div style={{ background: 'linear-gradient(90deg, #0d9488, #0f766e)', color: 'white', padding: '12px 20px', textAlign: 'center', fontWeight: 'bold', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '15px', flexWrap: 'wrap' }}>
+        <span>❄️ Winter Special: Get up to 30% Off on all Indoor Plants! Use code <strong>WINTER30</strong></span>
+        <Link to="/shop" className="btn btn-sm hover-scale" style={{ background: 'white', color: '#0f766e', padding: '6px 16px', borderRadius: '20px', fontSize: '0.9rem', border: 'none', fontWeight: 'bold' }}>Claim Offer</Link>
+      </div>
+
       {/* Hero Section */}
       <section className="hero gradient-hero">
         <div className="container">
@@ -55,6 +61,30 @@ export default function LandingPage() {
             </div>
           </div>
           <div className="hero-decoration animate-float">🌿</div>
+        </div>
+      </section>
+
+      {/* Winter Special Promo Section */}
+      <section className="section" style={{ padding: 'var(--space-8) 0' }}>
+        <div className="container">
+          <div style={{ background: 'linear-gradient(135deg, #e0f2fe, #bae6fd)', borderRadius: 'var(--radius-2xl)', padding: 'var(--space-10)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--space-8)', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ flex: '1 1 400px', position: 'relative', zIndex: 1 }}>
+              <div className="badge" style={{ background: '#0284c7', color: 'white', marginBottom: 'var(--space-4)', display: 'inline-block' }}>Limited Time Offer</div>
+              <h2 style={{ fontSize: '2.5rem', color: '#0369a1', marginBottom: 'var(--space-4)', fontWeight: '800' }}>Winter Plant Sale ❄️</h2>
+              <p style={{ fontSize: '1.2rem', color: '#0c4a6e', marginBottom: 'var(--space-6)', lineHeight: '1.6' }}>
+                Bring life to your indoor spaces this winter. Enjoy a flat <strong>30% discount</strong> on our exclusive collection of indoor and air-purifying plants.
+              </p>
+              <div style={{ display: 'flex', gap: 'var(--space-4)' }}>
+                <Link to="/shop" className="btn btn-lg hover-scale" style={{ background: '#0284c7', color: 'white', border: 'none', boxShadow: '0 4px 14px 0 rgba(2, 132, 199, 0.39)' }}>Shop Winter Collection</Link>
+              </div>
+            </div>
+            <div style={{ flex: '1 1 300px', display: 'flex', justifyContent: 'center', position: 'relative', zIndex: 1 }}>
+              <img src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=600" alt="Winter Plants" style={{ borderRadius: 'var(--radius-xl)', boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2)', maxWidth: '100%', height: 'auto', objectFit: 'cover', transform: 'rotate(2deg)' }} />
+            </div>
+            {/* Decorative background elements */}
+            <div style={{ position: 'absolute', top: '-10%', right: '-5%', fontSize: '15rem', opacity: 0.1, zIndex: 0, pointerEvents: 'none' }}>❄️</div>
+            <div style={{ position: 'absolute', bottom: '-20%', left: '10%', fontSize: '10rem', opacity: 0.05, zIndex: 0, pointerEvents: 'none' }}>🌿</div>
+          </div>
         </div>
       </section>
 
