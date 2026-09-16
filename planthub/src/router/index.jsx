@@ -9,6 +9,7 @@ import BlogPostPage from '../pages/BlogPostPage';
 import PlantMatcherPage from '../pages/PlantMatcherPage';
 import PlantDoctorPage from '../pages/PlantDoctorPage';
 import SubscriptionsPage from '../pages/SubscriptionsPage';
+import BuilderPage from '../pages/BuilderPage';
 import GiftingPage from '../pages/GiftingPage';
 import TrackOrderPage from '../pages/TrackOrderPage';
 import CartPage from '../pages/CartPage';
@@ -39,6 +40,7 @@ export const router = createBrowserRouter([
       { path: 'login', element: <LoginPage /> },
       { path: 'shop', element: <ShopPage /> },
       { path: 'product/:id', element: <ProductDetailPage /> },
+      { path: 'builder', element: <BuilderPage /> },
       { path: 'blog', element: <BlogPage /> },
       { path: 'blog/:id', element: <BlogPostPage /> },
       { path: 'plant-matcher', element: <PlantMatcherPage /> },
