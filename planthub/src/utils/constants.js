@@ -15,7 +15,7 @@ export const PRODUCTS = [
   { id: 12, name: 'Hybrid Papaya (Red Lady)', price: 299, description: 'Dwarf hybrid papaya that fruits early and heavily. Sweet red flesh.', image: 'https://images.unsplash.com/photo-1604762512401-443fc08a8e10?auto=format&fit=crop&w=800&q=80', stock: 15, category: 'Hybrid', careLevel: 'Easy', lightReq: 'Full Sun' },
 ];
 
-export const CATEGORIES = ['All', 'Indoor', 'Succulent', 'Herb', 'Fruit', 'Hybrid'];
+export const CATEGORIES = ['All', 'Indoor', 'Succulent', 'Herb', 'Fruit'];
 
 export const CHART_DATA = [
   { month: 'Jan', sales: 4000, orders: 240 },

@@ -42,7 +42,13 @@ const ShopPage = () => {
       }
 
       if (selectedCategory !== 'All') {
-        result = result.filter(p => p.category === selectedCategory);
+        if (selectedCategory === 'Indoor') {
+          result = result.filter(p => ['Indoor', 'Succulent'].includes(p.category));
+        } else if (selectedCategory === 'Outdoor') {
+          result = result.filter(p => ['Fruit', 'Herb'].includes(p.category));
+        } else {
+          result = result.filter(p => p.category === selectedCategory);
+        }
       }
 
       if (lightFilter !== 'All') {
