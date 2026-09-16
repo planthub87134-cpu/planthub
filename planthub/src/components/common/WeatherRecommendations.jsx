@@ -96,8 +96,8 @@ export default function WeatherRecommendations() {
     return <Cloud size={24} color="#9ca3af" />;
   };
 
-  // If loading or location failed, don't show the section to avoid cluttering the landing page with errors
-  if (loading || locationError || !weatherData) {
+  // If loading, show nothing. Once we have weatherData, show it.
+  if (loading || !weatherData) {
     return null; 
   }
 
@@ -108,7 +108,7 @@ export default function WeatherRecommendations() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', background: 'white', padding: '12px 24px', borderRadius: 'var(--radius-full)', boxShadow: '0 4px 14px rgba(0,0,0,0.05)', marginBottom: 'var(--space-4)' }}>
             {getWeatherIcon(weatherData.weathercode)}
             <span style={{ fontSize: '1.2rem', fontWeight: 'bold', color: 'var(--text-primary)' }}>
-              {Math.round(weatherData.temperature)}°C in your area
+              {Math.round(weatherData.temperature)}°C {locationError ? '(Default Location)' : 'in your area'}
             </span>
           </div>
           <h2 style={{ fontSize: '2rem', color: 'var(--primary-800)', marginBottom: 'var(--space-2)' }}>
