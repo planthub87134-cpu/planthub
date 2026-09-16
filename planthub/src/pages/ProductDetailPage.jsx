@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router';
-import { ArrowLeft, ShoppingCart, Info, Droplets, Sun, Ruler, Package, MapPin, ShieldCheck, Truck } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Info, Droplets, Sun, Ruler, Package, MapPin, ShieldCheck, Truck, Star } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useCart } from '../hooks/useCart';
 import { formatCurrency } from '../utils/formatters';
+import { MOCK_REVIEWS } from '../utils/reviewsData';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -288,6 +289,56 @@ export default function ProductDetailPage() {
               This plant has a care level of <strong>{product.carelevel || product.careLevel}</strong>. Wipe the leaves periodically to remove dust. Feed with a balanced liquid fertilizer once a month during the growing season.
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Customer Reviews Section */}
+      <div style={{ marginTop: 'var(--space-12)', borderTop: '1px solid var(--border-light)', paddingTop: 'var(--space-8)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-8)' }}>
+          <div>
+            <h2 style={{ fontSize: '2rem', marginBottom: 'var(--space-2)' }}>Customer Reviews</h2>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', color: 'var(--warning-500)' }}>
+                {[1, 2, 3, 4, 5].map(i => <Star key={i} size={20} fill="currentColor" />)}
+              </div>
+              <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>4.8 out of 5</span>
+              <span style={{ color: 'var(--text-muted)' }}>({MOCK_REVIEWS.length} reviews)</span>
+            </div>
+          </div>
+          <button className="btn btn-outline">Write a Review</button>
+        </div>
+
+        <div className="grid grid-3" style={{ gap: 'var(--space-6)' }}>
+          {MOCK_REVIEWS.map((review) => (
+            <div key={review.id} className="card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: 'var(--space-4)' }}>
+                <div className="avatar">{review.avatar}</div>
+                <div>
+                  <div style={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    {review.name}
+                    <span className="badge badge-success" style={{ fontSize: '0.65rem', padding: '2px 6px' }}>Verified Buyer</span>
+                  </div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{review.date}</div>
+                </div>
+              </div>
+              
+              <div style={{ display: 'flex', color: 'var(--warning-500)', marginBottom: 'var(--space-3)' }}>
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={16} fill={i < review.rating ? "currentColor" : "none"} stroke={i < review.rating ? "currentColor" : "var(--gray-300)"} />
+                ))}
+              </div>
+              
+              <p style={{ color: 'var(--text-secondary)', lineHeight: '1.6', flex: 1, marginBottom: 'var(--space-4)' }}>
+                "{review.text}"
+              </p>
+              
+              {review.image && (
+                <div style={{ borderRadius: 'var(--radius-lg)', overflow: 'hidden', height: '150px' }}>
+                  <img src={review.image} alt="Customer upload" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
       
