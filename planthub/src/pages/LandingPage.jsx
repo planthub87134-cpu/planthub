@@ -4,6 +4,7 @@ import { PRODUCTS, FEATURES, TESTIMONIALS } from '../utils/constants';
 import { formatCurrency } from '../utils/formatters';
 import { useAuth } from '../context/AuthContext';
 import { Mail, Lock } from 'lucide-react';
+import WeatherRecommendations from '../components/common/WeatherRecommendations';
 
 export default function LandingPage() {
   const [subscribed, setSubscribed] = useState(false);
@@ -61,6 +62,9 @@ export default function LandingPage() {
           <div className="hero-decoration animate-float">🌿</div>
         </div>
       </section>
+
+      {/* Weather-Based Recommendations (Hidden if location denied) */}
+      <WeatherRecommendations />
 
       {/* Winter Special Promo Section */}
       <section className="section" style={{ padding: 'var(--space-8) 0' }}>

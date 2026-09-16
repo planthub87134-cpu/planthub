@@ -29,6 +29,7 @@ const AdminDashboard = () => {
   const [inventory, setInventory] = useState(PRODUCTS);
   const [users, setUsers] = useState(MOCK_USERS);
   const [orders, setOrders] = useState(DEMO_ORDERS);
+  const [whatsappNumber, setWhatsappNumber] = useState(localStorage.getItem('planthub_whatsapp_number') || '7209306446');
 
   // Inventory State
   const [editingProductId, setEditingProductId] = useState(null);
@@ -100,6 +101,27 @@ const AdminDashboard = () => {
     setEditingOrderId(null);
   };
 
+  const handleTogglePacked = (id) => {
+    setOrders(orders.map(o => o.id === id ? { ...o, packed: !o.packed } : o));
+  };
+
+  const handleAutoAssignCourier = (id) => {
+    const couriers = ['FedEx', 'DHL', 'BlueDart', 'Delhivery'];
+    const randomCourier = couriers[Math.floor(Math.random() * couriers.length)];
+    setOrders(orders.map(o => o.id === id ? { ...o, courier: randomCourier } : o));
+  };
+
+  const handleRequestRefund = (id) => {
+    const notes = prompt("Enter damage notes:");
+    if (notes !== null) {
+      setOrders(orders.map(o => o.id === id ? { ...o, refundStatus: 'requested', damageNotes: notes } : o));
+    }
+  };
+
+  const handleProcessRefund = (id, newStatus) => {
+    setOrders(orders.map(o => o.id === id ? { ...o, refundStatus: newStatus } : o));
+  };
+
   return (
     <div className="dashboard-page container" style={{ padding: '20px' }}>
       <div className="dashboard-header" style={{ marginBottom: '20px' }}>
@@ -111,7 +133,9 @@ const AdminDashboard = () => {
         <button className={`btn ${activeTab === 'overview' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('overview')}>Overview</button>
         <button className={`btn ${activeTab === 'inventory' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('inventory')}>Inventory Management</button>
         <button className={`btn ${activeTab === 'orders' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('orders')}>Order Management</button>
+        <button className={`btn ${activeTab === 'refunds' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('refunds')}>Refunds & Damages</button>
         <button className={`btn ${activeTab === 'users' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('users')}>User Management</button>
+        <button className={`btn ${activeTab === 'settings' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('settings')}>Settings</button>
       </div>
 
       {activeTab === 'overview' && (
@@ -291,6 +315,8 @@ const AdminDashboard = () => {
                   <th style={{ padding: '10px' }}>Date</th>
                   <th style={{ padding: '10px' }}>Total</th>
                   <th style={{ padding: '10px' }}>Status</th>
+                  <th style={{ padding: '10px' }}>Courier</th>
+                  <th style={{ padding: '10px' }}>Packed</th>
                   <th style={{ padding: '10px' }}>Tracking</th>
                   <th style={{ padding: '10px' }}>Actions</th>
                 </tr>
@@ -317,6 +343,16 @@ const AdminDashboard = () => {
                         </span>
                       )}
                     </td>
+                    <td style={{ padding: '10px' }}>
+                      {order.courier !== 'Unassigned' && order.courier ? (
+                        <span style={{ fontWeight: '500', color: 'var(--text-primary)' }}>{order.courier}</span>
+                      ) : (
+                        <button className="btn btn-sm btn-ghost" style={{ padding: '4px 8px', fontSize: '0.8rem' }} onClick={() => handleAutoAssignCourier(order.id)}>Auto-Assign</button>
+                      )}
+                    </td>
+                    <td style={{ padding: '10px', textAlign: 'center' }}>
+                      <input type="checkbox" checked={order.packed || false} onChange={() => handleTogglePacked(order.id)} style={{ cursor: 'pointer', width: '18px', height: '18px', accentColor: 'var(--primary-600)' }} />
+                    </td>
                     <td style={{ padding: '10px' }}>{order.trackingNumber}</td>
                     <td style={{ padding: '10px' }}>
                       {editingOrderId === order.id ? (
@@ -325,11 +361,64 @@ const AdminDashboard = () => {
                           <button className="btn btn-sm btn-ghost" onClick={() => setEditingOrderId(null)}>Cancel</button>
                         </div>
                       ) : (
-                        <button className="btn btn-sm btn-secondary hover-scale" onClick={() => handleEditOrderStatus(order)}>Update Status</button>
+                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                          <button className="btn btn-sm btn-secondary hover-scale" onClick={() => handleEditOrderStatus(order)}>Update</button>
+                          <button className="btn btn-sm btn-ghost hover-scale" style={{ color: 'var(--danger-500)' }} onClick={() => handleRequestRefund(order.id)} title="Report Damage">⚠️ Report</button>
+                        </div>
                       )}
                     </td>
                   </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'refunds' && (
+        <div className="card animate-slide-up" style={{ padding: '24px', borderRadius: 'var(--radius-xl)' }}>
+          <h2 style={{ marginBottom: '20px', fontSize: 'var(--text-xl)' }}>Refunds & Damage Reports</h2>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ borderBottom: '2px solid var(--border-light)', textAlign: 'left' }}>
+                  <th style={{ padding: '10px' }}>Order ID</th>
+                  <th style={{ padding: '10px' }}>Date</th>
+                  <th style={{ padding: '10px' }}>Total</th>
+                  <th style={{ padding: '10px' }}>Damage Notes</th>
+                  <th style={{ padding: '10px' }}>Refund Status</th>
+                  <th style={{ padding: '10px' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.filter(o => o.refundStatus && o.refundStatus !== 'none').length === 0 ? (
+                  <tr><td colSpan="6" style={{ padding: '20px', textAlign: 'center', color: 'var(--text-muted)' }}>No refund requests found.</td></tr>
+                ) : (
+                  orders.filter(o => o.refundStatus && o.refundStatus !== 'none').map(order => (
+                    <tr key={order.id} style={{ borderBottom: '1px solid var(--border-light)' }}>
+                      <td style={{ padding: '10px', fontWeight: 'bold' }}>{order.id}</td>
+                      <td style={{ padding: '10px' }}>{order.date}</td>
+                      <td style={{ padding: '10px' }}>${order.total}</td>
+                      <td style={{ padding: '10px', maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={order.damageNotes}>{order.damageNotes}</td>
+                      <td style={{ padding: '10px' }}>
+                        <span style={{ padding: '4px 8px', borderRadius: '12px', fontSize: '0.8rem', textTransform: 'capitalize',
+                          backgroundColor: order.refundStatus === 'approved' ? 'rgba(34, 197, 94, 0.1)' : order.refundStatus === 'rejected' ? 'rgba(239, 68, 68, 0.1)' : 'rgba(245, 158, 11, 0.1)',
+                          color: order.refundStatus === 'approved' ? 'var(--success-600)' : order.refundStatus === 'rejected' ? 'var(--danger-600)' : 'var(--warning-600)'
+                        }}>
+                          {order.refundStatus}
+                        </span>
+                      </td>
+                      <td style={{ padding: '10px' }}>
+                        {order.refundStatus === 'requested' && (
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            <button className="btn btn-sm btn-primary hover-scale" onClick={() => handleProcessRefund(order.id, 'approved')}>Approve</button>
+                            <button className="btn btn-sm btn-danger hover-scale" style={{ background: 'var(--danger-50)', color: 'var(--danger-600)' }} onClick={() => handleProcessRefund(order.id, 'rejected')}>Reject</button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -440,6 +529,25 @@ const AdminDashboard = () => {
                 ))}
               </tbody>
             </table>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'settings' && (
+        <div className="card animate-slide-up" style={{ padding: '24px', borderRadius: 'var(--radius-xl)' }}>
+          <h2 style={{ fontSize: 'var(--text-xl)', marginBottom: '20px' }}>General Settings</h2>
+          <div style={{ maxWidth: '500px' }}>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>WhatsApp Support Number</label>
+              <input type="text" className="input" value={whatsappNumber} onChange={(e) => setWhatsappNumber(e.target.value)} placeholder="e.g. 7209306446" style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid var(--border-light)' }} />
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '4px' }}>This number is used for the WhatsApp floating widget on the customer site.</p>
+            </div>
+            <button className="btn btn-primary hover-scale" onClick={() => {
+              localStorage.setItem('planthub_whatsapp_number', whatsappNumber);
+              // Dispatch a custom event to notify WhatsAppWidget to update immediately across the app
+              window.dispatchEvent(new Event('whatsappNumberUpdated'));
+              alert('Settings saved!');
+            }}>Save Settings</button>
           </div>
         </div>
       )}

@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
 
 export default function WhatsAppWidget() {
-  const phoneNumber = "1234567890"; // TODO: Replace with real number
+  const [phoneNumber, setPhoneNumber] = useState(localStorage.getItem('planthub_whatsapp_number') || "7209306446");
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setPhoneNumber(localStorage.getItem('planthub_whatsapp_number') || "7209306446");
+    };
+    window.addEventListener('whatsappNumberUpdated', handleUpdate);
+    return () => window.removeEventListener('whatsappNumberUpdated', handleUpdate);
+  }, []);
+
   const message = encodeURIComponent("Hi, I need help choosing a plant! 🌱");
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
   return (
-    <a 
-      href={whatsappUrl} 
-      target="_blank" 
+    <a
+      href={whatsappUrl}
+      target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-widget"
       style={{
