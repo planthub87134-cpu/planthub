@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router';
-import { ArrowLeft, ShoppingCart, Info, Droplets, Sun, Ruler, Package } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Info, Droplets, Sun, Ruler, Package, MapPin, ShieldCheck, Truck } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useCart } from '../hooks/useCart';
 import { formatCurrency } from '../utils/formatters';
@@ -14,6 +14,21 @@ export default function ProductDetailPage() {
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const [pincode, setPincode] = useState('');
+  const [deliveryStatus, setDeliveryStatus] = useState(null);
+
+  const checkPincode = () => {
+    if (pincode.length !== 6) {
+      setDeliveryStatus({ type: 'error', msg: 'Please enter a valid 6-digit Pincode.' });
+      return;
+    }
+    // Mock validation logic
+    if (pincode.startsWith('9')) {
+      setDeliveryStatus({ type: 'error', msg: 'Sorry, delivery is not available in this area currently.' });
+    } else {
+      setDeliveryStatus({ type: 'success', msg: 'Delivery available! Estimated time: 3-5 days 🚚' });
+    }
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -148,6 +163,31 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
+          {/* Check Delivery Availability */}
+          <div style={{ border: '1px solid var(--border-light)', padding: 'var(--space-6)', borderRadius: 'var(--radius-xl)', marginBottom: 'var(--space-8)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: 'var(--space-4)' }}>
+              <MapPin className="text-primary-600" size={20} />
+              <h3 style={{ fontSize: '1.1rem', margin: 0 }}>Check Delivery Availability</h3>
+            </div>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <input 
+                type="text" 
+                placeholder="Enter 6-digit Pincode" 
+                className="input" 
+                maxLength="6"
+                value={pincode}
+                onChange={(e) => setPincode(e.target.value.replace(/\D/g, ''))}
+                style={{ flex: 1 }}
+              />
+              <button className="btn btn-secondary" onClick={checkPincode}>Check</button>
+            </div>
+            {deliveryStatus && (
+              <div style={{ marginTop: 'var(--space-3)', fontSize: '0.95rem', color: deliveryStatus.type === 'success' ? 'var(--success-600)' : 'var(--error-600)', fontWeight: 'bold' }}>
+                {deliveryStatus.msg}
+              </div>
+            )}
+          </div>
+
           {/* Key Specifications */}
           <div style={{ border: '1px solid var(--border-light)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
             <div style={{ padding: 'var(--space-4)', borderBottom: '1px solid var(--border-light)', display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -178,6 +218,37 @@ export default function ProductDetailPage() {
                 <div style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{watering}</div>
               </div>
             </div>
+          </div>
+
+          {/* Safe Packing & Guarantee */}
+          <div style={{ marginTop: 'var(--space-8)', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 'var(--radius-xl)', padding: 'var(--space-6)' }}>
+            <h3 style={{ fontSize: '1.2rem', marginBottom: 'var(--space-4)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <ShieldCheck className="text-primary-600" />
+              Safe Delivery Guarantee
+            </h3>
+            <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+              <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                <Package className="text-primary-600" size={20} style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Specially Designed Packaging:</strong> 
+                  <span style={{ display: 'block', color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '2px' }}>Soil is secured with cocopeat, and the plant is shipped in an aerated, crush-resistant box.</span>
+                </div>
+              </li>
+              <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                <Truck className="text-primary-600" size={20} style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Hydrated Before Transit:</strong> 
+                  <span style={{ display: 'block', color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '2px' }}>Plants are well-watered and treated to survive up to 7-10 days in transit without stress.</span>
+                </div>
+              </li>
+              <li style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
+                <ShieldCheck className="text-primary-600" size={20} style={{ flexShrink: 0, marginTop: '2px' }} />
+                <div>
+                  <strong>Free Replacement Guarantee:</strong> 
+                  <span style={{ display: 'block', color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '2px' }}>If the plant arrives dead or damaged, we will send a free replacement. Order without worry!</span>
+                </div>
+              </li>
+            </ul>
           </div>
 
         </div>
