@@ -1,13 +1,17 @@
-import { Trash2, ArrowRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Trash2, ArrowRight, Gift } from 'lucide-react';
 import { Link } from 'react-router';
 import { useCart } from '../hooks/useCart';
 import { formatCurrency } from '../utils/formatters';
 
 const CartPage = () => {
   const { cart: cartItems, removeFromCart, updateQuantity, cartTotal: subtotal } = useCart();
+  const [isGift, setIsGift] = useState(false);
+  const [giftMessage, setGiftMessage] = useState('');
 
   const shipping = subtotal > 999 ? 0 : 99;
-  const total = subtotal + shipping;
+  const giftWrapFee = isGift ? 99 : 0;
+  const total = subtotal + shipping + giftWrapFee;
 
   return (
     <div className="cart-page container">
@@ -42,6 +46,32 @@ const CartPage = () => {
           
           <div className="cart-summary card card-glass">
             <h3>Order Summary</h3>
+            
+            {/* Gift Wrap Option */}
+            <div style={{ background: 'var(--primary-50)', padding: '12px', borderRadius: '8px', marginBottom: '16px', border: '1px solid var(--primary-200)' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: 'bold', color: 'var(--primary-700)' }}>
+                <input 
+                  type="checkbox" 
+                  checked={isGift} 
+                  onChange={(e) => setIsGift(e.target.checked)} 
+                  style={{ width: '18px', height: '18px', accentColor: 'var(--primary-600)' }}
+                />
+                <Gift size={18} /> Make this a Gift (Add ₹99)
+              </label>
+              {isGift && (
+                <div style={{ marginTop: '12px', animation: 'fadeIn 0.3s ease' }}>
+                  <textarea 
+                    className="input" 
+                    placeholder="Type your custom message for the greeting card..." 
+                    rows="3" 
+                    value={giftMessage}
+                    onChange={(e) => setGiftMessage(e.target.value)}
+                    style={{ width: '100%', resize: 'none', fontSize: '0.9rem' }}
+                  />
+                </div>
+              )}
+            </div>
+
             <div className="summary-row">
               <span>Subtotal</span>
               <span>{formatCurrency(subtotal)}</span>
@@ -50,6 +80,12 @@ const CartPage = () => {
               <span>Shipping</span>
               <span>{shipping === 0 ? 'Free' : formatCurrency(shipping)}</span>
             </div>
+            {isGift && (
+              <div className="summary-row" style={{ color: 'var(--primary-600)' }}>
+                <span>Gift Wrap</span>
+                <span>{formatCurrency(giftWrapFee)}</span>
+              </div>
+            )}
             <div className="summary-row total">
               <span>Total</span>
               <span>{formatCurrency(total)}</span>
