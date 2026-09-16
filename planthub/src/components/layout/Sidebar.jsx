@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../hooks/useCart';
 import { getInitials } from '../../utils/formatters';
-import { Home, ShoppingBag, BookOpen, MessageSquare, HelpCircle, Shield, Menu, X, Sun, Moon, ShoppingCart, LogOut, User, Activity, PackageOpen, Gift, MapPin } from 'lucide-react';
+import { Home, ShoppingBag, BookOpen, MessageSquare, HelpCircle, Shield, Menu, X, Sun, Moon, ShoppingCart, LogOut, User, Activity, PackageOpen, Gift, MapPin, Box } from 'lucide-react';
 
 export default function Sidebar() {
   const { user, signOut } = useAuth();
@@ -84,6 +84,7 @@ export default function Sidebar() {
           <div className="sidebar-nav-group">
             <NavLink to="/" icon={<Home size={20} />} label="Home" />
             <NavLink to="/shop" icon={<ShoppingBag size={20} />} label="Shop Now" />
+            <NavLink to="/builder" icon={<Box size={20} />} label="3D Custom Pots ✨" />
             <NavLink to="/subscriptions" icon={<PackageOpen size={20} />} label="Subscriptions 📦" />
             <NavLink to="/gifting" icon={<Gift size={20} />} label="Gifting 🎁" />
             <NavLink to="/blog" icon={<BookOpen size={20} />} label="Blog & Tips" />
