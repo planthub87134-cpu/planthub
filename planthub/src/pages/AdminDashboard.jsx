@@ -3,6 +3,7 @@ import { useOutletContext } from 'react-router';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Package, DollarSign, Users, AlertCircle, Edit, Trash2 } from 'lucide-react';
 import { PRODUCTS, DEMO_ORDERS } from '../utils/constants';
+import CRMDashboard from '../components/admin/CRMDashboard';
 
 const data = [
   { name: 'Mon', sales: 4000 },
@@ -15,7 +16,7 @@ const data = [
 ];
 
 const MOCK_USERS = [
-  { id: 'USR001', name: 'Mayank Kumar', email: 'mayank@example.com', role: 'admin', status: 'active' },
+  { id: 1, name: 'Admin User', email: 'admin@planthub.com', role: 'admin', status: 'active' },
   { id: 'USR002', name: 'Laura Agent', email: 'laura@example.com', role: 'manager', status: 'active' },
   { id: 'USR003', name: 'Support Bot', email: 'support@planthub.com', role: 'agent', status: 'active' },
   { id: 'USR004', name: 'John Doe', email: 'john@example.com', role: 'customer', status: 'inactive' },
@@ -135,6 +136,7 @@ const AdminDashboard = () => {
         <button className={`btn ${activeTab === 'orders' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('orders')}>Order Management</button>
         <button className={`btn ${activeTab === 'refunds' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('refunds')}>Refunds & Damages</button>
         <button className={`btn ${activeTab === 'users' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('users')}>User Management</button>
+        <button className={`btn ${activeTab === 'crm' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('crm')}>CRM & Doctor</button>
         <button className={`btn ${activeTab === 'settings' ? 'btn-admin' : 'btn-secondary'} hover-scale`} onClick={() => setActiveTab('settings')}>Settings</button>
       </div>
 
@@ -549,6 +551,12 @@ const AdminDashboard = () => {
               alert('Settings saved!');
             }}>Save Settings</button>
           </div>
+        </div>
+      )}
+
+      {activeTab === 'crm' && (
+        <div className="animate-slide-up" style={{ height: '700px' }}>
+          <CRMDashboard />
         </div>
       )}
     </div>

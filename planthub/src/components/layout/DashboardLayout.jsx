@@ -27,6 +27,7 @@ export default function DashboardLayout({ role = 'admin' }) {
     { id: 'inventory', label: '🌿 Products', icon: '🌿' },
     { id: 'orders', label: '📦 Orders', icon: '📦' },
     { id: 'users', label: '👥 Users', icon: '👥' },
+    { id: 'crm', label: '🏥 CRM & Doctor', icon: '🏥' },
   ];
 
   const managerLinks = [
@@ -36,6 +37,7 @@ export default function DashboardLayout({ role = 'admin' }) {
 
   const agentLinks = [
     { id: 'tickets', label: '🎧 Support Tickets', icon: '🎧' },
+    { id: 'crm', label: '🏥 CRM & Doctor', icon: '🏥' },
   ];
 
   const links = role === 'admin' ? adminLinks : role === 'manager' ? managerLinks : agentLinks;

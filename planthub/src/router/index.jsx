@@ -22,6 +22,7 @@ import AdminDashboard from '../pages/AdminDashboard';
 import ManagerDashboard from '../pages/ManagerDashboard';
 import SupportPage from '../pages/SupportPage';
 import AgentDashboard from '../pages/AgentDashboard';
+import CRMDashboard from '../components/admin/CRMDashboard';
 import SignupPage from '../pages/SignupPage';
 import LoginPage from '../pages/LoginPage';
 import PrivacyPolicy from '../pages/policies/PrivacyPolicy';

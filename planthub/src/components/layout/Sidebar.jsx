@@ -95,7 +95,7 @@ export default function Sidebar() {
             <NavLink to="/track-order" icon={<MapPin size={20} />} label="Track Order 📍" />
             <NavLink to="/plant-doctor" icon={<Activity size={20} />} label="Plant Doctor" />
             <NavLink to="/contact" icon={<MessageSquare size={20} />} label="Contact" />
-            <NavLink to="/support" icon={<HelpCircle size={20} />} label="Support Center" />
+            <NavLink to="/support" icon={<Shield size={20} />} label="Support Center & CRM" />
           </div>
 
           {user && ['admin', 'manager', 'agent'].includes(user.role) && (
