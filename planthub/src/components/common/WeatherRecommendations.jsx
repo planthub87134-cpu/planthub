@@ -10,43 +10,47 @@ export default function WeatherRecommendations() {
   const [recommendedPlants, setRecommendedPlants] = useState([]);
   const [loading, setLoading] = useState(true);
   
+  const fetchWeather = async (latitude, longitude) => {
+    try {
+      // Fetch weather from Open-Meteo (free, no API key required)
+      const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
+      const data = await response.json();
+      
+      if (data && data.current_weather) {
+        setWeatherData(data.current_weather);
+        filterPlantsByWeather(data.current_weather.temperature, data.current_weather.weathercode);
+      } else {
+        setLocationError("Could not fetch weather data");
+      }
+    } catch (error) {
+      console.error(error);
+      setLocationError("Error fetching weather data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
+    const fallbackLocation = { latitude: 28.6139, longitude: 77.2090 }; // New Delhi
+
     // Check if geolocation is supported
     if (!navigator.geolocation) {
-      setLocationError("Geolocation is not supported by your browser");
-      setLoading(false);
+      setLocationError("Geolocation is not supported by your browser. Showing default location.");
+      fetchWeather(fallbackLocation.latitude, fallbackLocation.longitude);
       return;
     }
 
     // Try to get location
     navigator.geolocation.getCurrentPosition(
-      async (position) => {
-        try {
-          const { latitude, longitude } = position.coords;
-          
-          // Fetch weather from Open-Meteo (free, no API key required)
-          const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`);
-          const data = await response.json();
-          
-          if (data && data.current_weather) {
-            setWeatherData(data.current_weather);
-            filterPlantsByWeather(data.current_weather.temperature, data.current_weather.weathercode);
-          } else {
-            setLocationError("Could not fetch weather data");
-          }
-        } catch (error) {
-          setLocationError("Error fetching weather data");
-          console.error(error);
-        } finally {
-          setLoading(false);
-        }
+      (position) => {
+        fetchWeather(position.coords.latitude, position.coords.longitude);
       },
       (error) => {
         // User denied location or timeout
-        setLocationError("Location access denied or unavailable");
-        setLoading(false);
+        setLocationError("Location access denied or unavailable. Showing default location.");
+        fetchWeather(fallbackLocation.latitude, fallbackLocation.longitude);
       },
-      { timeout: 10000 }
+      { timeout: 5000 }
     );
   }, []);
 
