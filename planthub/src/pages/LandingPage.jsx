@@ -13,6 +13,7 @@ export default function LandingPage() {
     setSubscribed(true);
   };
   const featuredProducts = PRODUCTS.slice(0, 4);
+  const trendingProducts = PRODUCTS.slice(4, 8);
   const navigate = useNavigate();
   const { isDemoMode } = useAuth();
 
@@ -130,6 +131,51 @@ export default function LandingPage() {
           <div className="text-center" style={{ marginTop: 'var(--space-10)' }}>
             <Link to="/shop" className="btn btn-secondary btn-lg" id="view-all-plants">
               View All Plants →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Trending / Best Sellers Products */}
+      <section className="section" id="trending-products">
+        <div className="container">
+          <div className="section-header">
+            <p className="section-label">Most Popular</p>
+            <h2 className="section-title">Best Sellers & Trending</h2>
+            <p className="section-subtitle">
+              The plants everyone is talking about. Get them before they're gone!
+            </p>
+          </div>
+
+          <div className="grid grid-4" style={{ gap: 'var(--space-6)' }}>
+            {trendingProducts.map((product, index) => (
+              <div
+                key={`trending-${product.id}`}
+                className={`product-card stagger-item animate-slide-up delay-${index + 1} hover-lift`}
+                style={{ transition: 'all 0.3s ease', borderRadius: 'var(--radius-xl)', overflow: 'hidden', border: '1px solid var(--border-light)', background: 'var(--bg-primary)' }}
+              >
+                <div className="product-card-image" style={{ position: 'relative', overflow: 'hidden' }}>
+                  <img src={product.image} alt={product.name} style={{ width: '100%', height: '250px', objectFit: 'cover', display: 'block' }} />
+                  <div className="product-card-badge" style={{ position: 'absolute', top: '10px', left: '10px' }}>
+                    <span className="badge badge-solid-danger" style={{ background: '#ef4444', color: 'white', padding: '4px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>🔥 Hot Selling</span>
+                  </div>
+                </div>
+                <div className="product-card-body" style={{ padding: 'var(--space-4)' }}>
+                  <p className="product-card-category" style={{ fontSize: 'var(--text-xs)', color: 'var(--primary-600)', fontWeight: 'var(--font-bold)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 'var(--space-1)' }}>{product.category}</p>
+                  <h3 className="product-card-name" style={{ fontSize: 'var(--text-lg)', marginBottom: 'var(--space-2)' }}>{product.name}</h3>
+                  <p className="product-card-desc" style={{ color: 'var(--text-secondary)', fontSize: 'var(--text-sm)', marginBottom: 'var(--space-4)', display: '-webkit-box', WebkitLineClamp: '2', WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{product.description}</p>
+                  <div className="product-card-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border-light)', paddingTop: 'var(--space-3)' }}>
+                    <span className="product-card-price" style={{ fontSize: 'var(--text-xl)', fontWeight: 'var(--font-bold)' }}>{formatCurrency(product.price)}</span>
+                    <Link to="/shop" className="btn btn-primary btn-sm hover-scale">View</Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center" style={{ marginTop: 'var(--space-10)' }}>
+            <Link to="/shop?sort=popular" className="btn btn-secondary btn-lg" id="view-trending">
+              Explore More Best Sellers →
             </Link>
           </div>
         </div>
