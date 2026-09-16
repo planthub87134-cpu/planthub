@@ -55,7 +55,7 @@ export default function LandingPage() {
             
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', justifyContent: 'center' }} className="animate-slide-up delay-4">
               <Link to="/shop" className="btn btn-primary btn-lg hover-scale">Shop Now</Link>
-              <Link to="/plant-matcher" className="btn btn-secondary btn-lg hover-scale" style={{ border: '2px solid var(--primary-500)', background: 'white' }}>Find My Plant 🪴</Link>
+              <Link to="/plant-matcher" className="btn btn-secondary btn-lg hover-scale" style={{ border: '2px solid var(--primary-500)', background: 'white' }}>Find My Plant 🌱</Link>
             </div>
           </div>
           <div className="hero-decoration animate-float">🌿</div>
