@@ -10,6 +10,8 @@ const ShopPage = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [lightFilter, setLightFilter] = useState('All');
+  const [careFilter, setCareFilter] = useState('All');
   const [sortBy, setSortBy] = useState('newest');
   
   const { addToCart } = useCart();
@@ -43,6 +45,14 @@ const ShopPage = () => {
         result = result.filter(p => p.category === selectedCategory);
       }
 
+      if (lightFilter !== 'All') {
+        result = result.filter(p => p.lightReq === lightFilter || p.light_req === lightFilter);
+      }
+
+      if (careFilter !== 'All') {
+        result = result.filter(p => p.careLevel === careFilter || p.care_level === careFilter);
+      }
+
       if (sortBy === 'price-asc') result.sort((a, b) => a.price - b.price);
       else if (sortBy === 'price-desc') result.sort((a, b) => b.price - a.price);
       else if (sortBy === 'name-asc') result.sort((a, b) => a.name.localeCompare(b.name));
@@ -51,7 +61,7 @@ const ShopPage = () => {
     };
 
     fetchProducts();
-  }, [searchTerm, selectedCategory, sortBy]);
+  }, [searchTerm, selectedCategory, lightFilter, careFilter, sortBy]);
 
   return (
     <div className="shop-page container">
@@ -72,13 +82,45 @@ const ShopPage = () => {
           />
         </div>
 
-        <div className="filters">
+        <div className="filters" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <select 
             value={selectedCategory} 
             onChange={(e) => setSelectedCategory(e.target.value)}
             className="input"
+            title="Indoor/Outdoor"
           >
-            {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            <option value="All">Placement (All)</option>
+            <option value="Indoor">Indoor Plants</option>
+            <option value="Outdoor">Outdoor Plants</option>
+            <option value="Succulent">Succulents</option>
+            <option value="Herb">Herbs</option>
+            <option value="Fruit">Fruit Plants</option>
+          </select>
+
+          <select 
+            value={lightFilter} 
+            onChange={(e) => setLightFilter(e.target.value)}
+            className="input"
+            title="Sunlight Needs"
+          >
+            <option value="All">Sunlight (All)</option>
+            <option value="Full Sun">Full Sun (तेज धूप)</option>
+            <option value="Bright Direct">Bright Direct (सीधी धूप)</option>
+            <option value="Bright Indirect">Bright Indirect (हल्की धूप)</option>
+            <option value="Low to Bright">Low Light (कम रोशनी)</option>
+          </select>
+
+          <select 
+            value={careFilter} 
+            onChange={(e) => setCareFilter(e.target.value)}
+            className="input"
+            title="Care & Water Needs"
+          >
+            <option value="All">Water / Care (All)</option>
+            <option value="Easy">Easy (कम पानी)</option>
+            <option value="Beginner">Beginner (बहुत कम पानी)</option>
+            <option value="Moderate">Moderate (नियमित पानी)</option>
+            <option value="Advanced">Advanced (खास देखभाल)</option>
           </select>
 
           <select 
