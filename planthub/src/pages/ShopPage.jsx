@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { useCart } from '../hooks/useCart';
 import { supabase } from '../lib/supabase';
 import { formatCurrency } from '../utils/formatters';
+import { PRODUCTS } from '../utils/constants';
 import '../styles/shop.css';
 
 const ShopPage = () => {
@@ -33,10 +34,9 @@ const ShopPage = () => {
       const { data, error } = await query;
       if (error) {
         console.error('Error fetching products:', error);
-        return;
       }
       
-      let result = [...(data || [])];
+      let result = data && data.length > 0 ? [...data] : [...PRODUCTS];
 
       if (searchTerm) {
         result = result.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
