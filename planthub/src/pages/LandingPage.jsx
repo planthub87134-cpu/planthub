@@ -109,7 +109,7 @@ export default function LandingPage() {
       <section className="section" style={{ background: 'var(--bg-secondary)' }} id="features">
         <div className="container">
           <div className="section-header">
-            <p className="section-label">Why PlantHub</p>
+            <p className="section-label">Why Greenera Foundation</p>
             <h2 className="section-title">Why Choose Us</h2>
             <p className="section-subtitle">
               We go above and beyond to ensure your plant shopping experience is exceptional.
@@ -138,7 +138,7 @@ export default function LandingPage() {
             <p className="section-label">Testimonials</p>
             <h2 className="section-title">What Our Customers Say</h2>
             <p className="section-subtitle">
-              Join thousands of happy plant parents who love PlantHub.
+              Join thousands of happy plant parents who love Greenera Foundation.
             </p>
           </div>
 

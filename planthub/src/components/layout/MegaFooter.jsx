@@ -22,7 +22,7 @@ export default function MegaFooter() {
       <div className="footer-grid">
         {/* Brand Column */}
         <div>
-          <div className="footer-brand">🌱 PlantHub</div>
+          <div className="footer-brand">🌱 Greenera Foundation</div>
           <p className="footer-description">
             Your one-stop shop for beautiful, healthy plants. We bring nature closer
             to you with premium quality plants, expert care guides, and fast delivery.
@@ -98,7 +98,7 @@ export default function MegaFooter() {
       {/* Bottom Bar */}
       <div className="footer-bottom">
         <p className="footer-copyright">
-          © {new Date().getFullYear()} PlantHub. All rights reserved. Made with 🌱 for plant lovers.
+          © {new Date().getFullYear()} Greenera Foundation. All rights reserved. Made with 🌱 for plant lovers.
         </p>
         <div className="footer-bottom-links">
           <Link to="/privacy-policy">Privacy</Link>

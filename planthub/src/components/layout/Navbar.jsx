@@ -51,7 +51,7 @@ export default function Navbar() {
           {/* Brand */}
           <Link to="/" className="navbar-brand">
             <span className="navbar-brand-icon">🌱</span>
-            PlantHub
+            Greenera Foundation
           </Link>
 
           {/* Navigation Links */}
