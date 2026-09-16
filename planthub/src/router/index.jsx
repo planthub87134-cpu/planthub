@@ -4,6 +4,8 @@ import DashboardLayout from '../components/layout/DashboardLayout';
 import LandingPage from '../pages/LandingPage';
 import ShopPage from '../pages/ShopPage';
 import ProductDetailPage from '../pages/ProductDetailPage';
+import BlogPage from '../pages/BlogPage';
+import BlogPostPage from '../pages/BlogPostPage';
 import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import OrdersPage from '../pages/OrdersPage';
@@ -32,6 +34,8 @@ export const router = createBrowserRouter([
       { path: 'login', element: <LoginPage /> },
       { path: 'shop', element: <ShopPage /> },
       { path: 'product/:id', element: <ProductDetailPage /> },
+      { path: 'blog', element: <BlogPage /> },
+      { path: 'blog/:id', element: <BlogPostPage /> },
       { path: 'cart', element: <CartPage /> },
       {
         path: 'checkout',

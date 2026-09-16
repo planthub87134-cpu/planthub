@@ -73,6 +73,14 @@ export default function Navbar() {
             Shop
           </Link>
           <Link
+            to="/blog"
+            className={`btn btn-ghost ${location.pathname.startsWith('/blog') ? 'btn-secondary' : ''}`}
+            onClick={() => setMobileOpen(false)}
+            title="Blog & Tips"
+          >
+            Blog
+          </Link>
+          <Link
             to="/contact"
             className={`btn btn-ghost ${isActive('/contact') ? 'btn-secondary' : ''}`}
             onClick={() => setMobileOpen(false)}
