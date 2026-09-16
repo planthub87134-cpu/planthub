@@ -20,11 +20,15 @@ export default function WeatherRecommendations() {
         setWeatherData(data.current_weather);
         filterPlantsByWeather(data.current_weather.temperature, data.current_weather.weathercode);
       } else {
-        setLocationError("Could not fetch weather data");
+        throw new Error("Could not fetch weather data");
       }
     } catch (error) {
       console.error(error);
       setLocationError("Error fetching weather data");
+      // Fallback mock weather if API fails
+      const mockWeather = { temperature: 28, weathercode: 1 };
+      setWeatherData(mockWeather);
+      filterPlantsByWeather(mockWeather.temperature, mockWeather.weathercode);
     } finally {
       setLoading(false);
     }
