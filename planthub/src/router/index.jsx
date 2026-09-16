@@ -7,6 +7,7 @@ import ProductDetailPage from '../pages/ProductDetailPage';
 import BlogPage from '../pages/BlogPage';
 import BlogPostPage from '../pages/BlogPostPage';
 import PlantMatcherPage from '../pages/PlantMatcherPage';
+import PlantDoctorPage from '../pages/PlantDoctorPage';
 import CartPage from '../pages/CartPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import OrdersPage from '../pages/OrdersPage';
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
       { path: 'blog', element: <BlogPage /> },
       { path: 'blog/:id', element: <BlogPostPage /> },
       { path: 'plant-matcher', element: <PlantMatcherPage /> },
+      { path: 'plant-doctor', element: <PlantDoctorPage /> },
       { path: 'cart', element: <CartPage /> },
       {
         path: 'checkout',

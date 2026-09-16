@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../hooks/useCart';
 import { getInitials } from '../../utils/formatters';
-import { Home, ShoppingBag, BookOpen, MessageSquare, HelpCircle, Shield, Menu, X, Sun, Moon, ShoppingCart, LogOut, User } from 'lucide-react';
+import { Home, ShoppingBag, BookOpen, MessageSquare, HelpCircle, Shield, Menu, X, Sun, Moon, ShoppingCart, LogOut, User, Activity } from 'lucide-react';
 
 export default function Sidebar() {
   const { user, signOut } = useAuth();
@@ -89,6 +89,7 @@ export default function Sidebar() {
 
           <div className="sidebar-nav-group">
             <h4 className="sidebar-nav-title">Support</h4>
+            <NavLink to="/plant-doctor" icon={<Activity size={20} />} label="Plant Doctor" />
             <NavLink to="/contact" icon={<MessageSquare size={20} />} label="Contact" />
             <NavLink to="/support" icon={<HelpCircle size={20} />} label="Support Center" />
           </div>
