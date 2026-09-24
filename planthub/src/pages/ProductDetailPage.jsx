@@ -19,6 +19,26 @@ export default function ProductDetailPage() {
   const [added, setAdded] = useState(false);
   const [pincode, setPincode] = useState('');
   const [deliveryStatus, setDeliveryStatus] = useState(null);
+  
+  const [reviews, setReviews] = useState(MOCK_REVIEWS);
+  const [showReviewForm, setShowReviewForm] = useState(false);
+  const [newReview, setNewReview] = useState({ rating: 5, text: '' });
+
+  const submitReview = () => {
+    if (!newReview.text) return;
+    const review = {
+      id: Date.now(),
+      name: "You",
+      avatar: "Y",
+      rating: newReview.rating,
+      date: new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }),
+      text: newReview.text,
+      image: null
+    };
+    setReviews([review, ...reviews]);
+    setShowReviewForm(false);
+    setNewReview({ rating: 5, text: '' });
+  };
 
   const checkPincode = () => {
     if (pincode.length !== 6) {
@@ -313,15 +333,42 @@ export default function ProductDetailPage() {
                 {[1, 2, 3, 4, 5].map(i => <Star key={i} size={20} fill="currentColor" />)}
               </div>
               <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>4.8 out of 5</span>
-              <span style={{ color: 'var(--text-muted)' }}>({MOCK_REVIEWS.length} reviews)</span>
+              <span style={{ color: 'var(--text-muted)' }}>({reviews.length} reviews)</span>
             </div>
           </div>
-          <button className="btn btn-outline">Write a Review</button>
+          <button className="btn btn-outline" onClick={() => setShowReviewForm(!showReviewForm)}>Write a Review</button>
         </div>
 
+        {showReviewForm && (
+          <div className="card animate-slide-up" style={{ marginBottom: 'var(--space-8)', padding: 'var(--space-6)' }}>
+            <h3 style={{ marginBottom: 'var(--space-4)' }}>Write Your Review</h3>
+            <div style={{ display: 'flex', gap: '4px', color: 'var(--warning-500)', marginBottom: 'var(--space-4)', cursor: 'pointer' }}>
+              {[1, 2, 3, 4, 5].map(i => (
+                <Star 
+                  key={i} 
+                  size={24} 
+                  fill={i <= newReview.rating ? "currentColor" : "none"} 
+                  onClick={() => setNewReview({ ...newReview, rating: i })}
+                />
+              ))}
+            </div>
+            <textarea 
+              className="input" 
+              placeholder="What did you like or dislike about this plant?" 
+              style={{ width: '100%', minHeight: '100px', marginBottom: 'var(--space-4)' }}
+              value={newReview.text}
+              onChange={(e) => setNewReview({ ...newReview, text: e.target.value })}
+            ></textarea>
+            <div style={{ display: 'flex', gap: 'var(--space-4)' }}>
+              <button className="btn btn-primary" onClick={submitReview}>Submit Review</button>
+              <button className="btn btn-ghost" onClick={() => setShowReviewForm(false)}>Cancel</button>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-3" style={{ gap: 'var(--space-6)' }}>
-          {MOCK_REVIEWS.map((review) => (
-            <div key={review.id} className="card" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+          {reviews.map((review) => (
+            <div key={review.id} className="card animate-slide-up" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: 'var(--space-4)' }}>
                 <div className="avatar">{review.avatar}</div>
                 <div>
