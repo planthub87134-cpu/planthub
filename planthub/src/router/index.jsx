@@ -13,6 +13,7 @@ import BuilderPage from '../pages/BuilderPage';
 import GiftingPage from '../pages/GiftingPage';
 import TrackOrderPage from '../pages/TrackOrderPage';
 import CartPage from '../pages/CartPage';
+import WishlistPage from '../pages/WishlistPage';
 import CheckoutPage from '../pages/CheckoutPage';
 import OrdersPage from '../pages/OrdersPage';
 import ProfilePage from '../pages/ProfilePage';
@@ -50,6 +51,7 @@ export const router = createBrowserRouter([
       { path: 'gifting', element: <GiftingPage /> },
       { path: 'track-order', element: <TrackOrderPage /> },
       { path: 'cart', element: <CartPage /> },
+      { path: 'wishlist', element: <WishlistPage /> },
       {
         path: 'checkout',
         element: (
@@ -105,7 +107,7 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     ),
     children: [
-      { index: true, element: <AdminDashboard /> },
+      { index: true, element: <ManagerDashboard /> },
     ],
   },
   {

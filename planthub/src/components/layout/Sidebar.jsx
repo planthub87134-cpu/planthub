@@ -76,7 +76,7 @@ export default function Sidebar() {
         <div className="sidebar-header">
           <Link to="/" className="sidebar-brand" onClick={() => setMobileOpen(false)}>
             <span className="sidebar-brand-icon">🌱</span>
-            <h2>Greenera</h2>
+            <h2>Greenera Foundation</h2>
           </Link>
         </div>
 

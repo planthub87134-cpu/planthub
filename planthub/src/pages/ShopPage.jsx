@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
-import { Search, Filter, ShoppingCart, Eye } from 'lucide-react';
+import { Search, Filter, ShoppingCart, Eye, Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../hooks/useCart';
+import { useWishlist } from '../hooks/useWishlist';
 import { supabase } from '../lib/supabase';
 import { formatCurrency } from '../utils/formatters';
 import { PRODUCTS } from '../utils/constants';
@@ -17,6 +18,7 @@ const ShopPage = () => {
   const [sortBy, setSortBy] = useState('newest');
   
   const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const [addedItem, setAddedItem] = useState(null);
 
   const categories = ['All', 'Indoor', 'Outdoor', 'Succulents', 'Rare'];
@@ -156,6 +158,14 @@ const ShopPage = () => {
                   title="Add to Cart"
                 >
                   <ShoppingCart size={18} />
+                </button>
+                <button 
+                  className={`btn btn-icon ${isInWishlist(product.id) ? 'btn-secondary' : 'btn-outline'}`}
+                  onClick={() => toggleWishlist(product)}
+                  title="Wishlist"
+                  style={{ color: isInWishlist(product.id) ? 'var(--danger-500)' : 'inherit' }}
+                >
+                  <Heart size={18} fill={isInWishlist(product.id) ? 'currentColor' : 'none'} />
                 </button>
                 <Link to={`/product/${product.id}`} className="btn btn-secondary btn-icon" title="View Details"><Eye size={18} /></Link>
               </div>

@@ -4,11 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../hooks/useCart';
+import { useWishlist } from '../../hooks/useWishlist';
 import { getInitials } from '../../utils/formatters';
 
 export default function Navbar() {
   const { user, signOut } = useAuth();
   const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -158,6 +160,13 @@ export default function Navbar() {
           >
             {isDarkMode ? '🌞' : '🌙'}
           </button>
+
+          <Link to="/wishlist" className="navbar-cart" id="wishlist-button" aria-label="Wishlist" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <span style={{ fontSize: '1.2rem' }}>❤️</span>
+            {wishlistCount > 0 && (
+              <span className="navbar-cart-count">{wishlistCount}</span>
+            )}
+          </Link>
 
           {/* Cart */}
           <Link to="/cart" className="navbar-cart" id="cart-button" aria-label="Shopping cart" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>

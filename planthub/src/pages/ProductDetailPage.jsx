@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router';
-import { ArrowLeft, ShoppingCart, Info, Droplets, Sun, Ruler, Package, MapPin, ShieldCheck, Truck, Star } from 'lucide-react';
+import { ArrowLeft, ShoppingCart, Info, Droplets, Sun, Ruler, Package, MapPin, ShieldCheck, Truck, Star, Heart } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import { useCart } from '../hooks/useCart';
+import { useWishlist } from '../hooks/useWishlist';
 import { formatCurrency } from '../utils/formatters';
 import { MOCK_REVIEWS } from '../utils/reviewsData';
 
@@ -10,6 +11,7 @@ export default function ProductDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -160,6 +162,15 @@ export default function ProductDetailPage() {
               >
                 <ShoppingCart size={20} />
                 {added ? 'Added to Cart!' : (product.stock > 0 ? 'Add to Cart' : 'Out of Stock')}
+              </button>
+
+              <button 
+                className={`btn btn-lg ${isInWishlist(product.id) ? 'btn-secondary' : 'btn-outline'}`}
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: isInWishlist(product.id) ? 'var(--danger-500)' : 'inherit' }}
+                onClick={() => toggleWishlist(product)}
+                title="Add to Wishlist"
+              >
+                <Heart size={20} fill={isInWishlist(product.id) ? 'currentColor' : 'none'} />
               </button>
             </div>
           </div>
