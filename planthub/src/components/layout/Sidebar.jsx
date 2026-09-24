@@ -102,8 +102,8 @@ export default function Sidebar() {
             <div className="sidebar-nav-group">
               <h4 className="sidebar-nav-title">Administration</h4>
               {user.role === 'admin' && <NavLink to="/admin" icon={<Shield size={20} />} label="Admin Dashboard" />}
-              {user.role === 'manager' && <NavLink to="/manager" icon={<Shield size={20} />} label="Manager Dashboard" />}
-              {user.role === 'agent' && <NavLink to="/agent" icon={<Shield size={20} />} label="Agent Panel" />}
+              {(user.role === 'manager' || user.role === 'admin') && <NavLink to="/manager" icon={<Shield size={20} />} label="Manager Dashboard" />}
+              {(user.role === 'agent' || user.role === 'admin') && <NavLink to="/agent" icon={<Shield size={20} />} label="Agent Panel" />}
             </div>
           )}
         </nav>

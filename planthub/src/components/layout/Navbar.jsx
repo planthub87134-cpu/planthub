@@ -124,7 +124,7 @@ export default function Navbar() {
               Admin Dashboard
             </Link>
           )}
-          {user?.role === 'manager' && (
+          {(user?.role === 'manager' || user?.role === 'admin') && (
             <Link
               to="/manager"
               className={`btn btn-ghost ${location.pathname.startsWith('/manager') ? 'btn-secondary' : ''}`}
@@ -134,7 +134,7 @@ export default function Navbar() {
               Manager Dashboard
             </Link>
           )}
-          {user?.role === 'agent' && (
+          {(user?.role === 'agent' || user?.role === 'admin') && (
             <Link
               to="/agent"
               className={`btn btn-ghost ${location.pathname.startsWith('/agent') ? 'btn-secondary' : ''}`}
