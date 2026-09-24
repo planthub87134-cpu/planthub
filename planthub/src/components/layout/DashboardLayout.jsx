@@ -31,8 +31,11 @@ export default function DashboardLayout({ role = 'admin' }) {
   ];
 
   const managerLinks = [
-    { id: 'orders', label: '📦 Order Processing', icon: '📦' },
-    { id: 'inventory', label: '🌿 Inventory Overview', icon: '🌿' },
+    { id: 'overview', label: '📊 Executive Overview', icon: '📊' },
+    { id: 'operations', label: '⚙️ Operations & KPI', icon: '⚙️' },
+    { id: 'financials', label: '💰 Financials', icon: '💰' },
+    { id: 'inventory', label: '📦 Inventory & Quality', icon: '📦' },
+    { id: 'insights', label: '📈 Product Insights', icon: '📈' },
   ];
 
   const agentLinks = [
