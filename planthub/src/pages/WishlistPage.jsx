@@ -42,7 +42,7 @@ export default function WishlistPage() {
         {wishlist.map(item => (
           <div key={item.id} className="product-card card card-hover">
             <Link to={`/product/${item.id}`} className="product-image-link">
-              <img src={item.image_url} alt={item.name} className="product-image" />
+              <img src={item.image || item.image_url} alt={item.name} className="product-image" />
             </Link>
             <div className="product-info">
               <h3><Link to={`/product/${item.id}`}>{item.name}</Link></h3>

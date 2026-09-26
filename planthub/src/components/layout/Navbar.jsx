@@ -43,6 +43,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     await signOut();
     setDropdownOpen(false);
+    setMobileOpen(false);
     navigate('/');
   };
 
@@ -51,7 +52,7 @@ export default function Navbar() {
       <div className="navbar-inner">
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-8)' }}>
           {/* Brand */}
-          <Link to="/" className="navbar-brand">
+          <Link to="/" className="navbar-brand" onClick={() => setMobileOpen(false)}>
             <span className="navbar-brand-icon">🌱</span>
             Greenera Foundation
           </Link>
@@ -161,7 +162,7 @@ export default function Navbar() {
             {isDarkMode ? '🌞' : '🌙'}
           </button>
 
-          <Link to="/wishlist" className="navbar-cart" id="wishlist-button" aria-label="Wishlist" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <Link to="/wishlist" className="navbar-cart" id="wishlist-button" aria-label="Wishlist" onClick={() => setMobileOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <span style={{ fontSize: '1.2rem' }}>❤️</span>
             {wishlistCount > 0 && (
               <span className="navbar-cart-count">{wishlistCount}</span>
@@ -169,7 +170,7 @@ export default function Navbar() {
           </Link>
 
           {/* Cart */}
-          <Link to="/cart" className="navbar-cart" id="cart-button" aria-label="Shopping cart" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <Link to="/cart" className="navbar-cart" id="cart-button" aria-label="Shopping cart" onClick={() => setMobileOpen(false)} style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
             <span style={{ fontSize: 'var(--text-sm)', fontWeight: 'var(--font-medium)' }}>Cart</span>
             {cartCount > 0 && (
               <span className="navbar-cart-count">{cartCount}</span>
@@ -197,10 +198,10 @@ export default function Navbar() {
                     <div style={{ fontSize: 'var(--text-xs)', color: 'var(--text-muted)' }}>{user.email}</div>
                     <div className="badge badge-success" style={{ marginTop: 'var(--space-2)' }}>{user.role}</div>
                   </div>
-                  <Link to="/profile" className="navbar-dropdown-item" onClick={() => setDropdownOpen(false)}>
+                  <Link to="/profile" className="navbar-dropdown-item" onClick={() => { setDropdownOpen(false); setMobileOpen(false); }}>
                     Profile
                   </Link>
-                  <Link to="/orders" className="navbar-dropdown-item" onClick={() => setDropdownOpen(false)}>
+                  <Link to="/orders" className="navbar-dropdown-item" onClick={() => { setDropdownOpen(false); setMobileOpen(false); }}>
                     My Orders
                   </Link>
                   <div className="navbar-dropdown-divider" />
@@ -212,10 +213,10 @@ export default function Navbar() {
             </div>
           ) : (
             <div className="flex gap-2">
-              <Link to="/login" className="btn btn-outline" style={{ borderRadius: 'var(--radius-md)' }}>
+              <Link to="/login" className="btn btn-outline" onClick={() => setMobileOpen(false)} style={{ borderRadius: 'var(--radius-md)' }}>
                 Login
               </Link>
-              <Link to="/signup" className="btn btn-primary" style={{ borderRadius: 'var(--radius-md)' }}>
+              <Link to="/signup" className="btn btn-primary" onClick={() => setMobileOpen(false)} style={{ borderRadius: 'var(--radius-md)' }}>
                 Sign Up
               </Link>
             </div>
