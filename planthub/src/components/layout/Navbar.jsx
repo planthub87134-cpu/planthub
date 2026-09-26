@@ -76,6 +76,14 @@ export default function Navbar() {
             Shop
           </Link>
           <Link
+            to="/plant-matcher"
+            className={`btn btn-ghost ${isActive('/plant-matcher') ? 'btn-secondary' : ''}`}
+            onClick={() => setMobileOpen(false)}
+            title="Find My Plant"
+          >
+            Find My Plant 🌱
+          </Link>
+          <Link
             to="/builder"
             className={`btn btn-ghost ${isActive('/builder') ? 'btn-secondary' : ''}`}
             onClick={() => setMobileOpen(false)}
