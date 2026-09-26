@@ -194,6 +194,11 @@ export default function SignupPage() {
           <button type="submit" className="btn btn-primary btn-block" style={{ marginTop: 'var(--space-4)', padding: '12px', width: '100%', background: 'var(--primary-600)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', fontWeight: 'var(--font-bold)', cursor: 'pointer' }}>
             Register & Continue
           </button>
+
+          <div style={{ textAlign: 'center', marginTop: 'var(--space-4)', fontSize: 'var(--text-sm)' }}>
+            <span style={{ color: 'var(--text-muted)' }}>Already have an account? </span>
+            <a href="/login" style={{ color: 'var(--primary-600)', fontWeight: 'var(--font-bold)', textDecoration: 'none' }}>Login</a>
+          </div>
         </form>
       </div>
     </div>

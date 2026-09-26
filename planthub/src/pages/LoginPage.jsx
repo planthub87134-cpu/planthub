@@ -72,7 +72,7 @@ export default function LoginPage() {
             Admin: <code>admin@planthub.com</code> / <code>admin123</code><br />
             Manager: <code>manager@planthub.com</code> / <code>manager123</code><br />
             Agent: <code>agent@planthub.com</code> / <code>agent123</code><br />
-            User: <code>user@example.com</code> / <code>user123</code>
+            Customer: <code>user@example.com</code> / <code>user123</code>
           </div>
         </div>
         
@@ -119,6 +119,11 @@ export default function LoginPage() {
           <button type="submit" className="btn btn-primary btn-block" style={{ marginTop: 'var(--space-4)', padding: '12px', width: '100%', background: 'var(--primary-600)', color: 'white', border: 'none', borderRadius: 'var(--radius-md)', fontWeight: 'var(--font-bold)', cursor: 'pointer' }}>
             Login
           </button>
+
+          <div style={{ textAlign: 'center', marginTop: 'var(--space-4)', fontSize: 'var(--text-sm)' }}>
+            <span style={{ color: 'var(--text-muted)' }}>Don't have an account? </span>
+            <a href="/signup" style={{ color: 'var(--primary-600)', fontWeight: 'var(--font-bold)', textDecoration: 'none' }}>Sign Up</a>
+          </div>
         </form>
       </div>
     </div>
