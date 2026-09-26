@@ -50,8 +50,22 @@ export const router = createBrowserRouter([
       { path: 'subscriptions', element: <SubscriptionsPage /> },
       { path: 'gifting', element: <GiftingPage /> },
       { path: 'track-order', element: <TrackOrderPage /> },
-      { path: 'cart', element: <CartPage /> },
-      { path: 'wishlist', element: <WishlistPage /> },
+      {
+        path: 'cart',
+        element: (
+          <ProtectedRoute>
+            <CartPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'wishlist',
+        element: (
+          <ProtectedRoute>
+            <WishlistPage />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: 'checkout',
         element: (

@@ -19,7 +19,7 @@ export default function ProtectedRoute({ children, requiredRole }) {
   // If user is not logged in, but we have AuthGate, they technically won't reach here.
   // But just in case, redirect them.
   if (!user) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // If a role is required and user doesn't have it (and is not an admin), deny access
