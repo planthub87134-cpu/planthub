@@ -16,9 +16,7 @@ export default function LandingPage() {
   const featuredProducts = PRODUCTS.slice(0, 4);
   const trendingProducts = PRODUCTS.slice(4, 8);
   const navigate = useNavigate();
-  const { isDemoMode } = useAuth();
-
-
+  const { isDemoMode, user } = useAuth();
 
   return (
     <div className="page-enter">
@@ -56,7 +54,11 @@ export default function LandingPage() {
             
             <div style={{ marginTop: '40px', display: 'flex', gap: '16px', justifyContent: 'center' }} className="animate-slide-up delay-4">
               <Link to="/shop" className="btn btn-primary btn-lg hover-scale">Shop Now</Link>
-              <Link to="/plant-matcher" className="btn btn-secondary btn-lg hover-scale" style={{ border: '2px solid var(--primary-500)', background: 'white' }}>Find My Plant 🌱</Link>
+              {!user ? (
+                <Link to="/login" className="btn btn-secondary btn-lg hover-scale" style={{ border: '2px solid var(--primary-500)', background: 'white', color: 'var(--primary-600)' }}>Login / Sign Up 🔐</Link>
+              ) : (
+                <Link to="/plant-matcher" className="btn btn-secondary btn-lg hover-scale" style={{ border: '2px solid var(--primary-500)', background: 'white', color: 'var(--primary-600)' }}>Find My Plant 🌱</Link>
+              )}
             </div>
           </div>
           <div className="hero-decoration animate-float">🌿</div>
