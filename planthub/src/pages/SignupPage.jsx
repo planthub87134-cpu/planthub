@@ -57,8 +57,13 @@ export default function SignupPage() {
       email: formData.email,
       phone: formData.phone,
       password: formData.password
+    }).then(({ error }) => {
+      if (error) {
+        setError(error.message);
+      } else {
+        navigate('/');
+      }
     });
-    navigate('/');
   };
 
   return (

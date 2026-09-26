@@ -28,13 +28,19 @@ export default function LoginPage() {
       return;
     }
     
-    login(formData.email, formData.password).then(({ error }) => {
+    login(formData.email, formData.password).then(({ user, error }) => {
       if (error) {
         setError(error.message);
-      } else {
-        // We will just navigate to home (which redirects based on role in App.jsx or DashboardLayout, but for now we'll send to `/` which goes to user dashboard/home, and admin will be able to go to /admin). 
-        // Let's redirect to `/` instead of `/admin` unconditionally.
-        navigate('/');
+      } else if (user) {
+        if (user.role === 'admin') {
+          navigate('/admin');
+        } else if (user.role === 'manager') {
+          navigate('/manager');
+        } else if (user.role === 'agent') {
+          navigate('/agent');
+        } else {
+          navigate('/');
+        }
       }
     });
   };
@@ -61,6 +67,13 @@ export default function LoginPage() {
           <p className="text-muted" style={{ color: 'var(--text-muted)' }}>
             Login to your account
           </p>
+          <div style={{ marginTop: 'var(--space-4)', padding: 'var(--space-3)', background: 'var(--bg-muted)', borderRadius: 'var(--radius-md)', fontSize: 'var(--text-xs)', color: 'var(--text-muted)', textAlign: 'left' }}>
+            <strong>Demo Credentials:</strong><br />
+            Admin: <code>admin@planthub.com</code> / <code>admin123</code><br />
+            Manager: <code>manager@planthub.com</code> / <code>manager123</code><br />
+            Agent: <code>agent@planthub.com</code> / <code>agent123</code><br />
+            User: <code>user@example.com</code> / <code>user123</code>
+          </div>
         </div>
         
         {error && (

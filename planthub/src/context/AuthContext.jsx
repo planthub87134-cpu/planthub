@@ -14,56 +14,146 @@ const DEMO_USERS = {
 };
 
 export function AuthProvider({ children }) {
-  // Initialize from localStorage to persist across refreshes
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('planthub_user');
     return saved ? JSON.parse(saved) : null;
   });
-  const [session, setSession] = useState({});
-  const [loading, setLoading] = useState(false);
+  const [session, setSession] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // New register function that saves the user and also logs them in
-  const register = (userData) => {
-    const newUser = { id: 'local-user-' + Date.now(), role: 'customer', ...userData };
-    setUser(newUser);
-    localStorage.setItem('planthub_user', JSON.stringify(newUser));
-    
-    // Add to registered users list
-    const savedUsers = localStorage.getItem('planthub_registered_users');
-    const users = savedUsers ? JSON.parse(savedUsers) : [];
-    users.push(newUser);
-    localStorage.setItem('planthub_registered_users', JSON.stringify(users));
-    
-    return { error: null };
+  useEffect(() => {
+    if (isDemoMode) {
+      setLoading(false);
+      return;
+    }
+
+    // Initialize Supabase session
+    supabase.auth.getSession().then(({ data: { session: sbSession } }) => {
+      setSession(sbSession);
+      if (sbSession?.user) {
+        setUser({
+          id: sbSession.user.id,
+          email: sbSession.user.email,
+          name: sbSession.user.user_metadata?.name || sbSession.user.email?.split('@')[0] || 'User',
+          role: sbSession.user.user_metadata?.role || 'customer',
+          phone: sbSession.user.user_metadata?.phone || '',
+        });
+      }
+      setLoading(false);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, sbSession) => {
+      setSession(sbSession);
+      if (sbSession?.user) {
+        setUser({
+          id: sbSession.user.id,
+          email: sbSession.user.email,
+          name: sbSession.user.user_metadata?.name || sbSession.user.email?.split('@')[0] || 'User',
+          role: sbSession.user.user_metadata?.role || 'customer',
+          phone: sbSession.user.user_metadata?.phone || '',
+        });
+      } else {
+        // Only clear user if we are not falling back to a demo user
+        const saved = localStorage.getItem('planthub_user');
+        if (!saved || !Object.values(DEMO_USERS).find(u => u.id === JSON.parse(saved).id)) {
+          setUser(null);
+        }
+      }
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const register = async (userData) => {
+    if (isDemoMode) {
+      const newUser = { id: 'local-user-' + Date.now(), role: 'customer', ...userData };
+      setUser(newUser);
+      localStorage.setItem('planthub_user', JSON.stringify(newUser));
+      const savedUsers = localStorage.getItem('planthub_registered_users');
+      const users = savedUsers ? JSON.parse(savedUsers) : [];
+      users.push(newUser);
+      localStorage.setItem('planthub_registered_users', JSON.stringify(users));
+      return { error: null };
+    }
+
+    const { email, password, name, phone } = userData;
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          name: name || '',
+          role: 'customer',
+          phone: phone || ''
+        }
+      }
+    });
+
+    return { error };
   };
 
   const signOut = async () => {
-    setUser(null);
+    if (isDemoMode) {
+      setUser(null);
+      localStorage.removeItem('planthub_user');
+      return;
+    }
+    
+    // Clear local storage just in case we were on a fallback account
     localStorage.removeItem('planthub_user');
+    setUser(null);
+    await supabase.auth.signOut();
   };
 
   const login = async (email, password) => {
-    // 1. Check Admin
-    if (email === 'admin@planthub.com' && password === 'admin123') {
-      const adminUser = { id: 'admin-user', role: 'admin', email, name: 'Admin User', phone: '555-9012' };
-      setUser(adminUser);
-      localStorage.setItem('planthub_user', JSON.stringify(adminUser));
-      return { error: null };
-    }
-    
-    // 2. Check registered local users
-    const savedUsers = localStorage.getItem('planthub_registered_users');
-    if (savedUsers) {
-      const users = JSON.parse(savedUsers);
-      const foundUser = users.find(u => u.email === email && u.password === password);
-      if (foundUser) {
-        setUser(foundUser);
-        localStorage.setItem('planthub_user', JSON.stringify(foundUser));
-        return { error: null };
+    if (isDemoMode) {
+      const demoUser = Object.values(DEMO_USERS).find(u => u.email === email && u.password === password);
+      if (demoUser) {
+        setUser(demoUser);
+        localStorage.setItem('planthub_user', JSON.stringify(demoUser));
+        return { user: demoUser, error: null };
       }
+      const savedUsers = localStorage.getItem('planthub_registered_users');
+      if (savedUsers) {
+        const users = JSON.parse(savedUsers);
+        const foundUser = users.find(u => u.email === email && u.password === password);
+        if (foundUser) {
+          setUser(foundUser);
+          localStorage.setItem('planthub_user', JSON.stringify(foundUser));
+          return { user: foundUser, error: null };
+        }
+      }
+      return { user: null, error: { message: 'Invalid email or password' } };
     }
 
-    return { error: { message: 'Invalid email or password' } };
+    // Try Supabase auth
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    
+    if (error) {
+      // Fallback: Check if they are trying to login with a demo user that isn't in Supabase yet
+      const demoUser = Object.values(DEMO_USERS).find(u => u.email === email && u.password === password);
+      if (demoUser) {
+        console.warn("Supabase login failed. Falling back to local demo user.");
+        setUser(demoUser);
+        localStorage.setItem('planthub_user', JSON.stringify(demoUser));
+        return { user: demoUser, error: null };
+      }
+      return { user: null, error };
+    }
+
+    const sbUser = data.user;
+    const formattedUser = {
+      id: sbUser.id,
+      email: sbUser.email,
+      name: sbUser.user_metadata?.name || sbUser.email?.split('@')[0] || 'User',
+      role: sbUser.user_metadata?.role || 'customer',
+      phone: sbUser.user_metadata?.phone || '',
+    };
+    
+    setUser(formattedUser);
+    localStorage.setItem('planthub_user', JSON.stringify(formattedUser));
+    return { user: formattedUser, error: null };
   };
 
   // Stub functions to prevent crashes in other components
@@ -73,8 +163,6 @@ export function AuthProvider({ children }) {
   const signInWithPhone = async () => ({ error: null });
   const verifyOtp = async () => ({ error: null });
   const demoLogin = () => {};
-
-
 
   const value = {
     user,
