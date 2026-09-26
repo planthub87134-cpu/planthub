@@ -27,41 +27,90 @@ export default function LandingPage() {
       </div>
 
       {/* Hero Section */}
-      <section className="hero gradient-hero">
-        <div className="container">
-          <div className="hero-content animate-slide-up" style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
-            <div className="hero-badge" style={{ display: 'inline-block' }}>
-              🌿 Premium Quality Plants — Free shipping over $50
+      <section className="hero" style={{ background: 'linear-gradient(180deg, var(--bg-muted) 0%, var(--bg-primary) 100%)', position: 'relative', overflow: 'hidden', padding: 'var(--space-16) 0 var(--space-12)' }}>
+        {/* Background decorative blobs */}
+        <div style={{ position: 'absolute', top: '-10%', right: '-10%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(255,255,255,0) 70%)', borderRadius: '50%', zIndex: 0, filter: 'blur(40px)' }}></div>
+        <div style={{ position: 'absolute', bottom: '-20%', left: '-10%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(2, 132, 199, 0.08) 0%, rgba(255,255,255,0) 70%)', borderRadius: '50%', zIndex: 0, filter: 'blur(40px)' }}></div>
+
+        <div className="container" style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: 'var(--space-10)', flexWrap: 'wrap' }}>
+          
+          <div className="hero-text" style={{ flex: '1 1 500px', paddingRight: 'var(--space-4)' }}>
+            <div className="hero-badge animate-slide-down" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '8px 16px', background: 'var(--primary-50)', color: 'var(--primary-700)', borderRadius: '30px', fontSize: '0.9rem', fontWeight: 'bold', marginBottom: 'var(--space-6)', border: '1px solid var(--primary-100)' }}>
+              <span style={{ display: 'inline-block', animation: 'bounce 2s infinite' }}>🌿</span> Premium Quality Plants — Free shipping over $50
             </div>
-            <h1 className="hero-title" style={{ fontSize: '3rem', marginTop: '20px' }}>
+            <h1 className="hero-title animate-slide-right delay-1" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', fontWeight: '800', lineHeight: '1.1', marginBottom: 'var(--space-6)', color: 'var(--gray-900)' }}>
               Bring Nature
-              <span className="gradient-text"> Into Your Home</span>
+              <br/>
+              <span className="gradient-text" style={{ animation: 'gradient-shift 5s ease infinite', backgroundSize: '200% 200%' }}>Into Your Home</span>
             </h1>
-            <p className="hero-subtitle" style={{ fontSize: '1.2rem', marginBottom: '30px' }}>
+            <p className="hero-subtitle animate-slide-right delay-2" style={{ fontSize: '1.25rem', color: 'var(--text-secondary)', marginBottom: 'var(--space-8)', lineHeight: '1.6', maxWidth: '90%' }}>
               Discover our curated collection of premium indoor plants, succulents, and herbs.
               Delivered fresh to your doorstep with expert care guides.
             </p>
-            <div className="hero-stats" style={{ display: 'flex', gap: '40px', marginTop: '30px', justifyContent: 'center' }}>
-              <div className="stagger-item animate-slide-up delay-2">
-                <div className="hero-stat-value">10K+</div>
-                <div className="hero-stat-label">Plants Delivered</div>
-              </div>
-              <div className="stagger-item animate-slide-up delay-3">
-                <div className="hero-stat-value">5K+</div>
-                <div className="hero-stat-label">Happy Customers</div>
-              </div>
-            </div>
             
-            <div style={{ marginTop: '40px', display: 'flex', gap: '16px', justifyContent: 'center' }} className="animate-slide-up delay-4">
-              <Link to="/shop" className="btn btn-primary btn-lg hover-scale">Shop Now</Link>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }} className="animate-slide-up delay-3">
+              <Link to="/shop" className="btn btn-primary btn-lg btn-shiny hover-scale" style={{ boxShadow: '0 10px 25px -5px rgba(5, 150, 105, 0.4)' }}>
+                Shop Now <span style={{ marginLeft: '8px', transition: 'transform 0.3s' }} className="arrow-icon">→</span>
+              </Link>
               {!user ? (
-                <Link to="/login" className="btn btn-secondary btn-lg hover-scale" style={{ border: '2px solid var(--primary-500)', background: 'white', color: 'var(--primary-600)' }}>Login / Sign Up 🔐</Link>
+                <Link to="/login" className="btn btn-secondary btn-lg hover-scale hover-glow" style={{ background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(10px)' }}>
+                  Login / Sign Up 🔐
+                </Link>
               ) : (
-                <Link to="/plant-matcher" className="btn btn-secondary btn-lg hover-scale" style={{ border: '2px solid var(--primary-500)', background: 'white', color: 'var(--primary-600)' }}>Find My Plant 🌱</Link>
+                <Link to="/plant-matcher" className="btn btn-secondary btn-lg hover-scale hover-glow" style={{ background: 'rgba(255, 255, 255, 0.8)', backdropFilter: 'blur(10px)' }}>
+                  Find My Plant 🌱
+                </Link>
               )}
             </div>
+
+            <div className="hero-stats animate-slide-up delay-4" style={{ display: 'flex', gap: 'var(--space-8)', marginTop: 'var(--space-12)' }}>
+              <div className="hover-lift" style={{ padding: 'var(--space-2)' }}>
+                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--gray-900)', display: 'flex', alignItems: 'baseline' }}>10K<span style={{ color: 'var(--primary-500)', fontSize: '1.5rem' }}>+</span></div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: '500' }}>Plants Delivered</div>
+              </div>
+              <div style={{ width: '1px', background: 'var(--border-light)', margin: '10px 0' }}></div>
+              <div className="hover-lift" style={{ padding: 'var(--space-2)' }}>
+                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--gray-900)', display: 'flex', alignItems: 'baseline' }}>5K<span style={{ color: 'var(--primary-500)', fontSize: '1.5rem' }}>+</span></div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: '500' }}>Happy Customers</div>
+              </div>
+              <div style={{ width: '1px', background: 'var(--border-light)', margin: '10px 0' }}></div>
+              <div className="hover-lift" style={{ padding: 'var(--space-2)' }}>
+                <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--gray-900)' }}>4.9</div>
+                <div style={{ color: 'var(--text-muted)', fontSize: '0.9rem', fontWeight: '500' }}>Average Rating ⭐️</div>
+              </div>
+            </div>
           </div>
-          <div className="hero-decoration animate-float">🌿</div>
+
+          <div className="hero-visual animate-scale-in delay-2" style={{ flex: '1 1 400px', display: 'flex', justifyContent: 'center', position: 'relative' }}>
+            {/* Glowing backdrop for the image */}
+            <div style={{ position: 'absolute', top: '5%', left: '5%', right: '5%', bottom: '5%', background: 'radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(255,255,255,0) 70%)', filter: 'blur(30px)', animation: 'pulse 4s infinite' }}></div>
+            
+            <img 
+              src="https://images.unsplash.com/photo-1485955900006-10f4d324d411?auto=format&fit=crop&q=80&w=800" 
+              alt="Beautiful Indoor Plant" 
+              className="animate-float"
+              style={{ width: '100%', maxWidth: '500px', height: 'auto', borderRadius: '30px', boxShadow: '0 30px 60px rgba(0,0,0,0.12)', position: 'relative', zIndex: 2, border: '8px solid white' }} 
+            />
+            
+            {/* Floating badge 1 */}
+            <div className="animate-float" style={{ position: 'absolute', top: '10%', right: '-5%', background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', padding: '12px 20px', borderRadius: '20px', boxShadow: '0 15px 30px rgba(0,0,0,0.08)', zIndex: 3, display: 'flex', alignItems: 'center', gap: '12px', animationDelay: '1s', border: '1px solid rgba(255,255,255,0.5)' }}>
+              <div style={{ background: 'var(--primary-50)', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>💧</div>
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Care Level</div>
+                <div style={{ fontSize: '0.95rem', color: 'var(--gray-900)', fontWeight: 'bold' }}>Super Easy</div>
+              </div>
+            </div>
+
+            {/* Floating badge 2 */}
+            <div className="animate-float" style={{ position: 'absolute', bottom: '15%', left: '-10%', background: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', padding: '12px 20px', borderRadius: '20px', boxShadow: '0 15px 30px rgba(0,0,0,0.08)', zIndex: 3, display: 'flex', alignItems: 'center', gap: '12px', animationDelay: '2.5s', border: '1px solid rgba(255,255,255,0.5)' }}>
+              <div style={{ background: 'rgba(14, 165, 233, 0.1)', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>✨</div>
+              <div>
+                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontWeight: 'bold', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Air Purifying</div>
+                <div style={{ fontSize: '0.95rem', color: 'var(--success-600)', fontWeight: 'bold' }}>100% Natural</div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
@@ -286,7 +335,7 @@ export default function LandingPage() {
               <p className="cta-banner-text" style={{ fontSize: 'var(--text-lg)', color: 'var(--text-secondary)', marginBottom: 'var(--space-6)', maxWidth: '600px', margin: '0 auto var(--space-6)' }}>
                 Start your plant journey today. We have everything you need to build your perfect indoor jungle.
               </p>
-              <Link to="/shop" className="btn btn-primary btn-lg hover-scale hover-glow" id="cta-shop">
+              <Link to="/shop" className="btn btn-primary btn-lg hover-scale btn-shiny hover-glow" id="cta-shop">
                 Shop Our Collection →
               </Link>
             </div>
