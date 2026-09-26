@@ -25,6 +25,7 @@ import SupportPage from '../pages/SupportPage';
 import AgentDashboard from '../pages/AgentDashboard';
 import CRMDashboard from '../components/admin/CRMDashboard';
 import SignupPage from '../pages/SignupPage';
+import SellerSignupPage from '../pages/SellerSignupPage';
 import LoginPage from '../pages/LoginPage';
 import PrivacyPolicy from '../pages/policies/PrivacyPolicy';
 import ReturnPolicy from '../pages/policies/ReturnPolicy';
@@ -39,6 +40,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <LandingPage /> },
       { path: 'signup', element: <SignupPage /> },
+      { path: 'seller-signup', element: <SellerSignupPage /> },
       { path: 'login', element: <LoginPage /> },
       { path: 'shop', element: <ShopPage /> },
       { path: 'product/:id', element: <ProductDetailPage /> },

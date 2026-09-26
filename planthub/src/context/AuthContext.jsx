@@ -67,7 +67,7 @@ export function AuthProvider({ children }) {
 
   const register = async (userData) => {
     if (isDemoMode) {
-      const newUser = { id: 'local-user-' + Date.now(), role: 'customer', ...userData };
+      const newUser = { id: 'local-user-' + Date.now(), role: userData.role || 'customer', ...userData };
       setUser(newUser);
       localStorage.setItem('planthub_user', JSON.stringify(newUser));
       const savedUsers = localStorage.getItem('planthub_registered_users');
@@ -77,14 +77,14 @@ export function AuthProvider({ children }) {
       return { error: null };
     }
 
-    const { email, password, name, phone } = userData;
+    const { email, password, name, phone, role } = userData;
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
         data: {
           name: name || '',
-          role: 'customer',
+          role: role || 'customer',
           phone: phone || ''
         }
       }
