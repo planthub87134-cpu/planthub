@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Lock, Mail } from 'lucide-react';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -122,7 +122,7 @@ export default function LoginPage() {
 
           <div style={{ textAlign: 'center', marginTop: 'var(--space-4)', fontSize: 'var(--text-sm)' }}>
             <span style={{ color: 'var(--text-muted)' }}>Don't have an account? </span>
-            <a href="/signup" style={{ color: 'var(--primary-600)', fontWeight: 'var(--font-bold)', textDecoration: 'none' }}>Sign Up</a>
+            <Link to="/signup" style={{ color: 'var(--primary-600)', fontWeight: 'var(--font-bold)', textDecoration: 'none' }}>Sign Up</Link>
           </div>
         </form>
       </div>

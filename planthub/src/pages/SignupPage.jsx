@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { ShieldCheck, User, Mail, Phone, Lock } from 'lucide-react';
-import { useNavigate, Navigate } from 'react-router';
+import { useNavigate, Navigate, Link } from 'react-router';
 
 export default function SignupPage() {
   const { user, register } = useAuth();
@@ -36,8 +36,8 @@ export default function SignupPage() {
     setError('');
     
     // Validations
-    if (!formData.name || !formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
-      setError('Please fill in all fields.');
+    if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+      setError('Please fill in all mandatory fields.');
       return;
     }
     
@@ -197,12 +197,12 @@ export default function SignupPage() {
 
           <div style={{ textAlign: 'center', marginTop: 'var(--space-4)', fontSize: 'var(--text-sm)' }}>
             <span style={{ color: 'var(--text-muted)' }}>Already have an account? </span>
-            <a href="/login" style={{ color: 'var(--primary-600)', fontWeight: 'var(--font-bold)', textDecoration: 'none' }}>Login</a>
+            <Link to="/login" style={{ color: 'var(--primary-600)', fontWeight: 'var(--font-bold)', textDecoration: 'none' }}>Login</Link>
           </div>
 
           <div style={{ textAlign: 'center', marginTop: 'var(--space-2)', fontSize: 'var(--text-sm)', borderTop: '1px solid var(--border-light)', paddingTop: 'var(--space-4)' }}>
             <span style={{ color: 'var(--text-muted)' }}>Want to sell on PlantHub? </span>
-            <a href="/seller-signup" style={{ color: '#0369a1', fontWeight: 'var(--font-bold)', textDecoration: 'none' }}>Register as a Seller</a>
+            <Link to="/seller-signup" style={{ color: '#0369a1', fontWeight: 'var(--font-bold)', textDecoration: 'none' }}>Register as a Seller</Link>
           </div>
         </form>
       </div>
