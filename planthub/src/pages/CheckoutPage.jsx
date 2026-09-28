@@ -4,6 +4,7 @@ import { Truck, CheckCircle, ShieldCheck } from 'lucide-react';
 import { useCart } from '../hooks/useCart';
 import { formatCurrency } from '../utils/formatters';
 import { supabase } from '../lib/supabase';
+import { trackBeginCheckout, trackAddPaymentInfo, trackPurchase } from '../services/analytics';
 
 const loadRazorpayScript = () => {
   return new Promise((resolve) => {
@@ -27,10 +28,17 @@ const CheckoutPage = () => {
   const shipping = cartTotal > 999 ? 0 : 99;
   const finalTotal = cartTotal + shipping;
 
+  useEffect(() => {
+    if (cart.length > 0) {
+      trackBeginCheckout(cart, finalTotal);
+    }
+  }, []);
+
   const handleChange = (e) => setFormData({...formData, [e.target.name]: e.target.value});
 
   const handleNext = (e) => {
     e.preventDefault();
+    trackAddPaymentInfo(finalTotal, 'Razorpay / Cards / UPI');
     setStep(2);
   };
 
@@ -72,6 +80,9 @@ const CheckoutPage = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
     }
     
+    // Unified conversion tracking (GA4 purchase + Meta Pixel Purchase + Funnel purchase)
+    trackPurchase({ orderId, total: finalTotal, items: cart });
+
     addOrder({ ...dbOrder, trackingNumber: dbOrder.trackingnumber, items: cart, paymentId });
     clearCart();
     setStep(3);

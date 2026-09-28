@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Trash2, ArrowRight, Gift } from 'lucide-react';
 import { Link } from 'react-router';
 import { useCart } from '../hooks/useCart';
 import { formatCurrency } from '../utils/formatters';
+import { trackViewCart, trackBeginCheckout } from '../services/analytics';
 
 const CartPage = () => {
   const { cart: cartItems, removeFromCart, updateQuantity, cartTotal: subtotal } = useCart();
@@ -12,6 +13,12 @@ const CartPage = () => {
   const shipping = subtotal > 999 ? 0 : 99;
   const giftWrapFee = isGift ? 99 : 0;
   const total = subtotal + shipping + giftWrapFee;
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      trackViewCart(cartItems, subtotal);
+    }
+  }, [cartItems.length, subtotal]);
 
   return (
     <div className="cart-page container">
@@ -90,7 +97,11 @@ const CartPage = () => {
               <span>Total</span>
               <span>{formatCurrency(total)}</span>
             </div>
-            <Link to="/checkout" className="btn btn-primary btn-block">
+            <Link 
+              to="/checkout" 
+              className="btn btn-primary btn-block"
+              onClick={() => trackBeginCheckout(cartItems, total)}
+            >
               Proceed to Checkout <ArrowRight size={18} />
             </Link>
           </div>

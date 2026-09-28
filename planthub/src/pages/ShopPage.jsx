@@ -7,6 +7,7 @@ import { useWishlist } from '../hooks/useWishlist';
 import { supabase } from '../lib/supabase';
 import { formatCurrency } from '../utils/formatters';
 import { PRODUCTS } from '../utils/constants';
+import { trackViewItemList, trackSearch } from '../services/analytics';
 import '../styles/shop.css';
 
 const ShopPage = () => {
@@ -67,6 +68,9 @@ const ShopPage = () => {
       else if (sortBy === 'name-asc') result.sort((a, b) => a.name.localeCompare(b.name));
 
       setProducts(result);
+      if (result && result.length > 0) {
+        trackViewItemList(result, selectedCategory);
+      }
     };
 
     fetchProducts();

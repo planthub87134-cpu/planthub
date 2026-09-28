@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle } from 'lucide-react';
+import { trackContact } from '../../services/analytics';
 
 export default function WhatsAppWidget() {
   const [phoneNumber, setPhoneNumber] = useState(localStorage.getItem('planthub_whatsapp_number') || "7209306446");
@@ -21,6 +22,7 @@ export default function WhatsAppWidget() {
       target="_blank"
       rel="noopener noreferrer"
       className="whatsapp-widget"
+      onClick={() => trackContact('whatsapp')}
       style={{
         position: 'fixed',
         bottom: '24px',

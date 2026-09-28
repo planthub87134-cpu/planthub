@@ -24,6 +24,7 @@ export default function DashboardLayout({ role = 'admin' }) {
 
   const adminLinks = [
     { id: 'overview', label: '📊 Analytics', icon: '📊' },
+    { id: 'funnel', label: '🎯 Funnel & Heatmap', icon: '🎯' },
     { id: 'inventory', label: '🌿 Products', icon: '🌿' },
     { id: 'orders', label: '📦 Orders', icon: '📦' },
     { id: 'users', label: '👥 Users', icon: '👥' },

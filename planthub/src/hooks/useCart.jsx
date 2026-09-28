@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { trackAddToCart, trackRemoveFromCart } from '../services/analytics';
 
 const CartContext = createContext(null);
 
@@ -42,9 +43,16 @@ export function CartProvider({ children }) {
     } else {
       setCart([...cart, { ...product, selectedSize: size, qty: qtyToAdd, cartKey: itemKey, cartId: Date.now() + Math.random() }]);
     }
+
+    // Fire unified analytics tracking (GA4 + Meta Pixel + Funnel)
+    trackAddToCart(product, qtyToAdd, size);
   };
 
   const removeFromCart = (productId) => {
+    const itemToRemove = cart.find(item => item.id === productId);
+    if (itemToRemove) {
+      trackRemoveFromCart(itemToRemove);
+    }
     setCart(cart.filter(item => item.id !== productId));
   };
 

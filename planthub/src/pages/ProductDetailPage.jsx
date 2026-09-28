@@ -11,6 +11,7 @@ import { useWishlist } from '../hooks/useWishlist';
 import { formatCurrency } from '../utils/formatters';
 import { MOCK_REVIEWS } from '../utils/reviewsData';
 import { PRODUCTS } from '../utils/constants';
+import { trackViewItem, trackBeginCheckout } from '../services/analytics';
 
 const SIZE_OPTIONS = {
   Small: { 
@@ -88,11 +89,17 @@ export default function ProductDetailPage() {
         }
 
         setProduct(foundProduct || null);
+        if (foundProduct) {
+          trackViewItem(foundProduct);
+        }
       } catch (err) {
         console.error('Error fetching product:', err);
         const numericId = Number(id);
         const foundProduct = PRODUCTS.find(p => p.id === numericId || String(p.id) === String(id));
         setProduct(foundProduct || null);
+        if (foundProduct) {
+          trackViewItem(foundProduct);
+        }
       } finally {
         setLoading(false);
       }
@@ -183,6 +190,7 @@ export default function ProductDetailPage() {
       image: galleryImages[activeImageIndex] || product.image
     };
     addToCart(cartItem, qty);
+    trackBeginCheckout([cartItem], activePrice * qty);
     navigate('/checkout');
   };
 

@@ -4,6 +4,7 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Package, DollarSign, Users, AlertCircle, Edit, Trash2 } from 'lucide-react';
 import { PRODUCTS, DEMO_ORDERS } from '../utils/constants';
 import CRMDashboard from '../components/admin/CRMDashboard';
+import FunnelAnalyticsDashboard from '../components/admin/FunnelAnalyticsDashboard';
 
 const data = [
   { name: 'Mon', sales: 4000 },
@@ -551,6 +552,12 @@ const AdminDashboard = () => {
               alert('Settings saved!');
             }}>Save Settings</button>
           </div>
+        </div>
+      )}
+
+      {activeTab === 'funnel' && (
+        <div className="animate-slide-up">
+          <FunnelAnalyticsDashboard />
         </div>
       )}
 
