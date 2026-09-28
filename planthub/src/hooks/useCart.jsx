@@ -27,16 +27,20 @@ export function CartProvider({ children }) {
     fetchOrders();
   }, []);
 
-  const addToCart = (product) => {
-    const existing = cart.find(item => item.id === product.id);
+  const addToCart = (product, customQty) => {
+    const qtyToAdd = customQty || product.qty || 1;
+    const size = product.selectedSize || 'Medium';
+    const itemKey = `${product.id}-${size}`;
+
+    const existing = cart.find(item => (item.cartKey || item.id) === itemKey || (item.id === product.id && item.selectedSize === size));
     if (existing) {
       setCart(cart.map(item =>
-        item.id === product.id
-          ? { ...item, qty: item.qty + 1 }
+        ((item.cartKey || item.id) === itemKey || (item.id === product.id && item.selectedSize === size))
+          ? { ...item, qty: item.qty + qtyToAdd }
           : item
       ));
     } else {
-      setCart([...cart, { ...product, qty: 1, cartId: Date.now() + Math.random() }]);
+      setCart([...cart, { ...product, selectedSize: size, qty: qtyToAdd, cartKey: itemKey, cartId: Date.now() + Math.random() }]);
     }
   };
 
