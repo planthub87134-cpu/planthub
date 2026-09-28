@@ -7,10 +7,10 @@
   position: sticky;
   top: 0;
   z-index: var(--z-sticky);
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--border-light);
+  background: rgba(248, 250, 248, 0.88);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(187, 247, 208, 0.25);
   transition: all var(--transition-base);
 }
 
@@ -32,7 +32,7 @@
   font-family: 'Outfit', sans-serif;
   font-size: var(--text-2xl);
   font-weight: var(--font-extrabold);
-  color: var(--primary-700);
+  color: var(--primary-800);
   text-decoration: none;
   white-space: nowrap;
 }
@@ -62,7 +62,7 @@
 
 .navbar-link:hover,
 .navbar-link.active {
-  color: var(--primary-600);
+  color: var(--primary-700);
   background: var(--primary-50);
 }
 
@@ -85,13 +85,14 @@
 
 .navbar-cart:hover {
   background: var(--primary-50);
+  color: var(--primary-700);
 }
 
 .navbar-cart-count {
   position: absolute;
   top: -4px;
   right: -4px;
-  background: var(--danger-500);
+  background: var(--primary-600);
   color: white;
   font-size: 10px;
   font-weight: var(--font-bold);

@@ -69,8 +69,8 @@
 }
 
 .shop-controls .search-bar .input:focus {
-  border-color: var(--primary-500);
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  border-color: var(--primary-600);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
 }
 
 .shop-controls .filters {
